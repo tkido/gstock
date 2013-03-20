@@ -46,13 +46,12 @@ object main extends App {
     val lines = try s.getLines.toList finally s.close
     
     val stocks = MSet[Stock]()
-    val num = lines.size / 8
+    val num = lines.size / 4
     for(i <- Range(0, num)){
       val name = lines(0+i*4).trim
       val id = lines(1+i*4).split(" ")(0)
       val value = lines(3+i*4).stripSuffix("‰~")
-      val delta = lines(3+i*4+num*4)
-      stocks += Stock(id, name, value, delta, groupmap(id))
+      stocks += Stock(id, name, value, "", groupmap(id))
     }
     stocks
   }

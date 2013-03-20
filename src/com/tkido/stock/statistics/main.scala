@@ -13,8 +13,6 @@ object main extends App {
 
   val (stocksmap, stocks) = makeStocks()
   val (namesmap, deals) = parseDeals()
-  println(namesmap)
-  println(deals)
   
   for(id <- namesmap.keys){
     val value = if (stocksmap.contains(id))
@@ -57,7 +55,6 @@ object main extends App {
     val namesmap = MMap[String, String]()
     val deals = MSet[Deal]()
     for(line <- lines.tail){
-      println(line)
       val array = line.split("\t")
       val name = array(1)
       val id = array(2)
