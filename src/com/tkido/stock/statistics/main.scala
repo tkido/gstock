@@ -64,6 +64,7 @@ object main extends App {
       val dealType = array(4) match {
         case "Š”Ž®Œ»•¨”ƒ" => DealType.BUY
         case "Š”Ž®Œ»•¨”„" => DealType.SELL
+        case "”z“–"       => DealType.SELL
         case _            => DealType.NEUTRAL
       }
       
