@@ -19,7 +19,6 @@ object main extends App {
         target = last
       last = line
     }
-    //html.collectFirst{ case p(m) => m.filter(_ != ',') }
     val p2 = """<strong>([0-9,]+)</strong>""".r
     val m = p2.findFirstMatchIn(target)
     Some(m.get.group(1).dropRight(4))
