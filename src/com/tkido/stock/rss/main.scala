@@ -7,46 +7,62 @@ object main extends App {
   case class Stock(code:String, market:String){
   }
   
-  def getTotal(code:String) :Option[String] = {
+  def parseYahoo(code:String) :(String, String) = {
     val url = "http://stocks.finance.yahoo.co.jp/stocks/detail/?code=" + code
     val html = HtmlScraper(url)
-    val p = """<dt class="title">”­sÏŠ”®”""".r
     
+    val rgexO = """<dt class="title">”­sÏŠ”®”""".r
     var last = ""
     var target = ""
     for(line <- html){
-      if(p.findFirstIn(line).isDefined)
+      if(rgexO.findFirstIn(line).isDefined)
         target = last
       last = line
     }
-    val p2 = """<strong>([0-9,]+)</strong>""".r
-    val m = p2.findFirstMatchIn(target)
-    Some(m.get.group(1).dropRight(4))
+    val rgexO2 = """<strong>([0-9,]+)</strong>""".r
+    val mO = rgexO2.findFirstMatchIn(target)
+    val outstanding = if(mO.isDefined) mO.get.group(1).dropRight(4) else "ERROR!!"
+    
+    val rgexM = """<dt>%s</dt>""".format(code).r
+    var flag = false
+    for(line <- html){
+      if(flag){
+    	target = line
+    	flag = false
+      }
+      if(rgexM.findFirstIn(line).isDefined)
+        flag = true
+    }
+    val marketString = target.replaceAll("<.*?>", "").trim
+    val market = marketString match {
+      case "“ŒØ" => "T"
+      case "“ŒØ1•”" => "T"
+      case "“ŒØ2•”" => "T"
+      case "ƒ}ƒU[ƒY" => "T"
+      case "‘åØ1•”" => "OS"
+      case "‘åØ2•”" => "OS"
+      case "JQG" => "Q"
+      case "JQS" => "Q"
+    }
+    (market, outstanding)
   }
   
-  def makeStockList() :List[Stock] = {
+  def makeCodeList() :List[String] = {
     val s = Source.fromFile("data/rss/table.txt", "utf-8")
     val lines = try s.getLines.toList finally s.close
-    
-    var list = List[Stock]()
-    for(line <- lines){
-      val arr = line.split("\t")
-      list = Stock(arr(0), arr(1)) :: list
-    }
-    list.reverse
+    val codes = lines.map(_.stripLineEnd)
+    codes
   }
   
-  def makeStockString(pair:Pair[Stock, Int]) :String = {
-    val (stock, n) = pair
-    val totalopt = getTotal(stock.code)
-    if(totalopt.isEmpty) return "ERROR!!"
-    val total = totalopt.get
+  def makeStockString(pair:Pair[String, Int]) :String = {
+    val (code, n) = pair
+    val (market, outstanding) = parseYahoo(code)
     
     val buf = new StringBuilder
-    val s = "%s.%s".format(stock.code, stock.market)
+    val s = "%s.%s".format(code, market)
 
-    buf ++= stock.code + "\t"
-    buf ++= stock.market + "\t"
+    buf ++= code + "\t"
+    buf ++= market + "\t"
     buf ++= "=RSS|'%s'!–Á•¿–¼Ì\t".format(s) 
     buf ++= "=RSS|'%s'!Œ»İ’l\t".format(s) 
     buf ++= "=RSS|'%s'!‘O“ú”ä—¦\t".format(s) 
@@ -64,13 +80,13 @@ object main extends App {
     buf ++= "=RSS|'%s'!”z“–/D%d\t".format(s, n) 
     buf ++= "=RSS|'%s'!‚o‚d‚q\t".format(s) 
     buf ++= "=RSS|'%s'!‚o‚a‚q\t".format(s) 
-    buf ++= total 
+    buf ++= outstanding 
     buf.toString()
   }
   
-  val stock_list = makeStockList()
-  val stock_and_num = stock_list zip Range(2, stock_list.size+2)
-  val stockstrings = stock_and_num.map(makeStockString)
+  val codeList = makeCodeList()
+  val codeAndNum = codeList zip Range(2, codeList.size+2)
+  val stockstrings = codeAndNum.map(makeStockString)
   val result = stockstrings.mkString("\n")
   println(result)
   
