@@ -34,6 +34,7 @@ object main extends App {
         flag = true
     }
     val marketString = target.replaceAll("<.*?>", "").trim
+    println(marketString)
     val market = marketString match {
       case "“ŒØ" => "T"
       case "“ŒØ1•”" => "T"
@@ -43,6 +44,7 @@ object main extends App {
       case "‘åØ2•”" => "OS"
       case "JQG" => "Q"
       case "JQS" => "Q"
+      case _ => "X"
     }
     (market, outstanding)
   }
