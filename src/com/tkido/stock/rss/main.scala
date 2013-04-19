@@ -2,10 +2,6 @@ package com.tkido.stock.rss
 
 object main extends App {
   import scala.io.Source
-  import scala.collection.mutable.{Set => MSet}
-  
-  case class Stock(code:String, market:String){
-  }
   
   def parseYahoo(code:String) :(String, String) = {
     val url = "http://stocks.finance.yahoo.co.jp/stocks/detail/?code=" + code
@@ -34,7 +30,6 @@ object main extends App {
         flag = true
     }
     val marketString = target.replaceAll("<.*?>", "").trim
-    println(marketString)
     val market = marketString match {
       case "“ŒØ" => "T"
       case "“ŒØ1•”" => "T"
@@ -91,6 +86,4 @@ object main extends App {
   val stockstrings = codeAndNum.map(makeStockString)
   val result = stockstrings.mkString("\n")
   println(result)
-  
-
 }
