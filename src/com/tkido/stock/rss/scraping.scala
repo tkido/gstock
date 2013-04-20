@@ -4,8 +4,7 @@ object scraping extends App {
   import scala.io.Source
   import scala.util.matching.Regex
   import java.net.URLEncoder
-  import java.nio._
-  import java.nio.charset._
+  import scala.collection.mutable.{Map => MMap}  
   //import com.ibm.icu.text.Transliterator
   
   def removeTags(string:String) :String =
@@ -19,7 +18,7 @@ object scraping extends App {
         target = last
       last = line
     }
-    removeTags(last)
+    removeTags(target)
   }
   
   def getNextLineOf(html:Iterable[String], rgex:Regex) :String = {
@@ -37,8 +36,30 @@ object scraping extends App {
     removeTags(target)
   }
   
+  def parseDetailPage(code:String) :Map[String, String] = {
+    val url = "http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code)
+    val html = HtmlScraper(url)
+    
+    def getOutstanding() :String =
+      getPreviousLineOf(html, """<dt class="title">発行済株式数""".r).dropRight(12)
+    def getMarketCode() :String = {
+      getNextLineOf(html, """<dt>%s</dt>""".format(code).r) match {
+        case "東証" => "T"
+        case "東証1部" => "T"
+        case "東証2部" => "T"
+        case "マザーズ" => "T"
+        case "大証1部" => "OS"
+        case "大証2部" => "OS"
+        case "JQG" => "Q"
+        case "JQS" => "Q"
+        case _ => "X"
+      }
+    }
+    Map("市ID" -> getMarketCode,
+        "発行" -> getOutstanding)
+  }  
   
-  def parseProfilePage(code:String) :List[String] = {
+  def parseProfilePage(code:String) :Map[String, String] = {
     val url = "http://stocks.finance.yahoo.co.jp/stocks/profile/?code=%s".format(code)
     val html = HtmlScraper(url)
     
@@ -54,9 +75,9 @@ object scraping extends App {
       """=HYPERLINK("https://www.google.co.jp/search?q=%s", "%s")""".format(URLEncoder.encode(name, "UTF-8"), name)
     }
     def getFoundated() :String =
-      getNextLineOf(html, """<th nowrap>設立年月日</th>""".r)
+      getNextLineOf(html, """<th nowrap>設立年月日</th>""".r).slice(0, 4)
     def getListed() :String =
-      getNextLineOf(html, """<th nowrap>上場年月日</th>""".r)
+      getNextLineOf(html, """<th nowrap>上場年月日</th>""".r).slice(0, 4)
     def getSettlement() :String =
       getNextLineOf(html, """<th nowrap>決算</th>""".r).dropRight(2)
     def getSingleEmployees() :String =
@@ -68,20 +89,20 @@ object scraping extends App {
     def getIncome() :String =
       getNextLineOf(html, """<th nowrap>平均年収</th>""".r).dropRight(3).replaceAll(",", "")
     
-    List(getFeature,
-         getConsolidated,
-         getCategory,
-         getFoundated,
-         getListed,
-         getSettlement,
-         getConsolidatedEmployees,
-         getSingleEmployees,
-         getAge,
-         getIncome,
-         getRepresentative)
+    Map("特色" -> getFeature,
+        "連結事業" -> getConsolidated,
+        "業務" -> getCategory,
+        "設立" -> getFoundated,
+        "上場" -> getListed,
+        "決"   -> getSettlement,
+        "従連" -> getConsolidatedEmployees,
+        "従単" -> getSingleEmployees,
+        "齢"   -> getAge,
+        "収"   -> getIncome,
+        "代表" -> getRepresentative)
   }
   
-  def parseConsolidatePage(code:String) :List[String] = {
+  def parseConsolidatePage(code:String) :Map[String, String] = {
     val url = "http://profile.yahoo.co.jp/consolidate/%s".format(code)
     val html = Source.fromURL(url, "EUC-JP").getLines.toIterable
     
@@ -92,12 +113,12 @@ object scraping extends App {
     def getRoe() :String =
       getNextLineOf(html, """<td bgcolor="#ebf4ff">ROE（自己資本利益率）</td>""".r)
     
-    List(getSettlement,
-         getCapitalToAssetRatio,
-         getRoe)
+    Map("前決" -> getSettlement,
+        "自" -> getCapitalToAssetRatio,
+        "ROE" -> getRoe)
   }
   
-  def parseStockholderPage(code:String) :List[String] = {
+  def parseStockholderPage(code:String) :Map[String, String] = {
     val url = "http://info.finance.yahoo.co.jp/stockholder/detail/?code=%s".format(code)
     val html = HtmlScraper(url)
     
@@ -109,8 +130,7 @@ object scraping extends App {
       else
         ""
     }
-    val month = getMonth()
-    List(month)
+    Map("優待" -> getMonth)
   }
     
   def makeCodeList() :List[String] = {
@@ -120,24 +140,59 @@ object scraping extends App {
     codes
   }
   
-  def makeStockString(code:String) :String = {
-    val list = parseProfilePage(code) ::: parseConsolidatePage(code) ::: parseStockholderPage(code) 
-    //val list = parseProfilePage(code)
-    //val list = parseConsolidatePage(code)
-    //val list = parseStockholderPage(code)
-    //println(list)
-    /*
-    val buf = new StringBuilder
-    val s = "%s.%s".format(code, "")
-
-    buf ++= "\t"
-    buf.toString()
-    */
+  def makeData(pair:Pair[String, Int]) :Map[String, String] = {
+    val (code, row) = pair
+    //val list = parseProfilePage(code) ::: parseConsolidatePage(code) ::: parseStockholderPage(code) 
+    val parsedData = parseDetailPage(code) ++
+                     parseStockholderPage(code)
+               
+    //val data = parseProfilePage(code)
+    //val data = parseConsolidatePage(code)
+    //val data = parseStockholderPage(code)
+    val pushedData = pushData(code, parsedData("市ID"), row)
+    val data = parsedData ++ pushedData
+    data
+  }
+  
+  def pushData(code:String, market:String, row:Int) :Map[String, String] = {
+    def rssCode(id:String, div:String) :String = {
+      val divStr = div match {
+        case "O" => "/T%d".format(row)
+        case "C" => "/C%d".format(row)
+        case _   => ""
+      }
+      "=RSS|'%s.%s'!%s%s".format(code, market, id, divStr)
+    }
+    
+    Map("ID"       -> code,
+        "名称"     -> rssCode("銘柄名称", ""),
+        "現値"     -> rssCode("現在値", ""),
+        "前比"     -> rssCode("前日比率", ""),
+        "出来"     -> rssCode("出来高", "O"),
+        "買残"     -> rssCode("信用買残", "O"),
+        "買残週差" -> rssCode("信用買残前週比", "O"),
+        "売残"     -> rssCode("信用売残", "O"),
+        "売残週差" -> rssCode("信用売残前週比", "O"),
+        "年高"     -> rssCode("年初来高値", "C"),
+        "年高日"   -> rssCode("年初来高値日付", ""),
+        "年安"     -> rssCode("年初来安値", "C"),
+        "年安日"   -> rssCode("年初来安値日付", ""),
+        "市"       -> rssCode("市場部略称", ""),
+        "利"       -> rssCode("配当", "C"),
+        "PER"      -> rssCode("ＰＥＲ", "C"),
+        "PBR"      -> rssCode("ＰＢＲ", "C"))
+  }
+  
+  def makeString(pair:Pair[String, Int]) :String = {
+    val data = makeData(pair)
+    val order = List("ID", "発行", "優待", "利", "出来")
+    val list = order.map(data(_))
     list.mkString("\t")
   }
   
   val codeList = makeCodeList()
-  val stockstrings = codeList.map(makeStockString)
-  val result = stockstrings.mkString("\n")
+  val codeAndNum = codeList zip Range(2, codeList.size+2)
+  val strings = codeAndNum.map(makeString)
+  val result = strings.mkString("\n")
   println(result)
 }
