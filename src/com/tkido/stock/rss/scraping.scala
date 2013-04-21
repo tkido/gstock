@@ -69,7 +69,7 @@ object scraping extends App {
       """=HYPERLINK("https://www.google.co.jp/search?q=%s", "%s")""".format(URLEncoder.encode(name, "UTF-8"), name)
     }
     def getFeature() :String =
-      getNextLineOf(html, """<th width="1%" nowrap>特色</th>""".r)
+      getNextLineOf(html, """<th width="1%" nowrap>特色</th>""".r).replaceFirst(""" \[企業特色\]""", "")
     def getConsolidated() :String =
       getNextLineOf(html, """<th nowrap>連結事業</th>""".r)
     def getCategory() :String = {
@@ -78,7 +78,7 @@ object scraping extends App {
     }
     def getRepresentative() :String = {
       val raw = getNextLineOf(html, """<th nowrap>代表者名</th>""".r)
-      val name = raw.replaceAll("　", "")
+      val name = raw.replaceAll("　", "").replaceAll(""" \[役員\]""", "")
       """=HYPERLINK("https://www.google.co.jp/search?q=%s", "%s")""".format(URLEncoder.encode(name, "UTF-8"), name)
     }
     def getFoundated() :String =
@@ -117,11 +117,11 @@ object scraping extends App {
     val html = Source.fromURL(url, "EUC-JP").getLines.toIterable
     
     def getSettlement() :String =
-      getNextLineOf(html, """<td bgcolor="#ebf4ff">決算発表日</td>""".r)
+      getNextLineOf(html, """<td bgcolor="#ebf4ff">決算発表日</td>""".r).replaceFirst("---", "-")
     def getCapitalToAssetRatio() :String =
-      getNextLineOf(html, """<td bgcolor="#ebf4ff">自己資本比率</td>""".r)
+      getNextLineOf(html, """<td bgcolor="#ebf4ff">自己資本比率</td>""".r).replaceFirst("---", "-")
     def getRoe() :String =
-      getNextLineOf(html, """<td bgcolor="#ebf4ff">ROE（自己資本利益率）</td>""".r)
+      getNextLineOf(html, """<td bgcolor="#ebf4ff">ROE（自己資本利益率）</td>""".r).replaceFirst("---", "-")
     
     Map("決算" -> getSettlement,
         "自"   -> getCapitalToAssetRatio,
@@ -213,7 +213,7 @@ object scraping extends App {
     list.mkString("\t")
   }
   
-  val startLine = 241
+  val startLine = 5
   val codeList = makeCodeList()
   val codeRowPair = codeList zip Range(startLine, codeList.size+startLine)
   val strings = codeRowPair.map(makeString)
