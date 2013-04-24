@@ -179,7 +179,11 @@ object scraping extends App {
         case CURRENT     => "/C%d".format(row)
         case _ => ""
       }
-      "=RSS|'%s.%s'!%s%s".format(code, market, id, divStr)
+      val mainCode = "RSS|'%s.%s'!%s%s".format(code, market, id, divStr)
+      div match {
+        case CURRENT     => """=IF(C%s=" ", "", %s)""".format(row, mainCode)
+        case _ => "=%s".format(mainCode)
+      }
     }
     
     Map("åªíl"     -> rssCode("åªç›íl", NONE),
@@ -213,7 +217,7 @@ object scraping extends App {
     list.mkString("\t")
   }
   
-  val startLine = 287
+  val startLine = 2
   val codeList = makeCodeList()
   val codeRowPair = codeList zip Range(startLine, codeList.size+startLine)
   val strings = codeRowPair.map(makeString)
