@@ -38,7 +38,7 @@ object scraping extends App {
   
   def parseDetailPage(code:String) :Map[String, String] = {
     val url = "http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code)
-    val html = HtmlScraper(url)
+    val html = Source.fromURL(url, "UTF-8").getLines.toIterable
     
     def getOutstanding() :String =
       getPreviousLineOf(html, """<dt class="title">î≠çsçœäîéÆêî""".r).dropRight(12)
@@ -61,7 +61,7 @@ object scraping extends App {
   
   def parseProfilePage(code:String) :Map[String, String] = {
     val url = "http://stocks.finance.yahoo.co.jp/stocks/profile/?code=%s".format(code)
-    val html = HtmlScraper(url)
+    val html = Source.fromURL(url, "UTF-8").getLines.toIterable
     
     def getName() :String = {
       val raw = getNextLineOf(html, """<meta http-equiv="Refresh" content="60">""".r)
@@ -130,7 +130,7 @@ object scraping extends App {
   
   def parseStockholderPage(code:String) :Map[String, String] = {
     val url = "http://info.finance.yahoo.co.jp/stockholder/detail/?code=%s".format(code)
-    val html = HtmlScraper(url)
+    val html = Source.fromURL(url, "UTF-8").getLines.toIterable
     
     def getMonth() :String = {
       val rgex = """<tr><th>å†óòämíËåé</th><td>(.*?)</td></tr>""".r
@@ -213,7 +213,7 @@ object scraping extends App {
     list.mkString("\t")
   }
   
-  val startLine = 5
+  val startLine = 287
   val codeList = makeCodeList()
   val codeRowPair = codeList zip Range(startLine, codeList.size+startLine)
   val strings = codeRowPair.map(makeString)
