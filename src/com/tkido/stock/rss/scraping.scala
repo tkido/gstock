@@ -175,7 +175,7 @@ object scraping extends App {
     
     def rssCode(id:String, div:DivType.Value) :String = {
       val divStr = div match {
-        case OUTSTANDING => "/U%d".format(row)
+        case OUTSTANDING => "/Y%d".format(row)
         case CURRENT     => "/C%d".format(row)
         case _ => ""
       }
@@ -187,6 +187,10 @@ object scraping extends App {
     }
     
     Map("現値"     -> rssCode("現在値", NONE),
+        "最売"     -> rssCode("最良売気配値", NONE),
+        "最売数"   -> rssCode("最良売気配数量", NONE),
+        "最買"     -> rssCode("最良買気配値", NONE),
+        "最買数"   -> rssCode("最良買気配数量", NONE),
         "前比"     -> rssCode("前日比率", NONE),
         "出来"     -> rssCode("出来高", OUTSTANDING),
         "買残"     -> rssCode("信用買残", OUTSTANDING),
@@ -205,8 +209,10 @@ object scraping extends App {
   
   def makeString(pair:Pair[String, Int]) :String = {
     val data = makeData(pair)
-    val order = List("ID", "名称", "現値", "前比",
-                     "出来", "買残", "買残週差", "売残", "売残週差",
+    val order = List("ID", "名称", "現値", 
+                     "最売", "最売数", "最買", "最買数",
+                     "前比", "出来",
+                     "買残", "買残週差", "売残", "売残週差",
                      "年高", "年高日", "年安", "年安日",
                      "利", "PER", "PBR", "ROE", 
                      "自", "決算", "優待",
@@ -217,7 +223,7 @@ object scraping extends App {
     list.mkString("\t")
   }
   
-  val startLine = 2
+  val startLine = 3
   val codeList = makeCodeList()
   val codeRowPair = codeList zip Range(startLine, codeList.size+startLine)
   val strings = codeRowPair.map(makeString)
