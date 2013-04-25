@@ -164,7 +164,10 @@ object scraping extends App {
   }
   
   def makeOtherData(code:String) :Map[String, String] = {
-    Map("ID" -> code)
+    def getId() :String = {
+      """=HYPERLINK("https://kabu.click-sec.com/sec1-3/kabu/meigaraInfo.do?securityCode=%s", "%s")""".format(code, code)
+    }    
+    Map("ID" -> getId)
   }
   
   def makeRssData(code:String, market:String, row:Int) :Map[String, String] = {
