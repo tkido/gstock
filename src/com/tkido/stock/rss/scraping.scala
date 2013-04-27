@@ -178,15 +178,18 @@ object scraping extends App {
     
     def rssCode(id:String, div:DivType.Value) :String = {
       val divStr = div match {
-        case OUTSTANDING => "/Y%d".format(row)
+        case OUTSTANDING => "/Z%d".format(row)
         case CURRENT     => "/C%d".format(row)
         case _ => ""
       }
+      /*
       val mainCode = "RSS|'%s.%s'!%s%s".format(code, market, id, divStr)
       div match {
         case CURRENT     => """=IF(C%s=" ", "", %s)""".format(row, mainCode)
         case _ => "=%s".format(mainCode)
       }
+      */
+      "=RSS|'%s.%s'!%s%s".format(code, market, id, divStr)
     }
     
     Map("現値"     -> rssCode("現在値", NONE),
@@ -196,6 +199,7 @@ object scraping extends App {
         "最買数"   -> rssCode("最良買気配数量", NONE),
         "前比"     -> rssCode("前日比率", NONE),
         "出来"     -> rssCode("出来高", OUTSTANDING),
+        "落日"     -> rssCode("配当落日", NONE),
         "買残"     -> rssCode("信用買残", OUTSTANDING),
         "買残週差" -> rssCode("信用買残前週比", OUTSTANDING),
         "売残"     -> rssCode("信用売残", OUTSTANDING),
@@ -218,7 +222,7 @@ object scraping extends App {
                      "買残", "買残週差", "売残", "売残週差",
                      "年高", "年高日", "年安", "年安日",
                      "利", "PER", "PBR", "ROE", 
-                     "自", "決算", "優待",
+                     "自", "決算", "優待", "落日",
                      "発行", "市", "分類", "代表",
                      "特色", "事業", "設立", "上場", "決期",
                      "従連", "従単", "齢", "収")
@@ -226,7 +230,7 @@ object scraping extends App {
     list.mkString("\t")
   }
   
-  val startLine = 3
+  val startLine = 2
   val codeList = makeCodeList()
   val codeRowPair = codeList zip Range(startLine, codeList.size+startLine)
   val strings = codeRowPair.map(makeString)
