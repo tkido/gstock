@@ -2,6 +2,7 @@ package com.tkido.stock.rss
 
 object scraping extends App {
   import scala.io.Source
+  import java.io.PrintWriter
   import scala.util.matching.Regex
   import java.net.URLEncoder
   import scala.collection.mutable.{Map => MMap}  
@@ -65,29 +66,25 @@ object scraping extends App {
     
     def getName() :String = {
       val raw = getNextLineOf(html, """<meta http-equiv="Refresh" content="60">""".r)
-      val name = raw.dropRight(27).replaceFirst("""\(株\)""", "")
-      """=HYPERLINK("https://www.google.co.jp/search?q=%s", "%s")""".format(URLEncoder.encode(name, "UTF-8"), name)
+      raw.dropRight(27).replaceFirst("""\(株\)""", "")
     }
     def getFeature() :String =
       getNextLineOf(html, """<th width="1%" nowrap>特色</th>""".r).replaceFirst(""" \[企業特色\]""", "")
     def getConsolidated() :String =
       getNextLineOf(html, """<th nowrap>連結事業</th>""".r)
     def getCategory() :String = {
-      val name = getNextLineOf(html, """<th nowrap>業種分類</th>""".r).replaceAll("業", "").replaceAll("・", "")
-      """=HYPERLINK("http://kabu-sokuhou.com/brand/item/code___%s/", "%s")""".format(code, name)
+      getNextLineOf(html, """<th nowrap>業種分類</th>""".r).replaceAll("業", "").replaceAll("・", "")
     }
     def getRepresentative() :String = {
       val raw = getNextLineOf(html, """<th nowrap>代表者名</th>""".r)
-      val name = raw.replaceAll("　", "").replaceAll(""" \[役員\]""", "")
-      """=HYPERLINK("https://www.google.co.jp/search?q=%s", "%s")""".format(URLEncoder.encode(name, "UTF-8"), name)
+      raw.replaceAll("　", "").replaceAll(""" \[役員\]""", "")
     }
     def getFoundated() :String =
       getNextLineOf(html, """<th nowrap>設立年月日</th>""".r).slice(0, 4)
     def getListed() :String =
       getNextLineOf(html, """<th nowrap>上場年月日</th>""".r).slice(0, 4)
     def getSettlement() :String = {
-      val name = getNextLineOf(html, """<th nowrap>決算</th>""".r).replaceAll("末日", "").replaceAll(""" \[決算情報　年次\]""", "")
-      """=HYPERLINK("http://www.nikkei.com/markets/company/kigyo/kigyo.aspx?scode=%s", "%s")""".format(code, name)
+      getNextLineOf(html, """<th nowrap>決算</th>""".r).replaceAll("末日", "").replaceAll(""" \[決算情報　年次\]""", "")
     }
     def getSingleEmployees() :String =
       getNextLineOf(html, """<th width="1%">従業員数<br><span class="yjSt">（単独）</span></th>""".r).dropRight(1)
@@ -136,7 +133,7 @@ object scraping extends App {
       val rgex = """<tr><th>権利確定月</th><td>(.*?)</td></tr>""".r
       val opt = html.collectFirst{ case rgex(m) => m }
       if(opt.isDefined)
-        """=HYPERLINK("%s", "%s")""".format(url, removeTags(opt.get.replaceFirst("権利確定月", "").replaceAll("末日", "")))
+        removeTags(opt.get.replaceFirst("権利確定月", "").replaceAll("末日", ""))
       else
         ""
     }
@@ -148,6 +145,12 @@ object scraping extends App {
     val lines = try s.getLines.toList finally s.close
     val codes = lines.map(_.stripLineEnd)
     codes
+  }
+  
+  def writeFile(data: String) {
+    val out = new PrintWriter("data/rss/result.txt")
+    out.println(data)
+    out.close
   }
   
   def makeData(pair:Pair[String, Int]) :Map[String, String] = {
@@ -165,7 +168,7 @@ object scraping extends App {
   
   def makeOtherData(code:String) :Map[String, String] = {
     def getId() :String = {
-      """=HYPERLINK("https://kabu.click-sec.com/sec1-3/kabu/meigaraInfo.do?securityCode=%s", "%s")""".format(code, code)
+      code
     }    
     Map("ID" -> getId)
   }
@@ -182,13 +185,6 @@ object scraping extends App {
         case CURRENT     => "/C%d".format(row)
         case _ => ""
       }
-      /*
-      val mainCode = "RSS|'%s.%s'!%s%s".format(code, market, id, divStr)
-      div match {
-        case CURRENT     => """=IF(C%s=" ", "", %s)""".format(row, mainCode)
-        case _ => "=%s".format(mainCode)
-      }
-      */
       "=RSS|'%s.%s'!%s%s".format(code, market, id, divStr)
     }
     
@@ -235,5 +231,6 @@ object scraping extends App {
   val codeRowPair = codeList zip Range(startLine, codeList.size+startLine)
   val strings = codeRowPair.map(makeString)
   val result = strings.mkString("\n")
-  println(result)
+  writeFile(result)
+  println("OK!!")
 }
