@@ -161,16 +161,19 @@ object scraping extends App {
                      parseDetailPage(code) ++
                      parseStockholderPage(code)
     val rssData = makeRssData(code, parsedData("市ID"), row)
-    val otherData = makeOtherData(code)
+    val otherData = makeOtherData(code, row)
     
     parsedData ++ rssData ++ otherData
   }
   
-  def makeOtherData(code:String) :Map[String, String] = {
-    def getId() :String = {
+  def makeOtherData(code:String, row:Int) :Map[String, String] = {
+    def getId() :String =
       code
-    }    
-    Map("ID" -> getId)
+    def getPrice(): String =
+      """=IF(H%d=" ", I%d, H%d)""".format(row, row, row)
+      
+    Map("ID" -> getId,
+        "値" -> getPrice)
   }
   
   def makeRssData(code:String, market:String, row:Int) :Map[String, String] = {
@@ -181,7 +184,7 @@ object scraping extends App {
     
     def rssCode(id:String, div:DivType.Value) :String = {
       val divStr = div match {
-        case OUTSTANDING => "/Z%d".format(row)
+        case OUTSTANDING => "/AB%d".format(row)
         case CURRENT     => "/C%d".format(row)
         case _ => ""
       }
@@ -212,9 +215,9 @@ object scraping extends App {
   
   def makeString(pair:Pair[String, Int]) :String = {
     val data = makeData(pair)
-    val order = List("ID", "名称", "現値", 
+    val order = List("ID", "名称", "値", 
                      "最売", "最売数", "最買", "最買数",
-                     "前比", "出来",
+                     "現値", "前値", "前比", "出来",
                      "買残", "買残週差", "売残", "売残週差",
                      "年高", "年高日", "年安", "年安日",
                      "利", "PER", "PBR", "ROE", 
