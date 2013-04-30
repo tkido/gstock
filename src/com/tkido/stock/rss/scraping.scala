@@ -4,8 +4,8 @@ object scraping extends App {
   import scala.io.Source
   import java.io.PrintWriter
   import scala.util.matching.Regex
-  import java.net.URLEncoder
   import scala.collection.mutable.{Map => MMap}  
+  //import java.net.URLEncoder
   //import com.ibm.icu.text.Transliterator
   
   def removeTags(string:String) :String =
@@ -196,6 +196,7 @@ object scraping extends App {
         "最売数"   -> rssCode("最良売気配数量", NONE),
         "最買"     -> rssCode("最良買気配値", NONE),
         "最買数"   -> rssCode("最良買気配数量", NONE),
+        "前終"     -> rssCode("前日終値", NONE),
         "前比"     -> rssCode("前日比率", NONE),
         "出来"     -> rssCode("出来高", OUTSTANDING),
         "落日"     -> rssCode("配当落日", NONE),
@@ -217,7 +218,7 @@ object scraping extends App {
     val data = makeData(pair)
     val order = List("ID", "名称", "値", 
                      "最売", "最売数", "最買", "最買数",
-                     "現値", "前値", "前比", "出来",
+                     "現値", "前終", "前比", "出来",
                      "買残", "買残週差", "売残", "売残週差",
                      "年高", "年高日", "年安", "年安日",
                      "利", "PER", "PBR", "ROE", 
