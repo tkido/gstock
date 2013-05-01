@@ -171,9 +171,12 @@ object scraping extends App {
       code
     def getPrice(): String =
       """=IF(H%d=" ", I%d, H%d)""".format(row, row, row)
+    def getCap(): String =
+      """=C%d*AB%d/100000""".format(row, row)
       
-    Map("ID" -> getId,
-        "値" -> getPrice)
+    Map("ID"   -> getId,
+        "値"   -> getPrice,
+        "時価" -> getCap)
   }
   
   def makeRssData(code:String, market:String, row:Int) :Map[String, String] = {
@@ -223,7 +226,7 @@ object scraping extends App {
                      "年高", "年高日", "年安", "年安日",
                      "利", "PER", "PBR", "ROE", 
                      "自", "決算", "優待", "落日",
-                     "発行", "市", "分類", "代表",
+                     "発行", "時価", "市", "分類", "代表",
                      "特色", "事業", "設立", "上場", "決期",
                      "従連", "従単", "齢", "収")
     val list = order.map(data(_))
