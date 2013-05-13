@@ -172,11 +172,17 @@ object scraping extends App {
     def getPrice(): String =
       """=IF(H%d=" ", I%d, H%d)""".format(row, row, row)
     def getCap(): String =
-      """=C%d*AB%d/100000""".format(row, row)
+      """=C%d*AD%d/100000""".format(row, row)
+    def getEpr(): String =
+      """=IF(Y%d=0, 0, 1/Y%d""".format(row, row)
+    def getPayoutRatio(): String =
+      """=IF(U%d=0, 0, T%d/U%d""".format(row, row, row)
       
     Map("ID"   -> getId,
         "値"   -> getPrice,
-        "時価" -> getCap)
+        "時価" -> getCap,
+        "益"   -> getEpr,
+        "性"   -> getPayoutRatio)
   }
   
   def makeRssData(code:String, market:String, row:Int) :Map[String, String] = {
@@ -187,7 +193,7 @@ object scraping extends App {
     
     def rssCode(id:String, div:DivType.Value) :String = {
       val divStr = div match {
-        case OUTSTANDING => "/AB%d".format(row)
+        case OUTSTANDING => "/AD%d".format(row)
         case CURRENT     => "/C%d".format(row)
         case _ => ""
       }
@@ -224,8 +230,9 @@ object scraping extends App {
                      "現値", "前終", "前比", "出来",
                      "買残", "買残週差", "売残", "売残週差",
                      "年高", "年高日", "年安", "年安日",
-                     "利", "PER", "PBR", "ROE", 
-                     "自", "決算", "優待", "落日",
+                     "利", "益", "性", "ROE", "自",
+                     "PER", "PBR",
+                     "決算", "優待", "落日",
                      "発行", "時価", "市", "分類", "代表",
                      "特色", "事業", "設立", "上場", "決期",
                      "従連", "従単", "齢", "収")
