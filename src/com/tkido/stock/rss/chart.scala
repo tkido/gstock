@@ -2,11 +2,12 @@ package com.tkido.stock.rss
 
 object ChartMaker {
   import scala.util.matching.Regex
-  
+  import java.io.PrintWriter
+
   private val templete = """
 <html>
   <head>
-    <meta charset="utf-8" />
+    <meta charset="shift-jis" />
     <title>%s</title>
     
     <!--Load the AJAX API-->
@@ -32,7 +33,7 @@ object ChartMaker {
 
         // Set chart options
         var options = {'width':800,
-                       'height':600};
+                       'height':400};
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
@@ -43,14 +44,19 @@ object ChartMaker {
 
   <body>
     <h1>%s</h1>
-    <p>%s</p>
-    <p>%s</p>
+    <p>%s%s</p>
     <!--Div that will hold the pie chart-->
     <div id="chart_div"></div>
   </body>
 </html>
 """
-  
+
+  def writeFile(name: String, data: String) {
+    val out = new PrintWriter("data/rss/%s.html".format(name))
+    out.println(data)
+    out.close
+  }
+    
   def make(code:String, name:String, feature:String, data:String){
     def getDate() :String = {
       val rgexDate = """\([0-9]{4}\.[0-9]{1,2}\)""".r
@@ -58,12 +64,46 @@ object ChartMaker {
       if(m.isDefined) m.get.group(0)
       else ""
     }
+    def getHeader() :String = {
+      val rgexHeader = """y.*?z""".r
+      val m = rgexHeader.findFirstMatchIn(data)
+      if(m.isDefined) m.get.group(0)
+      else ""
+    }
+    def getOther() :String = {
+      val rgexHeader = """y.*?z.*?(y.*)""".r
+      val m = rgexHeader.findFirstMatchIn(data)
+      if(m.isDefined) m.get.group(1).replaceFirst("""\([0-9]{4}\.[0-9]{1,2}\)""", "")
+      else ""
+    }
+    def getRows() :String = {
+      val rawStr = data.replaceFirst("""\([0-9]{4}\.[0-9]{1,2}\)""", "").replaceFirst("""y.*?z""", "").replaceFirst("""y.*""", "")
+      val rawRows = rawStr.split('A')
+      
+      def stringToPairs(raw: String): Pair[String, String] = {
+        val rgex = """(.*?)([0-9]+)""".r
+        val m = rgex.findFirstMatchIn(raw)
+        if(m.isDefined) Pair(m.get.group(1), m.get.group(2))
+        else Pair("", "")
+      }
+      val pairs = rawRows.map(stringToPairs)
+      def pairToString(pair: Pair[String, String]): String = {
+        val (name, number) = pair
+        """['%s', %s]""".format(name, number)
+      }
+      val strings = pairs.map(pairToString)
+      val string = strings.mkString(",\n")
+      string
+    }
     val date = getDate
-    val title = name + date
+    val other = getOther
+    val header = getHeader
+    val rows = getRows
+    val title = name + header + date
+
     
-    val other = ""
-    val html = templete.format(title, data, title, feature, other)
-    println(date)
+    val html = templete.format(title, rows, title, feature, other)
+    writeFile(code, html)
   }
 }
 
@@ -73,10 +113,3 @@ object main extends App {
                   "ƒJƒc˜¥ê–å“Xu‚©‚Â‚âv‚ğ’¼‰cA‚e‚b‚Å“WŠJB“V˜¥ˆç¬’†Be‰ïĞ‚ÍVŠƒ’n”Õ‚Ìƒz[ƒ€ƒZƒ“ƒ^[",
                   "y˜AŒ‹–‹Æz‚©‚Â‚â’¼‰cˆùH59A‚e‚b33A‘¼’¼‰cˆùH6A‘¼2(2012.12)")
 }
-
-/*
-          ['‚©‚Â‚â’¼‰cˆùH', 59],
-          ['‚e‚b', 33],
-          ['‘¼’¼‰cˆùH', 6],
-          ['‘¼', 2]
-*/

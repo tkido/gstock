@@ -225,6 +225,9 @@ object scraping extends App {
   
   def makeString(pair:Pair[String, Int]) :String = {
     val data = makeData(pair)
+    
+    ChartMaker.make(data("ID"), data("名称"), data("特色"), data("事業"))
+    
     val order = List("ID", "名称", "値", 
                      "最売", "最売数", "最買", "最買数",
                      "現値", "前終", "前比", "出来",
