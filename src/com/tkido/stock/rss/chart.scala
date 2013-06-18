@@ -81,10 +81,15 @@ object ChartMaker {
       val rawRows = rawStr.split('ÅA')
       
       def stringToPairs(raw: String): Pair[String, String] = {
-        val rgex = """(.*?)([0-9]+)""".r
+        val rgex = """(.*?)([0-9]+)(\([0-9]+\))?""".r
         val m = rgex.findFirstMatchIn(raw)
-        if(m.isDefined) Pair(m.get.group(1), m.get.group(2))
-        else Pair("", "")
+        if(m.isDefined){
+          val g3 = m.get.group(3)
+          val profitability = if(g3 == null) "" else g3
+          Pair(m.get.group(1)+profitability, m.get.group(2))
+        }else{
+          Pair("", "")
+        }
       }
       val pairs = rawRows.map(stringToPairs)
       def pairToString(pair: Pair[String, String]): String = {
