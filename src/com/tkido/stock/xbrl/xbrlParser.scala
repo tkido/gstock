@@ -3,8 +3,25 @@ package com.tkido.stock.xbrl
 object XbrlParser {
   import scala.xml._
   import scala.collection.mutable.{Map => MMap}
+  import scala.io.Source
   
-  def parse(path :String){
+  
+  val breakupData = parseItems("data/xbrl/breakup_items.txt")
+  val netCashData = parseItems("data/xbrl/netcash_items.txt")
+  val accrualsData = parseItems("data/xbrl/accruals_items.txt")
+  
+  def parseItems(path:String): Map[String, Int] = {
+    def lineToPair(line:String) :Pair[String, Int] = {
+      val arr = line.split("\t")
+      Pair(arr(0), arr(1).toInt)
+    }
+    val s = Source.fromFile(path, "utf-8")
+    val lines = try s.getLines.toList finally s.close
+    val data = lines.map(lineToPair).toMap
+    data
+  }  
+  
+  def parse(path :String) :Map[String, BigInt] = {
     println("parse start")
     val xml = XML.loadFile(path)
     
@@ -31,9 +48,6 @@ object XbrlParser {
     for(li <- nodes) println(li.label + " = " + BigInt(li.text))
     
     val data = nodes.toList.map(x => Pair(x.label, BigInt(x.text))).toMap
-    val breakupValue = data("CashAndDeposits") * 100 +
-                       data("AccountsReceivableTrade") * 90
-    println(breakupValue / 100)
-
+    data
   }
 }

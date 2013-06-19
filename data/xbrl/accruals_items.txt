@@ -1,0 +1,2 @@
+OrdinaryIncome	60
+NetCashProvidedByUsedInOperatingActivities	-100

@@ -1,0 +1,8 @@
+CashAndDeposits	100
+AccountsReceivableTrade	90
+Merchandise	30
+RawMaterialsAndSupplies	30
+BuildingsAndStructuresNet	20
+MachineryAndEquipmentNet	20
+InvestmentSecurities	100
+Liabilities	-100
