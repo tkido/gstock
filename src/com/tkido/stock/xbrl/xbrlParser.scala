@@ -5,7 +5,6 @@ object XbrlParser {
   import scala.collection.mutable.{Map => MMap}
   import scala.io.Source
   
-  
   val breakupData = parseItems("data/xbrl/breakup_items.txt")
   val netCashData = parseItems("data/xbrl/netcash_items.txt")
   val accrualsData = parseItems("data/xbrl/accruals_items.txt")
@@ -19,18 +18,18 @@ object XbrlParser {
     val lines = try s.getLines.toList finally s.close
     val data = lines.map(lineToPair).toMap
     data
-  }  
+  }
   
   def parse(path :String) :Map[String, BigInt] = {
     println("parse start")
     val xml = XML.loadFile(path)
-    
     
     def isValidPrefix(prefix: String): Boolean = {
       //println(prefix)
       val rgex = "jpfr-asr".r
       prefix match  {
         case "jpfr-t-cte" => true
+        case "jpfr-t-cns" => true
         case rgex() => true
         case _ => false
       }
