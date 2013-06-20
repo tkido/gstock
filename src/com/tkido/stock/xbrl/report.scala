@@ -1,8 +1,6 @@
 package com.tkido.stock.xbrl
 
 class Report(path:String) {
-  import java.io.File
-  
   val data = XbrlParser.parse(path)
   
   def breakupValue() = sumItems(XbrlParser.breakupData)

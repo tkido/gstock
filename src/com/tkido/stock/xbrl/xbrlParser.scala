@@ -21,7 +21,6 @@ object XbrlParser {
   }
   
   def parse(path :String) :Map[String, BigInt] = {
-    println("parse start")
     val xml = XML.loadFile(path)
     
     def isValidPrefix(prefix: String): Boolean = {
@@ -44,7 +43,7 @@ object XbrlParser {
     
     val nodes = xml.child.filter(isCurrentYearConsolidated)
     
-    for(li <- nodes) println(li.label + " = " + BigInt(li.text))
+    //for(li <- nodes) println(li.label + " = " + BigInt(li.text))
     
     val data = nodes.toList.map(x => Pair(x.label, BigInt(x.text))).toMap
     data
