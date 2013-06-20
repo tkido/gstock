@@ -1,11 +1,14 @@
 package com.tkido.stock.xbrl
 
 class Report(path:String) {
+  import java.io.File
+  val year = new File(path).getName.slice(20, 24).toInt
+  
   val data = XbrlParser.parse(path)
   
-  def breakupValue() = sumItems(XbrlParser.breakupData)
-  def netCash() = sumItems(XbrlParser.netCashData)
-  def accruals() = sumItems(XbrlParser.accrualsData)
+  def breakupValue = sumItems(XbrlParser.breakupData)
+  def netCash      = sumItems(XbrlParser.netCashData)
+  def accruals     = sumItems(XbrlParser.accrualsData)
   
   def sumItems(items:Map[String, Int]) :BigInt = {
     var sum = BigInt(0)
