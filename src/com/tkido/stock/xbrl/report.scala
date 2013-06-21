@@ -3,7 +3,6 @@ package com.tkido.stock.xbrl
 class Report(path:String) {
   import java.io.File
   val year = new File(path).getName.slice(20, 24).toInt
-  
   val data = XbrlParser.parse(path)
   
   def breakupValue = sumItems(XbrlParser.breakupData)
@@ -17,6 +16,8 @@ class Report(path:String) {
         sum += data(key) * value 
     sum / 100
   }
+  def compare(that:Report) =
+    year.compare(that.year)
   override def toString = path
 }
 

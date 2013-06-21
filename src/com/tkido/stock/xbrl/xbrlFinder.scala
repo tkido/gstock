@@ -3,15 +3,18 @@ package com.tkido.stock.xbrl
 object XbrlFinder {
   import java.io.File
   
-  def find(code :String) :List[String] = {
-    def listAllFiles(extension: String)(f: File): List[File] = {
-      if (f.isDirectory)
-        f.listFiles.toList.flatMap(listAllFiles(extension))
+  def find(code:String) :List[String] = {
+    def listFiles(filter:File => Boolean)(file:File): List[File] = {
+      if (file.isDirectory)
+        file.listFiles.toList.flatMap(listFiles(filter))
       else
-        List(f).filter(_.getName.endsWith(extension))
+        List(file).filter(filter)
     }
+    def isXbrl(file:File) :Boolean =
+      file.getName.endsWith(".xbrl")
+    
     val root = new File("data/xbrl/%s".format(code))
-    val files = listAllFiles(".xbrl")(root)
+    val files = listFiles(isXbrl)(root)
     files.map(_.toString)
   }
 }
