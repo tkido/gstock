@@ -16,8 +16,6 @@ class Report(path:String) {
         sum += data(key) * value 
     sum / 100
   }
-  def compare(that:Report) =
-    year.compare(that.year)
   override def toString = path
 }
 
