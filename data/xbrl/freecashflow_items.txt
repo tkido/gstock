@@ -1,0 +1,13 @@
+#シャープで始まる行はコメント。空白行は無視される。UTF-8である必要がある。
+#フリーキャッシュフローを計算するためのアイテム
+
+#フリーキャッシュフロー＝営業キャッシュフロー＋投資キャッシュフロー
+#ただしここでは財テクを除くため、
+#営業キャッシュフロー＋有形及び無形固定資産の取得による支出
+
+NetCashProvidedByUsedInOperatingActivities	100
+
+PurchaseOfPropertyPlantAndEquipmentAndIntangibleAssetsInvCF	100
+PurchaseOfPropertyPlantAndEquipmentInvCF	100
+PurchaseOfNoncurrentAssetsInvCF	100
+PurchaseOfIntangibleAssetsInvCF	100

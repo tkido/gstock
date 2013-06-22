@@ -5,9 +5,10 @@ object XbrlParser {
   import scala.collection.mutable.{Map => MMap}
   import scala.io.Source
   
-  val breakupData =  parseItems("data/xbrl/breakup_items.txt")
-  val netCashData =  parseItems("data/xbrl/netcash_items.txt")
-  val accrualsData = parseItems("data/xbrl/accruals_items.txt")
+  val breakupData      = parseItems("data/xbrl/breakup_items.txt")
+  val netCashData      = parseItems("data/xbrl/netcash_items.txt")
+  val accrualsData     = parseItems("data/xbrl/accruals_items.txt")
+  val freeCashFlowData = parseItems("data/xbrl/freecashflow_items.txt")
   
   def parseItems(path:String): Map[String, Int] = {
     def lineToPair(line:String) :Pair[String, Int] = {

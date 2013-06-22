@@ -8,6 +8,7 @@ class Report(path:String) {
   def breakupValue = sumItems(XbrlParser.breakupData)
   def netCash      = sumItems(XbrlParser.netCashData)
   def accruals     = sumItems(XbrlParser.accrualsData)
+  def freeCashFlow = sumItems(XbrlParser.freeCashFlowData)
   
   def sumItems(items:Map[String, Int]) :BigInt = {
     var sum = BigInt(0)
@@ -16,7 +17,16 @@ class Report(path:String) {
         sum += data(key) * value 
     sum / 100
   }
-  override def toString = path
+  override def toString = {
+    val buf = new StringBuilder
+    buf ++= "年度:%s\n".format(year)
+    buf ++= "解散価値:%s\n".format(breakupValue)
+    buf ++= "ネットキャッシュ:%s\n".format(netCash)
+    buf ++= "アクルーアル:%s\n".format(accruals)
+    buf ++= "純利益:%s\n".format(data("NetIncome"))
+    buf ++= "フリーキャッシュフロー:%s\n".format(freeCashFlow)
+    buf.toString
+  }
 }
 
 object Report{

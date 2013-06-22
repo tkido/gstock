@@ -1,12 +1,34 @@
-#ƒVƒƒ[ƒv‚Ån‚Ü‚és‚ÍƒRƒƒ“ƒgB‹ó”’s‚Í–³‹‚³‚ê‚éBUTF-8‚Å‚ ‚é•K—v‚ª‚ ‚éB
-#ƒlƒbƒgƒLƒƒƒbƒVƒ…‚ğŒvZ‚·‚é‚½‚ß‚ÌƒAƒCƒeƒ€
-#ƒlƒbƒgƒLƒƒƒbƒVƒ…Œ»‹à‹y‚ÑŒ»‹à“¯“™•¨{—L‰¿ØŒ”|—L—˜q•‰Â
+#ã‚·ãƒ£ãƒ¼ãƒ—ã§å§‹ã¾ã‚‹è¡Œã¯ã‚³ãƒ¡ãƒ³ãƒˆã€‚ç©ºç™½è¡Œã¯ç„¡è¦–ã•ã‚Œã‚‹ã€‚UTF-8ã§ã‚ã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
+#ãƒãƒƒãƒˆã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’è¨ˆç®—ã™ã‚‹ãŸã‚ã®ã‚¢ã‚¤ãƒ†ãƒ 
+#ãƒãƒƒãƒˆã‚­ãƒ£ãƒƒã‚·ãƒ¥ï¼ç¾é‡‘åŠã³ç¾é‡‘åŒç­‰ç‰©ï¼‹æœ‰ä¾¡è¨¼åˆ¸ï¼æœ‰åˆ©å­è² å‚µ
 
 CashAndDeposits	100
 ShortTermInvestmentSecurities	100
+
 InvestmentSecurities	100
+StocksOfSubsidiariesAndAffiliates	100
+BondsOfSubsidiariesAndAffiliates	100
+InvestmentsInOtherSecuritiesOfSubsidiariesAndAffiliates	100
+OperationalInvestmentSecuritiesIOA	100
+LongTermDeposits	100
 LongTermTimeDeposits	100
 
-#—L—˜q•‰Â‚Æ‚Í
-#’ZŠúØ“ü‹àAˆê”NˆÈ“à•ÔÏ’·ŠúØ“ü‹àAĞÂAƒRƒ}[ƒVƒƒƒ‹Eƒy[ƒp[A’·ŠúØ“ü‹à
-
+#æœ‰åˆ©å­è² å‚µã¨ã¯
+#çŸ­æœŸå€Ÿå…¥é‡‘ã€é•·æœŸå€Ÿå…¥é‡‘ã€ç¤¾å‚µã€ã‚³ãƒãƒ¼ã‚·ãƒ£ãƒ«ãƒ»ãƒšãƒ¼ãƒ‘ãƒ¼ã€ç­‰
+ShortTermBondsPayable	-100
+ShortTermLoansPayable	-100
+ShortTermLoansPayableToSubsidiariesAndAffiliates	-100
+CommercialPapersLiabilities	-100
+CurrentPortionOfBonds	-100
+CurrentPortionOfLongTermLoansPayable	-100
+CurrentPortionOfLongTermLoansPayableToSubsidiariesAndAffiliates	-100
+CurrentPortionOfConvertibleBonds	-100
+CurrentPortionOfBondsWithSubscriptionRightsToShares	-100
+CurrentPortionOfOtherNoncurrentLiabilities	-100
+BondsPayable	-100
+ConvertibleBonds	-100
+ConvertibleBondTypeBondsWithSubscriptionRightsToShares	-100
+BondsWithSubscriptionRightsToSharesNCL	-100
+LongTermLoansPayable	-100
+LongTermLoansPayableToShareholdersDirectorsOrEmployees	-100
+LongTermLoansPayableToSubsidiariesAndAffiliates	-100

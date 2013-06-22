@@ -8,12 +8,8 @@ class Company(code:String) {
   override def toString = {
     val buf = new StringBuilder
     buf ++= "コード：%s\n".format(code)
-    for(report <- reports){
-      buf ++= "年度:%s\n".format(report.year)
-      buf ++= "解散価値:%s\n".format(report.breakupValue)
-      buf ++= "ネットキャッシュ:%s\n".format(report.netCash)
-      buf ++= "アクルーアル:%s\n".format(report.accruals)
-    }
+    for(report <- reports)
+      buf ++= report.toString()
     buf.toString
   }
 }

@@ -30,6 +30,11 @@ RealEstateForRentNet	30
 #■投資その他の資産
 #投資有価証券・長期預金 100%
 InvestmentSecurities	100
+StocksOfSubsidiariesAndAffiliates	100
+BondsOfSubsidiariesAndAffiliates	100
+InvestmentsInOtherSecuritiesOfSubsidiariesAndAffiliates	100
+OperationalInvestmentSecuritiesIOA	100
+LongTermDeposits	100
 LongTermTimeDeposits	100
 
 #敷金及び保証金・建設協力金 50%
