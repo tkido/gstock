@@ -11,7 +11,7 @@ object XbrlFinder {
         List(file).filter(filter)
     def isXbrl(file:File) :Boolean =
       file.getName.endsWith(".xbrl")
-    val root = new File("data/xbrl/%s".format(code))
+    val root = new File("data/xbrl/xbrl/%s".format(code))
     val files = listFiles(isXbrl)(root)
     files.map(_.toString)
   }
