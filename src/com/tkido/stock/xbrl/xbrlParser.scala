@@ -14,9 +14,11 @@ object XbrlParser {
       val arr = line.split("\t")
       Pair(arr(0), arr(1).toInt)
     }
+    def isValid(line:String) :Boolean =
+      line.nonEmpty && line.head != '#'
     val s = Source.fromFile(path, "utf-8")
     val lines = try s.getLines.toList finally s.close
-    lines.map(lineToPair).toMap
+    lines.filter(isValid).map(lineToPair).toMap
   }
   
   def parse(path :String) :Map[String, BigInt] = {
