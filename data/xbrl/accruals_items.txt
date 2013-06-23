@@ -4,5 +4,6 @@
 #アクルーアル＝純利益－営業キャッシュフロー
 #ただしここでは財テクや特別利益・損失を除くため、
 #純利益ではなく、経常利益×（1-法人税率）を使用する。
+
 OrdinaryIncome	60
 NetCashProvidedByUsedInOperatingActivities	-100

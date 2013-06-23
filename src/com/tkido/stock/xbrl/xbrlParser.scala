@@ -23,6 +23,10 @@ object XbrlParser {
   }
   
   def parse(path :String) :Map[String, BigInt] = {
+    val xml = XML.loadFile(path)
+    val isConsolidated = (xml \\ "@id").filter(_.toString == "CurrentYearConsolidatedDuration").nonEmpty
+    println(isConsolidated)
+
     def isValid(node:Node) :Boolean = {
       def isValidPrefix :Boolean = {
         val rgex = """jpfr-t-[a-z]{3}""".r
@@ -31,19 +35,27 @@ object XbrlParser {
           case _ => false
         }
       }
-      def isCurrentYearConsolidated:Boolean = {
-        val contextRef = node.attribute("contextRef").get.text 
-        contextRef == "CurrentYearConsolidatedDuration" ||
-        contextRef == "CurrentYearConsolidatedInstant"
+      def isValidContext:Boolean = {
+        val contextRef = node.attribute("contextRef").get.text
+        if(isConsolidated)
+          contextRef match {
+            case "CurrentYearConsolidatedDuration" => true
+            case "CurrentYearConsolidatedInstant"  => true
+            case _                                 => false
+          }
+        else
+          contextRef match {
+            case "CurrentYearNonConsolidatedDuration" => true
+            case "CurrentYearNonConsolidatedInstant"  => true
+            case _                                    => false
+          }
       }
       node.text.nonEmpty &&
-      isValidPrefix &&
-      isCurrentYearConsolidated
+      isValidPrefix      &&
+      isValidContext
     }
-    
-    val xml = XML.loadFile(path)
     val nodes = xml.child.filter(isValid)
-    
+        
     //for(node <- nodes) println(node.prefix + "\t" + node.label + "\t" + BigInt(node.text))
     nodes.toList.map(x => Pair(x.label, BigInt(x.text))).toMap
   }

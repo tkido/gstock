@@ -10,6 +10,8 @@ class Report(path:String) {
   def accruals     = sumItems(XbrlParser.accrualsData)
   def freeCashFlow = sumItems(XbrlParser.freeCashFlowData)
   
+  def netIncome = data("NetIncome")
+  
   def sumItems(items:Map[String, Int]) :BigInt = {
     var sum = BigInt(0)
     for((key, value) <- items)
@@ -19,12 +21,12 @@ class Report(path:String) {
   }
   override def toString = {
     val buf = new StringBuilder
-    buf ++= "年度:%s\n".format(year)
-    buf ++= "解散価値:%s\n".format(breakupValue)
-    buf ++= "ネットキャッシュ:%s\n".format(netCash)
-    buf ++= "アクルーアル:%s\n".format(accruals)
-    buf ++= "純利益:%s\n".format(data("NetIncome"))
-    buf ++= "フリーキャッシュフロー:%s\n".format(freeCashFlow)
+    buf ++= "年度\t%s\n".format(year)
+    buf ++= "解散価値\t%s\n".format(breakupValue)
+    buf ++= "ネットキャッシュ\t%s\n".format(netCash)
+    buf ++= "アクルーアル\t%s\n".format(accruals)
+    buf ++= "純利益\t%s\n".format(netIncome)
+    buf ++= "フリーキャッシュフロー\t%s\n".format(freeCashFlow)
     buf.toString
   }
 }

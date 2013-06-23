@@ -37,9 +37,9 @@ OperationalInvestmentSecuritiesIOA	100
 LongTermDeposits	100
 LongTermTimeDeposits	100
 
-#敷金及び保証金・建設協力金 50%
-LeaseAndGuaranteeDeposits	50
-ConstructionAssistanceFundReceivables	50
+#敷金及び保証金・建設協力金 30%
+LeaseAndGuaranteeDeposits	30
+ConstructionAssistanceFundReceivables	30
 
 #■負債
 #負債は耳を揃えて返さなければいけないので全部の合計を引く
