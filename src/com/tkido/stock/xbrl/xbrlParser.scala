@@ -31,7 +31,7 @@ object XbrlParser {
         val rgex = """jpfr-t-[a-z]{3}""".r
         node.prefix match {
           case rgex() => true
-          case _ => false
+          case _      => false
         }
       }
       def isValidContext:Boolean = {
