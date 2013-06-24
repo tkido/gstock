@@ -13,6 +13,7 @@ ShortTermInvestmentSecurities	70
 #手形類 90%
 AccountsReceivableTrade	60
 NotesAndAccountsReceivableTrade	60
+NotesAndOperatingAccountsPayableTrade	60
 NotesReceivableAccountsReceivableFromCompletedConstructionContractsAndOtherCNS	60
 
 #■固定資産
