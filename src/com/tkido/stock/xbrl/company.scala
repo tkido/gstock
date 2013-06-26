@@ -7,6 +7,14 @@ class Company(code:String) {
   val files = XbrlFinder.find(code)
   val reports = files.map(Report(_))
   
+  def slope(list:List[BigInt]) :BigInt = {
+    val range = Range(0, list.size)
+    val m1 = range.map(x => x * list(x)).sum
+    val m2 = range.sum * list(0)
+    val m3 = range.map(x => x * x).sum
+    (m1 - m2) / m3
+  }
+  
   def growthRate :Double = {
     if(reports.size == 1) return 1.0
     if(reports.head.netIncome < 0) return 1.0

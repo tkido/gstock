@@ -19,6 +19,7 @@ class Report(path:String) {
         sum += data(key) * value 
     sum / 100
   }
+  
   override def toString = {
     val buf = new StringBuilder
     buf ++= "”N“x\t%s\n".format(year)
