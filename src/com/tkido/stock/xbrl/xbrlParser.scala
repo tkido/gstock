@@ -2,7 +2,6 @@ package com.tkido.stock.xbrl
 
 object XbrlParser {
   import scala.xml._
-  import scala.collection.mutable.{Map => MMap}
   import scala.io.Source
   
   val breakupData      = parseItems("data/xbrl/breakup_items.txt")
