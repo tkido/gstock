@@ -37,6 +37,8 @@ InvestmentsInOtherSecuritiesOfSubsidiariesAndAffiliates	100
 OperationalInvestmentSecuritiesIOA	100
 LongTermDeposits	100
 LongTermTimeDeposits	100
+LongTermLoansReceivable	100
+LongTermLoansReceivableFromSubsidiariesAndAffiliates	100
 
 #敷金及び保証金・建設協力金 30%
 LeaseAndGuaranteeDeposits	30
