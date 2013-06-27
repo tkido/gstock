@@ -26,7 +26,7 @@ class Company(code:String) {
   def stock :BigInt =
     List(reports.last.breakupValue, reports.last.netCash).min
   def flow :BigInt =
-    List(reports.last.freeCashFlow, reports.last.netIncome).min
+    List(reports.last.freeCashFlow, reports.last.netIncome).max
   def rate :Int = {
     if(flow < 0) return 15
     val forecastedGrowthRate = if(growthRate < 1.0) growthRate else growthRate / 2 + 0.5
