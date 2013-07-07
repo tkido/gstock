@@ -9,12 +9,12 @@
 	<property name="target_dir" location="${xbrl_dir}/${code}"/>
 	<mkdir dir="${target_dir}" />
 	
-    <copy todir="${target_dir}">
+    <move todir="${target_dir}">
       <fileset dir="${download_dir}">
         <include name="**/*.zip"/>
         <include name="**/*.pdf"/>
       </fileset>
-    </copy>
+    </move>
 
 	<unzip dest="${target_dir}">
 	    <fileset dir="${target_dir}">
