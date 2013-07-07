@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf8" ?>
+<project name="xbrl" default="deploy">
+
+  <target name="deploy">
+	<echo message="${code}"/>
+	<property name="download_dir" location="D:\Users\tkido\Downloads"/>
+	<property name="xbrl_dir" location="../data/xbrl/xbrl"/>
+	
+	<property name="target_dir" location="${xbrl_dir}/${code}"/>
+	<mkdir dir="${target_dir}" />
+	
+    <copy todir="${target_dir}">
+      <fileset dir="${download_dir}">
+        <include name="**/*.zip"/>
+        <include name="**/*.pdf"/>
+      </fileset>
+    </copy>
+
+	<unzip dest="${target_dir}">
+	    <fileset dir="${target_dir}">
+    	    <include name="**/*.zip"/>
+    	</fileset>
+	</unzip>
+  </target>
+
+</project>
