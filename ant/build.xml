@@ -2,25 +2,32 @@
 <project name="xbrl" default="deploy">
 
   <target name="deploy">
-	<echo message="${code}"/>
-	<property name="download_dir" location="D:\Users\tkido\Downloads"/>
-	<property name="xbrl_dir" location="../data/xbrl/xbrl"/>
-	
-	<property name="target_dir" location="${xbrl_dir}/${code}"/>
-	<mkdir dir="${target_dir}" />
-	
+    <echo message="${code}"/>
+    <property name="download_dir" location="C:\Users\tkido\Downloads"/>
+    <property name="xbrl_dir" location="C:\Users\tkido\Dropbox\xbrl"/>
+    
+    <property name="target_dir" location="${xbrl_dir}/${code}"/>
+    <mkdir dir="${target_dir}" />
+    
     <move todir="${target_dir}">
       <fileset dir="${download_dir}">
         <include name="**/*.zip"/>
         <include name="**/*.pdf"/>
       </fileset>
     </move>
-
-	<unzip dest="${target_dir}">
-	    <fileset dir="${target_dir}">
-    	    <include name="**/*.zip"/>
-    	</fileset>
-	</unzip>
+    
+    <unzip dest="${target_dir}">
+        <fileset dir="${target_dir}">
+            <include name="*.zip"/>
+        </fileset>
+    </unzip>
+    
+    <delete>
+      <fileset dir="${target_dir}">
+        <include name="*.zip"/>
+        <include name="XbrlDlInfo.csv"/>
+      </fileset>
+    </delete>
   </target>
-
+  
 </project>
