@@ -41,12 +41,9 @@ class Company(code:String) {
   
   override def toString = {
     val buf = new StringBuilder
-    buf ++= "コード\t%s\n".format(code)
-    buf ++= "年度\t解散価値\tネットキャッシュ\tアクルーアル\t純利益\tフリーキャッシュフロー\n"	
+    buf ++= "\t\t\t\t\t\t%s\t%s\t%s\n".format(code, growthRate, fairValue)
     for(report <- reports)
       buf ++= report.toString()
-    buf ++= "成長率\t%s\n".format(growthRate)
-    buf ++= "フェアバリュー\t%s\n".format(fairValue)
     buf.toString
   }
 }
