@@ -17,30 +17,30 @@ object main extends App {
     out.close
   }
   
-  def makeString(pair:Pair[String, Int]) :String = {
-    val data = Scraping.makeData(pair)
-    
-    ChartMaker.make(data("ID"), data("名称"), data("特色"), data("事業"))
-    
-    val order = List("ID", "名称", "値", 
-                     "最売", "最売数", "最買", "最買数",
-                     "現値", "前終", "前比", "出来",
-                     "買残", "買残週差", "売残", "売残週差",
-                     "年高", "年高日", "年安", "年安日",
-                     "利", "益", "性", "ROE", "自",
-                     "PER", "PBR",
-                     "決算", "優待", "落日",
-                     "発行", "時価", "市", "分類",
-                     "代表", "設立", "上場", "決期",
-                     "従連", "従単", "齢", "収")
+  def makeString(data:Map[String, String] ) :String = {
     val list = order.map(data(_))
     list.mkString("\t")
   }
   
   val startLine = 2
+  val order = List("ID", "名称", "値", 
+                   "最売", "最売数", "最買", "最買数",
+                   "現値", "前終", "前比", "出来",
+                   "買残", "買残週差", "売残", "売残週差",
+                   "年高", "年高日", "年安", "年安日",
+                   "利", "益", "性", "ROE", "自",
+                   "PER", "PBR",
+                   "決算", "優待", "落日",
+                   "発行", "時価", "市", "分類",
+                   "代表", "設立", "上場", "決期",
+                   "従連", "従単", "齢", "収")
+
   val codeList = makeCodeList()
-  val codeRowPair = codeList zip Range(startLine, codeList.size+startLine)
-  val strings = codeRowPair.map(makeString)
+  val codeRowPairs = codeList zip Range(startLine, startLine+codeList.size)
+  val datas = codeRowPairs.map(Scraping.makeData)
+  for(data <- datas)
+    ChartMaker.make(data("ID"), data("名称"), data("特色"), data("事業"))
+  val strings = datas.map(makeString)
   val result = strings.mkString("\n")
   writeFile(result)
   println("OK!!")
