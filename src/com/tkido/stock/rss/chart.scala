@@ -112,7 +112,7 @@ object ChartMaker {
   }
 }
 
-object main extends App {
+object ChartMakerTest extends App {
   ChartMaker.make("3085",
                   "アークランドサービス",
                   "カツ丼専門店「かつや」を直営、ＦＣで展開。天丼育成中。親会社は新潟地盤のホームセンター",

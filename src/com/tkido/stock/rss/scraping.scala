@@ -1,10 +1,6 @@
 package com.tkido.stock.rss
 
-object scraping extends App {
-  import scala.io.Source
-  import java.io.PrintWriter
-  import scala.collection.mutable.{Map => MMap}
-  
+object Scraping{
   def parseDetailPage(code:String) :Map[String, String] = {
     val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
     
@@ -103,19 +99,6 @@ object scraping extends App {
     }
     Map("—D‘Ò" -> getMonth)
   }
-    
-  def makeCodeList() :List[String] = {
-    val s = Source.fromFile("data/rss/table.txt", "utf-8")
-    val lines = try s.getLines.toList finally s.close
-    val codes = lines.map(_.stripLineEnd)
-    codes
-  }
-  
-  def writeFile(data: String) {
-    val out = new PrintWriter("data/rss/result.txt")
-    out.println(data)
-    out.close
-  }
   
   def makeData(pair:Pair[String, Int]) :Map[String, String] = {
     val (code, row) = pair
@@ -186,32 +169,4 @@ object scraping extends App {
         "PER"      -> rssCode("‚o‚d‚q", NONE),
         "PBR"      -> rssCode("‚o‚a‚q", NONE))
   }
-  
-  def makeString(pair:Pair[String, Int]) :String = {
-    val data = makeData(pair)
-    
-    ChartMaker.make(data("ID"), data("–¼Ì"), data("“ÁF"), data("–‹Æ"))
-    
-    val order = List("ID", "–¼Ì", "’l", 
-                     "Å”„", "Å”„”", "Å”ƒ", "Å”ƒ”",
-                     "Œ»’l", "‘OI", "‘O”ä", "o—ˆ",
-                     "”ƒc", "”ƒcT·", "”„c", "”„cT·",
-                     "”N‚", "”N‚“ú", "”NˆÀ", "”NˆÀ“ú",
-                     "—˜", "‰v", "«", "ROE", "©",
-                     "PER", "PBR",
-                     "ŒˆZ", "—D‘Ò", "—“ú",
-                     "”­s", "‰¿", "s", "•ª—Ş",
-                     "‘ã•\", "İ—§", "ãê", "ŒˆŠú",
-                     "]˜A", "]’P", "—î", "û")
-    val list = order.map(data(_))
-    list.mkString("\t")
-  }
-  
-  val startLine = 2
-  val codeList = makeCodeList()
-  val codeRowPair = codeList zip Range(startLine, codeList.size+startLine)
-  val strings = codeRowPair.map(makeString)
-  val result = strings.mkString("\n")
-  writeFile(result)
-  println("OK!!")
 }
