@@ -12,15 +12,15 @@ object scraping extends App {
       html.getPreviousLineOf("""<dt class="title">発行済株式数""".r).dropRight(12)
     def getMarketCode() :String = {
       html.getNextLineOf("""<dt>%s</dt>""".format(code).r) match {
-        case "東証" => "T"
-        case "東証1部" => "T"
-        case "東証2部" => "T"
+        case "東証"     => "T"
+        case "東証1部"  => "T"
+        case "東証2部"  => "T"
         case "マザーズ" => "T"
-        case "大証1部" => "OS"
-        case "大証2部" => "OS"
-        case "JQG" => "Q"
-        case "JQS" => "Q"
-        case _ => "X"
+        case "大証1部"  => "OS"
+        case "大証2部"  => "OS"
+        case "JQG"      => "Q"
+        case "JQS"      => "Q"
+        case _          => "X"
       }
     }
     Map("市ID" -> getMarketCode,
