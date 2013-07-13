@@ -3,48 +3,15 @@ package com.tkido.stock.rss
 object scraping extends App {
   import scala.io.Source
   import java.io.PrintWriter
-  import scala.util.matching.Regex
-  import scala.collection.mutable.{Map => MMap}  
-  //import java.net.URLEncoder
-  //import com.ibm.icu.text.Transliterator
-  
-  def removeTags(string:String) :String =
-    string.replaceAll("""<.*?>""", "").trim
-    
-  def getPreviousLineOf(html:Iterable[String], rgex:Regex) :String = {
-    var last = ""
-    var target = ""
-    for(line <- html){
-      if(rgex.findFirstIn(line).isDefined)
-        target = last
-      last = line
-    }
-    removeTags(target)
-  }
-  
-  def getNextLineOf(html:Iterable[String], rgex:Regex) :String = {
-    var flag = false
-    var target = ""
-    
-    for(line <- html){
-      if(flag){
-        target = line
-        flag = false
-      }
-      if(rgex.findFirstIn(line).isDefined)
-        flag = true
-    }
-    removeTags(target)
-  }
+  import scala.collection.mutable.{Map => MMap}
   
   def parseDetailPage(code:String) :Map[String, String] = {
-    val url = "http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code)
-    val html = Source.fromURL(url, "UTF-8").getLines.toIterable
+    val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
     
     def getOutstanding() :String =
-      getPreviousLineOf(html, """<dt class="title">発行済株式数""".r).dropRight(12)
+      html.getPreviousLineOf("""<dt class="title">発行済株式数""".r).dropRight(12)
     def getMarketCode() :String = {
-      getNextLineOf(html, """<dt>%s</dt>""".format(code).r) match {
+      html.getNextLineOf("""<dt>%s</dt>""".format(code).r) match {
         case "東証" => "T"
         case "東証1部" => "T"
         case "東証2部" => "T"
@@ -61,39 +28,38 @@ object scraping extends App {
   }  
   
   def parseProfilePage(code:String) :Map[String, String] = {
-    val url = "http://stocks.finance.yahoo.co.jp/stocks/profile/?code=%s".format(code)
-    val html = Source.fromURL(url, "UTF-8").getLines.toIterable
+    val html = Html("http://stocks.finance.yahoo.co.jp/stocks/profile/?code=%s".format(code))
     
     def getName() :String = {
-      val raw = getNextLineOf(html, """<meta http-equiv="Refresh" content="60">""".r)
+      val raw = html.getNextLineOf("""<meta http-equiv="Refresh" content="60">""".r)
       raw.dropRight(27).replaceFirst("""\(株\)""", "")
     }
     def getFeature() :String =
-      getNextLineOf(html, """<th width="1%" nowrap>特色</th>""".r).replaceFirst(""" \[企業特色\]""", "")
+      html.getNextLineOf("""<th width="1%" nowrap>特色</th>""".r).replaceFirst(""" \[企業特色\]""", "")
     def getConsolidated() :String =
-      getNextLineOf(html, """<th nowrap>連結事業</th>""".r)
+      html.getNextLineOf("""<th nowrap>連結事業</th>""".r)
     def getCategory() :String = {
-      getNextLineOf(html, """<th nowrap>業種分類</th>""".r).replaceAll("業", "").replaceAll("・", "")
+      html.getNextLineOf("""<th nowrap>業種分類</th>""".r).replaceAll("業", "").replaceAll("・", "")
     }
     def getRepresentative() :String = {
-      val raw = getNextLineOf(html, """<th nowrap>代表者名</th>""".r)
+      val raw = html.getNextLineOf("""<th nowrap>代表者名</th>""".r)
       raw.replaceAll("　", "").replaceAll(""" \[役員\]""", "")
     }
     def getFoundated() :String =
-      getNextLineOf(html, """<th nowrap>設立年月日</th>""".r).slice(0, 4)
+      html.getNextLineOf("""<th nowrap>設立年月日</th>""".r).slice(0, 4)
     def getListed() :String =
-      getNextLineOf(html, """<th nowrap>上場年月日</th>""".r).slice(0, 4)
+      html.getNextLineOf("""<th nowrap>上場年月日</th>""".r).slice(0, 4)
     def getSettlement() :String = {
-      getNextLineOf(html, """<th nowrap>決算</th>""".r).replaceAll("末日", "").replaceAll(""" \[決算情報　年次\]""", "")
+      html.getNextLineOf("""<th nowrap>決算</th>""".r).replaceAll("末日", "").replaceAll(""" \[決算情報　年次\]""", "")
     }
     def getSingleEmployees() :String =
-      getNextLineOf(html, """<th width="1%">従業員数<br><span class="yjSt">（単独）</span></th>""".r).dropRight(1)
+      html.getNextLineOf("""<th width="1%">従業員数<br><span class="yjSt">（単独）</span></th>""".r).dropRight(1)
     def getConsolidatedEmployees() :String =
-      getNextLineOf(html, """<th width="1%">従業員数<br><span class="yjSt">（連結）</span></th>""".r).dropRight(1)
+      html.getNextLineOf("""<th width="1%">従業員数<br><span class="yjSt">（連結）</span></th>""".r).dropRight(1)
     def getAge() :String =
-      getNextLineOf(html, """<th nowrap>平均年齢</th>""".r).dropRight(1)
+      html.getNextLineOf("""<th nowrap>平均年齢</th>""".r).dropRight(1)
     def getIncome() :String =
-      getNextLineOf(html, """<th nowrap>平均年収</th>""".r).dropRight(3).replaceAll(",", "")
+      html.getNextLineOf("""<th nowrap>平均年収</th>""".r).dropRight(3).replaceAll(",", "")
     
     Map("名称" -> getName,
         "特色" -> getFeature,
@@ -110,15 +76,14 @@ object scraping extends App {
   }
   
   def parseConsolidatePage(code:String) :Map[String, String] = {
-    val url = "http://profile.yahoo.co.jp/consolidate/%s".format(code)
-    val html = Source.fromURL(url, "EUC-JP").getLines.toIterable
+    val html = Html("http://profile.yahoo.co.jp/consolidate/%s".format(code), "EUC-JP")
     
     def getSettlement() :String =
-      getNextLineOf(html, """<td bgcolor="#ebf4ff">決算発表日</td>""".r).replaceFirst("---", "-")
+      html.getNextLineOf("""<td bgcolor="#ebf4ff">決算発表日</td>""".r).replaceFirst("---", "-")
     def getCapitalToAssetRatio() :String =
-      getNextLineOf(html, """<td bgcolor="#ebf4ff">自己資本比率</td>""".r).replaceFirst("---", "-")
+      html.getNextLineOf("""<td bgcolor="#ebf4ff">自己資本比率</td>""".r).replaceFirst("---", "-")
     def getRoe() :String =
-      getNextLineOf(html, """<td bgcolor="#ebf4ff">ROE（自己資本利益率）</td>""".r).replaceFirst("---", "-")
+      html.getNextLineOf("""<td bgcolor="#ebf4ff">ROE（自己資本利益率）</td>""".r).replaceFirst("---", "-")
     
     Map("決算" -> getSettlement,
         "自"   -> getCapitalToAssetRatio,
@@ -126,14 +91,13 @@ object scraping extends App {
   }
   
   def parseStockholderPage(code:String) :Map[String, String] = {
-    val url = "http://info.finance.yahoo.co.jp/stockholder/detail/?code=%s".format(code)
-    val html = Source.fromURL(url, "UTF-8").getLines.toIterable
+    val html = Html("http://info.finance.yahoo.co.jp/stockholder/detail/?code=%s".format(code))
     
     def getMonth() :String = {
       val rgex = """<tr><th>権利確定月</th><td>(.*?)</td></tr>""".r
-      val opt = html.collectFirst{ case rgex(m) => m }
+      val opt = html.lines.collectFirst{ case rgex(m) => m }
       if(opt.isDefined)
-        removeTags(opt.get.replaceFirst("権利確定月", "").replaceAll("末日", ""))
+        Html.removeTags(opt.get.replaceFirst("権利確定月", "").replaceAll("末日", ""))
       else
         ""
     }
