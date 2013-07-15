@@ -37,13 +37,10 @@ object main extends App {
                    "]˜A", "]’P", "—î", "û")
 
   val codeList = makeCodeList()
-  /*
+  
   for(code <- codeList)
     Company(code)
-  */
   
-  //val codeRowPairs = codeList zip Range(startLine, startLine+codeList.size)
-  //val data = codeRowPairs.map(Scraping.makeData)
   val data = codeList.map(Scraping.makeData)
   for(data <- data)
     ChartMaker.make(data("ID"), data("–¼Ì"), data("“ÁF"), data("–‹Æ"))
