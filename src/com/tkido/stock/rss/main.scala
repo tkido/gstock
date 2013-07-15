@@ -17,8 +17,9 @@ object main extends App {
     out.close
   }
   
-  def makeString(data:Map[String, String] ) :String = {
-    val list = order.map(data(_))
+  def makeString(pair:Pair[Map[String, String], Int]) :String = {
+    val (data, row) = pair
+    val list = order.map(data(_).replaceAll("%d", row.toString))
     list.mkString("\t")
   }
   
@@ -40,11 +41,15 @@ object main extends App {
   for(code <- codeList)
     Company(code)
   */
-  val codeRowPairs = codeList zip Range(startLine, startLine+codeList.size)
-  val data = codeRowPairs.map(Scraping.makeData)
+  
+  //val codeRowPairs = codeList zip Range(startLine, startLine+codeList.size)
+  //val data = codeRowPairs.map(Scraping.makeData)
+  val data = codeList.map(Scraping.makeData)
   for(data <- data)
     ChartMaker.make(data("ID"), data("–¼Ì"), data("“ÁF"), data("Ž–‹Æ"))
-  val strings = data.map(makeString)
+  
+  val dataRowPairs = data zip Range(startLine, startLine+codeList.size)  
+  val strings = dataRowPairs.map(makeString)
   val result = strings.mkString("\n")
   writeFile(result)
   println("OK!!")

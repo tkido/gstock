@@ -14,8 +14,8 @@ object Scraping{
         case "ƒ}ƒU[ƒY" => "T"
         case "‘åØ1•”"  => "OS"
         case "‘åØ2•”"  => "OS"
-        case "JQG"      => "Q"
-        case "JQS"      => "Q"
+        case "“ŒØJQG"  => "Q"
+        case "“ŒØJQS"  => "Q"
         case _          => "X"
       }
     }
@@ -100,30 +100,28 @@ object Scraping{
     Map("—D‘Ò" -> getMonth)
   }
   
-  def makeData(pair:Pair[String, Int]) :Map[String, String] = {
-    val (code, row) = pair
-    
+  def makeData(code:String) :Map[String, String] = {    
     val parsedData = parseProfilePage(code) ++
                      parseConsolidatePage(code) ++
                      parseDetailPage(code) ++
                      parseStockholderPage(code)
-    val rssData = makeRssData(code, parsedData("ŽsID"), row)
-    val otherData = makeOtherData(code, row)
+    val rssData = makeRssData(code, parsedData("ŽsID"))
+    val otherData = makeOtherData(code)
     
     parsedData ++ rssData ++ otherData
   }
   
-  def makeOtherData(code:String, row:Int) :Map[String, String] = {
+  def makeOtherData(code:String) :Map[String, String] = {
     def getId() :String =
       code
     def getPrice(): String =
-      """=IF(H%d=" ", I%d, H%d)""".format(row, row, row)
+      """=IF(H%d=" ", I%d, H%d)"""
     def getCap(): String =
-      """=C%d*AD%d/100000""".format(row, row)
+      """=C%d*AD%d/100000"""
     def getEpr(): String =
-      """=IF(Y%d=0, 0, 1/Y%d""".format(row, row)
+      """=IF(Y%d=0, 0, 1/Y%d"""
     def getPayoutRatio(): String =
-      """=IF(U%d=0, 0, T%d/U%d""".format(row, row, row)
+      """=IF(U%d=0, 0, T%d/U%d"""
       
     Map("ID"   -> getId,
         "’l"   -> getPrice,
@@ -132,7 +130,7 @@ object Scraping{
         "«"   -> getPayoutRatio)
   }
   
-  def makeRssData(code:String, market:String, row:Int) :Map[String, String] = {
+  def makeRssData(code:String, market:String) :Map[String, String] = {
     object DivType extends Enumeration {
       val OUTSTANDING, CURRENT, NONE = Value
     }
@@ -140,8 +138,8 @@ object Scraping{
     
     def rssCode(id:String, div:DivType.Value) :String = {
       val divStr = div match {
-        case OUTSTANDING => "/AD%d".format(row)
-        case CURRENT     => "/C%d".format(row)
+        case OUTSTANDING => "/AD%d"
+        case CURRENT     => "/C%d"
         case _ => ""
       }
       "=RSS|'%s.%s'!%s%s".format(code, market, id, divStr)
