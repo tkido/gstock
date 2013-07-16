@@ -36,8 +36,6 @@ object CompanyJp{
         case "東証1部"  => true
         case "東証2部"  => true
         case "マザーズ" => true
-        case "大証1部"  => true
-        case "大証2部"  => true
         case "東証JQG"  => true
         case "東証JQS"  => true
         case _          => false
