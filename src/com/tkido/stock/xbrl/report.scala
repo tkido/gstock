@@ -31,18 +31,6 @@ class Report(path:String) {
     buf ++= "\n"
     buf.toString
   }
-  /*
-  override def toString = {
-    val buf = new StringBuilder
-    buf ++= "年度\t%s\n".format(year)
-    buf ++= "解散価値\t%s\n".format(breakupValue)
-    buf ++= "ネットキャッシュ\t%s\n".format(netCash)
-    buf ++= "アクルーアル\t%s\n".format(accruals)
-    buf ++= "純利益\t%s\n".format(netIncome)
-    buf ++= "フリーキャッシュフロー\t%s\n".format(freeCashFlow)
-    buf.toString
-  }
-  */
 }
 
 object Report{
