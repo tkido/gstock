@@ -30,7 +30,12 @@ class Html(url:String, charset:String) {
         flag = true
     }
     Html.removeTags(target)
-  }  
+  }
+  
+  def getGroupOf(rgex:Regex) :String = {
+    val opt = lines.collectFirst{ case rgex(m) => m }
+    opt.getOrElse("")
+  }
 }
 
 object Html{

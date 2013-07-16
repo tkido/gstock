@@ -1,27 +1,26 @@
 package com.tkido.stock.rss
 
-object Scraping{
-  def parseDetailPage(code:String) :Map[String, String] = {
+abstract class CompanyJp(code:String) extends Company(code) {
+    
+  def makeData :Map[String, String] = {    
+    val parsedData = parseProfilePage ++
+                     parseConsolidatePage ++
+                     parseDetailPage ++
+                     parseStockholderPage
+    val otherData = makeOtherData
+    parsedData ++ otherData
+  }
+  
+  def parseDetailPage :Map[String, String] = {
     val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
     
     def getOutstanding() :String =
       html.getPreviousLineOf("""<dt class="title">発行済株式数""".r).dropRight(12)
-    def getMarketCode() :String = {
-      html.getNextLineOf("""<dt>%s</dt>""".format(code).r) match {
-        case "東証"     => "T"
-        case "東証1部"  => "T"
-        case "東証2部"  => "T"
-        case "マザーズ" => "T"
-        case "東証JQG"  => "T"
-        case "東証JQS"  => "T"
-        case _          => "X"
-      }
-    }
-    Map("市ID" -> getMarketCode,
-        "発行" -> getOutstanding)
-  }  
+    
+    Map("発行" -> getOutstanding)
+  }
   
-  def parseProfilePage(code:String) :Map[String, String] = {
+  def parseProfilePage :Map[String, String] = {
     val html = Html("http://stocks.finance.yahoo.co.jp/stocks/profile/?code=%s".format(code))
     
     def getName() :String = {
@@ -69,7 +68,7 @@ object Scraping{
         "代表" -> getRepresentative)
   }
   
-  def parseConsolidatePage(code:String) :Map[String, String] = {
+  def parseConsolidatePage :Map[String, String] = {
     val html = Html("http://profile.yahoo.co.jp/consolidate/%s".format(code), "EUC-JP")
     
     def getSettlement() :String =
@@ -84,32 +83,7 @@ object Scraping{
         "ROE"  -> getRoe)
   }
   
-  def parseStockholderPage(code:String) :Map[String, String] = {
-    val html = Html("http://info.finance.yahoo.co.jp/stockholder/detail/?code=%s".format(code))
-    
-    def getMonth() :String = {
-      val rgex = """<tr><th>権利確定月</th><td>(.*?)</td></tr>""".r
-      val opt = html.lines.collectFirst{ case rgex(m) => m }
-      if(opt.isDefined)
-        Html.removeTags(opt.get.replaceFirst("権利確定月", "").replaceAll("末日", ""))
-      else
-        ""
-    }
-    Map("優待" -> getMonth)
-  }
-  
-  def makeData(code:String) :Map[String, String] = {    
-    val parsedData = parseProfilePage(code) ++
-                     parseConsolidatePage(code) ++
-                     parseDetailPage(code) ++
-                     parseStockholderPage(code)
-    val rssData = makeRssData(code, parsedData("市ID"))
-    val otherData = makeOtherData(code)
-    
-    parsedData ++ rssData ++ otherData
-  }
-  
-  def makeOtherData(code:String) :Map[String, String] = {
+  def makeOtherData :Map[String, String] = {
     def getId() :String =
       code
     def getPrice(): String =
@@ -126,43 +100,34 @@ object Scraping{
         "時価" -> getCap,
         "益"   -> getEpr,
         "性"   -> getPayoutRatio)
-  }
+  }  
   
-  def makeRssData(code:String, market:String) :Map[String, String] = {
-    object DivType extends Enumeration {
-      val OUTSTANDING, CURRENT, NONE = Value
-    }
-    import DivType._
+  def parseStockholderPage :Map[String, String] = {
+    val html = Html("http://info.finance.yahoo.co.jp/stockholder/detail/?code=%s".format(code))
     
-    def rssCode(id:String, div:DivType.Value) :String = {
-      val divStr = div match {
-        case OUTSTANDING => "/AD%d"
-        case CURRENT     => "/C%d"
-        case _ => ""
-      }
-      "=RSS|'%s.%s'!%s%s".format(code, market, id, divStr)
+    def getMonth() :String = {
+      val rgex = """<tr><th>権利確定月</th><td>(.*?)</td></tr>""".r
+      val opt = html.lines.collectFirst{ case rgex(m) => m }
+      if(opt.isDefined)
+        Html.removeTags(opt.get.replaceFirst("権利確定月", "").replaceAll("末日", ""))
+      else
+        ""
     }
-    
-    Map("現値"     -> rssCode("現在値", NONE),
-        "最売"     -> rssCode("最良売気配値", NONE),
-        "最売数"   -> rssCode("最良売気配数量", NONE),
-        "最買"     -> rssCode("最良買気配値", NONE),
-        "最買数"   -> rssCode("最良買気配数量", NONE),
-        "前終"     -> rssCode("前日終値", NONE),
-        "前比"     -> rssCode("前日比率", NONE),
-        "出来"     -> rssCode("出来高", OUTSTANDING),
-        "落日"     -> rssCode("配当落日", NONE),
-        "買残"     -> rssCode("信用買残", OUTSTANDING),
-        "買残週差" -> rssCode("信用買残前週比", OUTSTANDING),
-        "売残"     -> rssCode("信用売残", OUTSTANDING),
-        "売残週差" -> rssCode("信用売残前週比", OUTSTANDING),
-        "年高"     -> rssCode("年初来高値", CURRENT),
-        "年高日"   -> rssCode("年初来高値日付", NONE),
-        "年安"     -> rssCode("年初来安値", CURRENT),
-        "年安日"   -> rssCode("年初来安値日付", NONE),
-        "市"       -> rssCode("市場部略称", NONE),
-        "利"       -> rssCode("配当", CURRENT),
-        "PER"      -> rssCode("ＰＥＲ", NONE),
-        "PBR"      -> rssCode("ＰＢＲ", NONE))
+    Map("優待" -> getMonth)
+  }  
+  
+}
+object CompanyJp{
+  val reJpT = """東証.*""".r
+  
+  def apply(code:String) :CompanyJp = {
+    val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
+    html.getNextLineOf("""<dt>%s</dt>""".format(code).r) match {
+      case reJpT()    => CompanyJpRss(code)
+      case "マザーズ" => CompanyJpRss(code)
+      case _          => CompanyJpOther(code)
+    }
   }
 }
+
+
