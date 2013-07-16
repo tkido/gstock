@@ -50,5 +50,6 @@ object main extends App {
   val result = strings.mkString("\n")
   writeFile(result)
   */
+  
   println("OK!!")
 }
