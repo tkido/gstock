@@ -11,11 +11,9 @@ object Scraping{
         case "東証"     => "T"
         case "東証1部"  => "T"
         case "東証2部"  => "T"
+        case "東証JQG"  => "T"
+        case "東証JQS"  => "T"
         case "マザーズ" => "T"
-        case "大証1部"  => "OS"
-        case "大証2部"  => "OS"
-        case "東証JQG"  => "Q"
-        case "東証JQS"  => "Q"
         case _          => "X"
       }
     }

@@ -40,7 +40,7 @@ object main extends App {
   
   for(code <- codeList)
     Company(code)
-  
+  /*
   val data = codeList.map(Scraping.makeData)
   for(data <- data)
     ChartMaker.make(data("ID"), data("–¼Ì"), data("“ÁF"), data("Ž–‹Æ"))
@@ -49,5 +49,6 @@ object main extends App {
   val strings = dataRowPairs.map(makeString)
   val result = strings.mkString("\n")
   writeFile(result)
+  */
   println("OK!!")
 }
