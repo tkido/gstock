@@ -1,50 +1,85 @@
 package com.tkido.stock.rss
 
 class CompanyJpOther(code:String) extends CompanyJp(code) {
-  println("CompanyJpRss:%s".format(code))
-  override val data = makeData
+  println("CompanyJpOther:%s".format(code))
+  val data = makeData
   
   override def makeData :Map[String, String] = {    
-    val rssData = makeRssData
+    val rssData = makeNonRssData
     super.makeData ++ rssData
   }
   
-  def makeRssData :Map[String, String] = {
+  def makeNonRssData :Map[String, String] = {
+    val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
+    
+    def getMarketName() :String = {
+      val raw = html.getNextLineOf("""<dt>%s</dt>""".format(code).r)
+      raw match {
+        case "名証1部" => "名1"
+        case "名証2部" => "名2"
+        case _ => raw
+      }
+    }
+    
+    def getCurrentPrice() :String =
+      html.getGroupOf("""<td class="stoksPrice">(.*?)</td>""".r)
+    def getLastClose() :String =
+      html.getPreviousLineOf("""<dt class="title">前日終値""".r).dropRight(7)
+    def getRatioLast() :String =
+      html.getGroupOf("""<td class="change"><span class="yjSt">前日比</span><span class=".*? yjMSt">.*?（(.*?)%）</span></td>""".r)
+    def getValume() :String =
+      html.getPreviousLineOf("""<dt class="title">出来高""".r).dropRight(8)
+    def getHighest() :String =
+      html.getPreviousLineOf("""<dt class="title">年初来高値""".r).dropRight(10)
+    def getHighestDate() :String =
+      html.getPreviousLineOf("""<dt class="title">年初来高値""".r).takeRight(10).init.tail
+    def getLowest() :String =
+      html.getPreviousLineOf("""<dt class="title">年初来安値""".r).dropRight(10)
+    def getLowestDate() :String =
+      html.getPreviousLineOf("""<dt class="title">年初来安値""".r).takeRight(10).init.tail
+    def getDividendYield() :String =
+      html.getPreviousLineOf("""<dt class="title">配当利回り""".r).replaceFirst("""%.*""", "").replaceFirst("---", "-")
+    def getPer() :String =
+      html.getPreviousLineOf("""<dt class="title">PER""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "-")
+    def getPbr() :String =
+      html.getPreviousLineOf("""<dt class="title">PBR""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "-")
+    
+    
     object DivType extends Enumeration {
       val OUTSTANDING, CURRENT, NONE = Value
     }
     import DivType._
     
-    def rssCode(id:String, div:DivType.Value) :String = {
+    def divCode(id:String, div:DivType.Value) :String = {
       val divStr = div match {
         case OUTSTANDING => "/AD%d"
         case CURRENT     => "/C%d"
         case _ => ""
       }
-      "=RSS|'%s.T'!%s%s".format(code, id, divStr)
+      "%s%s".format(id, divStr)
     }
     
-    Map("現値"     -> rssCode("現在値", NONE),
-        "最売"     -> rssCode("最良売気配値", NONE),
-        "最売数"   -> rssCode("最良売気配数量", NONE),
-        "最買"     -> rssCode("最良買気配値", NONE),
-        "最買数"   -> rssCode("最良買気配数量", NONE),
-        "前終"     -> rssCode("前日終値", NONE),
-        "前比"     -> rssCode("前日比率", NONE),
-        "出来"     -> rssCode("出来高", OUTSTANDING),
-        "落日"     -> rssCode("配当落日", NONE),
-        "買残"     -> rssCode("信用買残", OUTSTANDING),
-        "買残週差" -> rssCode("信用買残前週比", OUTSTANDING),
-        "売残"     -> rssCode("信用売残", OUTSTANDING),
-        "売残週差" -> rssCode("信用売残前週比", OUTSTANDING),
-        "年高"     -> rssCode("年初来高値", CURRENT),
-        "年高日"   -> rssCode("年初来高値日付", NONE),
-        "年安"     -> rssCode("年初来安値", CURRENT),
-        "年安日"   -> rssCode("年初来安値日付", NONE),
-        "市"       -> rssCode("市場部略称", NONE),
-        "利"       -> rssCode("配当", CURRENT),
-        "PER"      -> rssCode("ＰＥＲ", NONE),
-        "PBR"      -> rssCode("ＰＢＲ", NONE))
+    Map("現値"     -> getCurrentPrice,
+        "最売"     -> "",
+        "最売数"   -> "",
+        "最買"     -> "",
+        "最買数"   -> "",
+        "前終"     -> getLastClose,
+        "前比"     -> getRatioLast,
+        "出来"     -> divCode(getValume, OUTSTANDING),
+        "落日"     -> "",
+        "買残"     -> "",
+        "買残週差" -> "",
+        "売残"     -> "",
+        "売残週差" -> "",
+        "年高"     -> divCode(getHighest, CURRENT),
+        "年高日"   -> getHighestDate,
+        "年安"     -> divCode(getLowest, CURRENT),
+        "年安日"   -> getLowestDate,
+        "市"       -> getMarketName,
+        "利"       -> getDividendYield,
+        "PER"      -> getPer,
+        "PBR"      -> getPbr)
   }
 }
 
