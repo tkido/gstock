@@ -1,8 +1,7 @@
 package com.tkido.stock.rss
 
 abstract class CompanyJp(code:String) extends Company(code) {
-  println("CompanyJp:%s".format(code))
-  
+    
   def makeData :Map[String, String] = {    
     val parsedData = parseProfilePage ++
                      parseConsolidatePage ++

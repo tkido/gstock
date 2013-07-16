@@ -20,7 +20,7 @@ object main extends App {
   val codes = makeCodes
   val companies = codes.map(Company(_))
   
-  val offset = 2  
+  val offset = 293
   val strings = for((company, index) <- companies.zipWithIndex) yield company.toStringForExcel(index+offset)
   
   val result = strings.mkString("\n")

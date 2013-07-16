@@ -1,7 +1,6 @@
 package com.tkido.stock.rss
 
 class CompanyJpOther(code:String) extends CompanyJp(code) {
-  println("CompanyJpOther:%s".format(code))
   val data = makeData
   
   override def makeData :Map[String, String] = {    
@@ -28,17 +27,17 @@ class CompanyJpOther(code:String) extends CompanyJp(code) {
     def getRatioLast() :String =
       html.getGroupOf("""<td class="change"><span class="yjSt">前日比</span><span class=".*? yjMSt">.*?（(.*?)%）</span></td>""".r)
     def getValume() :String =
-      html.getPreviousLineOf("""<dt class="title">出来高""".r).dropRight(8)
+      html.getPreviousLineOf("""<dt class="title">出来高""".r).dropRight(8).replaceAll(",", "")
     def getHighest() :String =
-      html.getPreviousLineOf("""<dt class="title">年初来高値""".r).dropRight(10)
+      html.getPreviousLineOf("""<dt class="title">年初来高値""".r).dropRight(10).replaceAll(",", "")
     def getHighestDate() :String =
       html.getPreviousLineOf("""<dt class="title">年初来高値""".r).takeRight(10).init.tail
     def getLowest() :String =
-      html.getPreviousLineOf("""<dt class="title">年初来安値""".r).dropRight(10)
+      html.getPreviousLineOf("""<dt class="title">年初来安値""".r).dropRight(10).replaceAll(",", "")
     def getLowestDate() :String =
       html.getPreviousLineOf("""<dt class="title">年初来安値""".r).takeRight(10).init.tail
     def getDividendYield() :String =
-      html.getPreviousLineOf("""<dt class="title">配当利回り""".r).replaceFirst("""%.*""", "").replaceFirst("---", "-")
+      html.getPreviousLineOf("""<dt class="title">配当利回り""".r).replaceFirst("""（.*""", "").replaceFirst("---", "-")
     def getPer() :String =
       html.getPreviousLineOf("""<dt class="title">PER""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "-")
     def getPbr() :String =
@@ -56,7 +55,7 @@ class CompanyJpOther(code:String) extends CompanyJp(code) {
         case CURRENT     => "/C%d"
         case _ => ""
       }
-      "%s%s".format(id, divStr)
+      "=%s%s".format(id, divStr)
     }
     
     Map("現値"     -> getCurrentPrice,
