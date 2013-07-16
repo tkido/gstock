@@ -1,8 +1,7 @@
 package com.tkido.stock.rss
 
-class CompanyJp(code:String) extends Company(code) {
+abstract class CompanyJp(code:String) extends Company(code) {
   println("CompanyJp:%s".format(code))
-  val data = makeData
   
   def makeData :Map[String, String] = {    
     val parsedData = parseProfilePage ++
@@ -124,17 +123,11 @@ object CompanyJp{
   
   def apply(code:String) :CompanyJp = {
     val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
-    val rssFlag = {
-      html.getNextLineOf("""<dt>%s</dt>""".format(code).r) match {
-        case reJpT()    => true
-        case "マザーズ" => true
-        case _          => false
-      }
+    html.getNextLineOf("""<dt>%s</dt>""".format(code).r) match {
+      case reJpT()    => CompanyJpRss(code)
+      case "マザーズ" => CompanyJpRss(code)
+      case _          => CompanyJpOther(code)
     }
-    if(rssFlag)
-      CompanyJpRss(code)
-    else
-      new CompanyJp(code)
   }
 }
 

@@ -16,11 +16,11 @@ object main extends App {
     out.println(data)
     out.close
   }
-
-  val offset = 2
   
   val codes = makeCodes
   val companies = codes.map(Company(_))
+  
+  val offset = 2  
   val strings = for((company, index) <- companies.zipWithIndex) yield company.toStringForExcel(index+offset)
   
   val result = strings.mkString("\n")
