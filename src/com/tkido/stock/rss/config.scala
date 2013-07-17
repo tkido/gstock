@@ -7,4 +7,8 @@ object Config {
   def get(key:String) :String =
     prop.getProperty(key)
   
+  def offset :Int =
+    prop.getProperty("offset").toInt
+  
+  
 }
