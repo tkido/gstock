@@ -5,7 +5,7 @@ object main extends App {
   val companies = codes.map(Company(_))
   val strings =
     for((company, index) <- companies.zipWithIndex)
-      yield company.toStringForExcel(index + Config.offset)
+      yield company.toStringForExcel(Config.offset + index)
   TextFile.writeString("data/rss/result.txt", strings.mkString("\n"))
   println("OK!!")
 }
