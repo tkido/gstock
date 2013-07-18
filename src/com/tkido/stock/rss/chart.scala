@@ -1,8 +1,6 @@
 package com.tkido.stock.rss
 
 object ChartMaker {
-  import scala.util.matching.Regex
-  import java.io.PrintWriter
 
   private val templete = """
 <html>
@@ -50,34 +48,33 @@ object ChartMaker {
   </body>
 </html>
 """
-
-  def writeFile(name: String, data: String) {
-    val out = new PrintWriter("data/rss/%s.html".format(name))
-    out.println(data)
-    out.close
-  }
     
-  def make(code:String, name:String, feature:String, data:String){
+  def make(company:Company){
+    val code = company.data("ID")
+    val name = company.data("–¼Ì")
+    val feature = company.data("“ÁF")
+    val business = company.data("–‹Æ")
+    
     def getDate() :String = {
       val rgexDate = """\([0-9]{4}\.[0-9]{1,2}\)""".r
-      val m = rgexDate.findFirstMatchIn(data)
+      val m = rgexDate.findFirstMatchIn(business)
       if(m.isDefined) m.get.group(0)
       else ""
     }
     def getHeader() :String = {
       val rgexHeader = """y.*?z""".r
-      val m = rgexHeader.findFirstMatchIn(data)
+      val m = rgexHeader.findFirstMatchIn(business)
       if(m.isDefined) m.get.group(0)
       else ""
     }
     def getOther() :String = {
       val rgexHeader = """y.*?z.*?(y.*)""".r
-      val m = rgexHeader.findFirstMatchIn(data)
+      val m = rgexHeader.findFirstMatchIn(business)
       if(m.isDefined) m.get.group(1).replaceFirst("""\([0-9]{4}\.[0-9]{1,2}\)""", "")
       else ""
     }
     def getRows() :String = {
-      val rawStr = data.replaceFirst("""\([0-9]{4}\.[0-9]{1,2}\)""", "").replaceFirst("""y.*?z""", "").replaceFirst("""y.*""", "")
+      val rawStr = business.replaceFirst("""\([0-9]{4}\.[0-9]{1,2}\)""", "").replaceFirst("""y.*?z""", "").replaceFirst("""y.*""", "")
       val rawRows = rawStr.split('A')
       
       def stringToPairs(raw: String): Pair[String, String] = {
@@ -105,16 +102,9 @@ object ChartMaker {
     val header = getHeader
     val rows = getRows
     val title = name + header + date
-
     
     val html = templete.format(title, rows, title, feature, other)
-    writeFile(code, html)
+    TextFile.writeString("data/rss/%s.html".format(code), html)
   }
 }
 
-object ChartMakerTest extends App {
-  ChartMaker.make("3085",
-                  "ƒA[ƒNƒ‰ƒ“ƒhƒT[ƒrƒX",
-                  "ƒJƒc˜¥ê–å“Xu‚©‚Â‚âv‚ğ’¼‰cA‚e‚b‚Å“WŠJB“V˜¥ˆç¬’†Be‰ïĞ‚ÍVŠƒ’n”Õ‚Ìƒz[ƒ€ƒZƒ“ƒ^[",
-                  "y˜AŒ‹–‹Æz‚©‚Â‚â’¼‰cˆùH59A‚e‚b33A‘¼’¼‰cˆùH6A‘¼2(2012.12)")
-}
