@@ -21,15 +21,8 @@ class Report(path:String) {
   }
   
   override def toString = {
-    val buf = new StringBuilder
-    buf ++= "%s\t".format(year)
-    buf ++= "%s\t".format(breakupValue)
-    buf ++= "%s\t".format(netCash)
-    buf ++= "%s\t".format(accruals)
-    buf ++= "%s\t".format(netIncome)
-    buf ++= "%s\t".format(freeCashFlow)
-    buf ++= "\n"
-    buf.toString
+    val list = List(year, breakupValue, netCash, accruals, netIncome, freeCashFlow)
+    list.map(_.toString).mkString("\t") + "\n"
   }
 }
 
