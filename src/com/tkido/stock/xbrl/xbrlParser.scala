@@ -23,7 +23,7 @@ object XbrlParser {
   
   def parse(path :String) :Map[String, BigInt] = {
     val xml = XML.loadFile(path)
-    val isConsolidated = (xml \\ "@id").filter(_.toString == "CurrentYearConsolidatedDuration").nonEmpty
+    val isConsolidated = (xml \\ "@id").exists(_.toString == "CurrentYearConsolidatedDuration")
 
     def isValid(node:Node) :Boolean = {
       def isValidPrefix :Boolean = {
