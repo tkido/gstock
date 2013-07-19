@@ -41,11 +41,9 @@ class Company(code:String) {
     stock + flow * rate
   
   override def toString = {
-    val buf = new StringBuilder
-    buf ++= "\t\t\t\t\t\t%s\t%s\t%s\n".format(code, growthRate, fairValue)
-    for(report <- reports)
-      buf ++= report.toString()
-    buf.toString
+    val header = "\t\t\t\t\t\t%s\t%s\t%s".format(code, growthRate, fairValue)
+    val list = header :: reports.map(_.toString)
+    list.mkString("\n")
   }
 }
 

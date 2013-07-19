@@ -22,7 +22,7 @@ class Report(path:String) {
   
   override def toString = {
     val list = List(year, breakupValue, netCash, accruals, netIncome, freeCashFlow)
-    list.map(_.toString).mkString("\t") + "\n"
+    list.map(_.toString).mkString("\t")
   }
 }
 
