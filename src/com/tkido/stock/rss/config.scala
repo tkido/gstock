@@ -5,6 +5,7 @@ object Config {
   prop.load(new java.io.FileInputStream("data/rss/conf.properties"))
 
   val offset = get("offset").toInt
+  val loglevel = get("loglevel").toInt
   
   def get(key:String) :String =
     prop.getProperty(key)
