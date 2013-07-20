@@ -13,7 +13,7 @@ object main extends App {
       yield company.toStringForExcel(Config.offset + index)
   TextFile.writeString("data/rss/result.txt", strings.mkString("\n"))
     
-  println(xbrl.Company("3085"))
+  //println(xbrl.Company("3085"))
   
   Logger.close()
 }
