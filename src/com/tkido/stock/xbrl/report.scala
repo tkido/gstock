@@ -13,11 +13,10 @@ class Report(path:String) {
   def netIncome = data("NetIncome")
   
   def sumItems(items:Map[String, Int]) :BigInt = {
-    var sum = BigInt(0)
-    for((key, value) <- items)
-      if(data.contains(key))
-        sum += data(key) * value 
-    sum / 100
+    val nums =
+      for((key, value) <- items if data.contains(key))
+        yield data(key) * value
+    nums.sum / 100
   }
   
   override def toString = {
