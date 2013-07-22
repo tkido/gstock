@@ -9,6 +9,4 @@ object Config {
   
   def get(key:String) :String =
     prop.getProperty(key)
-  
-  
 }

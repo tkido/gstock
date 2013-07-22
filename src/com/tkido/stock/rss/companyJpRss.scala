@@ -16,8 +16,8 @@ class CompanyJpRss(code:String) extends CompanyJp(code) {
     
     def rssCode(id:String, div:DivType.Value) :String = {
       val divStr = div match {
-        case OUTSTANDING => "/AD%d"
-        case CURRENT     => "/C%d"
+        case OUTSTANDING => "/y”­sz"
+        case CURRENT     => "/y’lz"
         case _ => ""
       }
       "=RSS|'%s.T'!%s%s".format(code, id, divStr)

@@ -16,6 +16,8 @@ class CompanyJpOther(code:String) extends CompanyJp(code) {
       raw match {
         case "–¼Ø1•”" => "–¼1"
         case "–¼Ø2•”" => "–¼2"
+        case "ŽDØ"    => "ŽD"
+        case "•ŸØ"    => "•Ÿ"
         case _ => raw
       }
     }
@@ -51,8 +53,8 @@ class CompanyJpOther(code:String) extends CompanyJp(code) {
     
     def divCode(id:String, div:DivType.Value) :String = {
       val divStr = div match {
-        case OUTSTANDING => "/AD%d"
-        case CURRENT     => "/C%d"
+        case OUTSTANDING => "/y”­sz"
+        case CURRENT     => "/y’lz"
         case _ => ""
       }
       "=%s%s".format(id, divStr)

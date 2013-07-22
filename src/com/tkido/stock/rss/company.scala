@@ -4,7 +4,14 @@ abstract class Company(code:String) {
   val data :Map[String, String]
   
   def toStringForExcel(row:Int) :String = {
-    val list = Company.order.map(data(_).replaceAll("%d", row.toString))
+    def replaceAllColumns(source:String) :String = {
+      var str = source
+      Company.rgexColumn.findAllIn(str).matchData.foreach(
+        m => str = str.replaceFirst(m.group(0), Company.columnNamesMap(m.group(1)) + row)
+      )
+      str
+    }
+    val list = Company.order.map(x => replaceAllColumns(data(x)))
     list.mkString("\t")
   }
 }
@@ -19,7 +26,14 @@ object Company{
                    "ŒˆZ", "—D‘Ò", "—“ú",
                    "”­s", "‰¿", "s", "•ª—Ş",
                    "‘ã•\", "İ—§", "ãê", "ŒˆŠú",
-                   "]˜A", "]’P", "—î", "û")  
+                   "]˜A", "]’P", "—î", "û")
+  val abc = {
+    for(char <- "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+      yield char.toString
+    }.toList
+  val columnNames = abc ::: abc.map("A"+_) ::: abc.map("B"+_)
+  val columnNamesMap = order.zip(columnNames).toMap
+  val rgexColumn = """y(.*?)z""".r
   
   val reJp = """[0-9]{4}""".r
   val reUs = """[A-Z]{1,5}""".r

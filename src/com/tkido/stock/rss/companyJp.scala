@@ -87,13 +87,13 @@ abstract class CompanyJp(code:String) extends Company(code) {
     def getId() :String =
       code
     def getPrice(): String =
-      """=IF(H%d=" ", I%d, H%d)"""
+      """=IF(yŒ»’lz=" ", y‘OIz, yŒ»’lz)"""
     def getCap(): String =
-      """=C%d*AD%d/100000"""
+      """=y’lz*y”­sz/100000"""
     def getEpr(): String =
-      """=IF(Y%d=0, 0, 1/Y%d"""
+      """=IF(yPERz=0, 0, 1/yPERz"""
     def getPayoutRatio(): String =
-      """=IF(U%d=0, 0, T%d/U%d"""
+      """=IF(y‰vz=0, 0, y—˜z/y‰vz"""
       
     Map("ID"   -> getId,
         "’l"   -> getPrice,
