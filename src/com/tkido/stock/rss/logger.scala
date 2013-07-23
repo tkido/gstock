@@ -11,22 +11,24 @@ object Logger{
   val ERROR = 3
   val FATAL = 4
   
-  val encode = "UTF-8"
-  val append = true
-  val template = "%tY_%<tm%<td_%<tH%<tM_%<tS"
+  private val encode = "UTF-8"
+  private val append = true
+  private val template = "%tY_%<tm%<td_%<tH%<tM_%<tS"
   
   var level = FATAL
+  val now = new Date
+  val today = "%tY/%<tm/%<td".format(now)
   
-  val started = template.format(new Date)
-  val fileName = "log/%s.log".format(started)
+  val started = template.format(now)
+  private val fileName = "log/%s.log".format(started)
   
-  val stream = new FileOutputStream(fileName, append)
-  val writer = new OutputStreamWriter(stream, encode)
+  private val stream = new FileOutputStream(fileName, append)
+  private val writer = new OutputStreamWriter(stream, encode)
   
   log5("***** STARTED at %s *****".format(started))
   println("STARTED at %s".format(started))
   
-  def write(args: Seq[Any]){
+  private def write(args: Seq[Any]){
     writer.write(args.mkString("", "", "\n"))
   }
   def close() {

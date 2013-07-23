@@ -6,7 +6,7 @@ abstract class Company(code:String) {
   def toStringForExcel(row:Int) :String = {
     def replaceAllColumns(source:String) :String = {
       var str = source
-      Company.rgexColumn.findAllIn(str).matchData.foreach(
+      Company.rgexColumn.findAllIn(source).matchData.foreach(
         m => str = str.replaceFirst(m.group(0), Company.columnNamesMap(m.group(1)) + row)
       )
       str
@@ -26,7 +26,8 @@ object Company{
                    "ŒˆZ", "—D‘Ò", "—“ú",
                    "”­s", "‰¿", "s", "•ª—Ş",
                    "‘ã•\", "İ—§", "ãê", "ŒˆŠú",
-                   "]˜A", "]’P", "—î", "û")
+                   "]˜A", "]’P", "—î", "û",
+                   "—¦", "Š”‰¿", "Šé‰¿", "XV")
   val abc = {
     for(char <- "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
       yield char.toString
