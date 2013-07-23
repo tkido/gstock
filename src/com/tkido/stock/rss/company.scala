@@ -3,11 +3,8 @@ package com.tkido.stock.rss
 abstract class Company(code:String) {
   val data :Map[String, String]
   
-  def toStringForExcel(row:Int) :String = {
-    Company.order.map(x =>
-      Company.reColumn.replaceAllIn(data(x), m => Company.columnsMap(m.group(1)) + row)
-    ).mkString("\t")
-  }
+  def toStringForExcel(row:Int) :String =
+    Company.replaceColumn(data, row.toString).mkString("\t")
 }
 object Company{
   val order = List("ID", "–¼Ì", "’l", 
@@ -39,4 +36,10 @@ object Company{
       case reUs() => CompanyUs(code)
     }
   }
+  
+  def replaceColumn(data:Map[String, String], row:String) :List[String] = {
+    order.map(x =>
+      reColumn.replaceAllIn(data(x), m => columnsMap(m.group(1)) + row)
+    )
+  }  
 }
