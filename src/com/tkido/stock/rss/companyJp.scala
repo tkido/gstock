@@ -99,7 +99,7 @@ abstract class CompanyJp(code:String) extends Company(code) {
         "—¦"   -> """=IF(yŠé‰¿z=0, 0, y’lz/yŠ”‰¿z)""",
         "Š”‰¿" -> """=IF(yŠé‰¿z="", 0, yŠé‰¿z/1000/y”­sz)""",
         "XV" -> Logger.today,
-        "Šé‰¿" -> getEnterpriseValue)
+        "Šé‰¿" -> getEnterpriseValue )
   }  
   
   def parseStockholderPage :Map[String, String] = {

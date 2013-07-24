@@ -32,10 +32,20 @@ class Html(url:String, charset:String) {
     Html.removeTags(target)
   }
   
+  def getLineOf(rgex:Regex) :String = {
+    var target = ""
+    for(line <- lines){
+      if(rgex.findFirstIn(line).isDefined)
+        target = line
+    }
+    target
+  }
+  
   def getGroupOf(rgex:Regex) :String = {
     val opt = lines.collectFirst{ case rgex(m) => m }
     opt.getOrElse("")
   }
+  
 }
 
 object Html{
