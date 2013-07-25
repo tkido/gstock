@@ -6,7 +6,7 @@ class CompanyUs(code:String) extends Company(code) {
   println(data)
   
   def makeData :Map[String, String] = {
-    makeOtherData ++ parseSummary ++ parseKeyStatistics //++ parseProfile 
+    makeOtherData ++ parseKeyStatistics //++ parseSummary ++ parseProfile 
   }
   
   def parseSummary :Map[String, String] = {
@@ -18,6 +18,10 @@ class CompanyUs(code:String) extends Company(code) {
     val sign = if(m.group(4) == "Down") "-" else ""
     val ratio = sign + m.group(5)
     
+    def getName =
+      html.getGroupOf("""^.*?<div class="title"><h2>(.*?) \(.*?\)</h2>.*$""".r)
+    def getMarket =
+      html.getGroupOf("""^.*?<span class="rtq_exch"><span class="rtq_dash">-</span>(.*?)  </span>.*$""".r)
     def getVolume = {
       val raw = html.getGroupOf("""^.*?Volume:</th><td class="yfnc_tabledata1"><span id="yfs_v53_.*?">(.*?)</span>.*$""".r)
       raw.replaceAll(",", "") + "/【発行】"
@@ -31,8 +35,8 @@ class CompanyUs(code:String) extends Company(code) {
       if(raw == "N/A") "-" else raw
     }
     
-    Map("名称" -> m.group(1),
-        "市"   -> m.group(2),
+    Map("名称" -> getName,
+        "市"   -> getMarket,
         "現値" -> m.group(3),
         "前比" -> ratio,
         "出来" -> getVolume,
@@ -62,12 +66,27 @@ class CompanyUs(code:String) extends Company(code) {
     }
     def get52wkLowDate =
       html.getGroupOf("""^.*?>52-Week Low \((.*?)\)<font size="-1"><sup>3</sup></font>:</td><td class="yfnc_tabledata1">.*?</td>.*$""".r)
-    Map("年高"   -> get52wkHigh,
+    def getOutstanding :String = {
+      val raw = html.getGroupOf("""^.*?>Shares Outstanding<font size="-1"><sup>5</sup></font>:</td><td class="yfnc_tabledata1">(.*?)</td>.*$""".r)
+      roundedNumberStringToString(raw)
+    }
+      
+    Map("発行"   -> getOutstanding,
+        "年高"   -> get52wkHigh,
         "年高日" -> get52wkHighDate,
         "年安"   -> get52wkLow,
         "年安日" -> get52wkLowDate )
   }
   
+  def roundedNumberStringToString(source:String) :String = {
+    val mantissa = source.init.replaceFirst("""\.""", "")
+    val unit = source.last match{
+      case 'B' => "0000000"
+      case 'M' => "0000"
+      case 'T' => "0"
+    }
+    mantissa + unit
+  }
   
 }
 object CompanyUs{
