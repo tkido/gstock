@@ -1,10 +1,31 @@
 package com.tkido.stock.rss
 
 abstract class Company(code:String) {
+  import com.tkido.stock.xbrl
+  
   val data :Map[String, String]
   
   def toStringForExcel(row:Int) :String =
     Company.replaceColumn(data, row.toString).mkString("\t")
+  
+  def makeOtherData :Map[String, String] = {
+    def getEnterpriseValue() :String =
+      try{
+        xbrl.Company(code).fairValue.toString
+      }catch{
+        case _ => ""
+      }
+    Map("ID"   -> code,
+        "’l"   -> """=IF(yŒ»’lz=" ", y‘OIz, yŒ»’lz)""",
+        "‰¿" -> """=y’lz*y”­sz/100000""",
+        "‰v"   -> """=IF(yPERz=0, 0, 1/yPERz""",
+        "«"   -> """=IF(y‰vz=0, 0, y—˜z/y‰vz""",
+        "—¦"   -> """=IF(yŠé‰¿z=0, 0, y’lz/yŠ”‰¿z)""",
+        "Š”‰¿" -> """=IF(yŠé‰¿z="", 0, yŠé‰¿z/1000/y”­sz)""",
+        "XV" -> Logger.today,
+        "Šé‰¿" -> getEnterpriseValue )
+  }
+    
 }
 object Company{
   val order = List("ID", "–¼Ì", "’l", 

@@ -1,8 +1,6 @@
 package com.tkido.stock.rss
 
 abstract class CompanyJp(code:String) extends Company(code) {
-  import com.tkido.stock.xbrl
-  
   def makeData :Map[String, String] = {    
     val parsedData = parseProfilePage ++
                      parseConsolidatePage ++
@@ -83,24 +81,6 @@ abstract class CompanyJp(code:String) extends Company(code) {
         "Ž©"   -> getCapitalToAssetRatio,
         "ROE"  -> getRoe)
   }
-  
-  def makeOtherData :Map[String, String] = {
-    def getEnterpriseValue() :String =
-      try{
-        xbrl.Company(code).fairValue.toString
-      }catch{
-        case _ => ""
-      }
-    Map("ID"   -> code,
-        "’l"   -> """=IF(yŒ»’lz=" ", y‘OIz, yŒ»’lz)""",
-        "Žž‰¿" -> """=y’lz*y”­sz/100000""",
-        "‰v"   -> """=IF(yPERz=0, 0, 1/yPERz""",
-        "«"   -> """=IF(y‰vz=0, 0, y—˜z/y‰vz""",
-        "—¦"   -> """=IF(yŠé‰¿z=0, 0, y’lz/yŠ”‰¿z)""",
-        "Š”‰¿" -> """=IF(yŠé‰¿z="", 0, yŠé‰¿z/1000/y”­sz)""",
-        "XV" -> Logger.today,
-        "Šé‰¿" -> getEnterpriseValue )
-  }  
   
   def parseStockholderPage :Map[String, String] = {
     val html = Html("http://info.finance.yahoo.co.jp/stockholder/detail/?code=%s".format(code))
