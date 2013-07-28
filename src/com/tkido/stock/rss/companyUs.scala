@@ -36,7 +36,7 @@ class CompanyUs(code:String) extends Company(code) {
     def getPrice =
       html.getGroupOf("""^.*?<span class="time_rtq_ticker"><span id="yfs_l84_.*?">(.*?)</span></span>.*$""".r)
     def getRatio = {
-      val raw = html.getGroupOf("""^.*?<div class="title">.*?class=".*?_arrow" alt=".*?">   (.*?)</span>.*$""".r)
+      val raw = html.getGroupOf("""^.*?<div class="title">.*?class=".*?_arrow" alt=".*?">   .*?</span><span id="yfs_p43_.*?">\((.*?)%\)</span>.*$""".r)
       val sign = html.getGroupOf("""^.*?<div class="title">.*?class=".*?_arrow" alt="(.*?)".*$""".r) match{
         case "Up"   => ""
         case "Down" => "-"
