@@ -40,6 +40,7 @@ class CompanyUs(code:String) extends Company(code) {
       val sign = html.getGroupOf("""^.*?<div class="title">.*?class=".*?_arrow" alt="(.*?)".*$""".r) match{
         case "Up"   => ""
         case "Down" => "-"
+        case _      => ""
       }
       sign + raw
     }
