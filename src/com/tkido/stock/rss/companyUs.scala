@@ -101,15 +101,17 @@ class CompanyUs(code:String) extends Company(code) {
       unRound(raw).dropRight(3)
     }
     def getDivYield = {
-      val raw = html.getGroupOf("""^.*?Trailing Annual Dividend Yield.*?Trailing Annual Dividend Yield<font size="-1"><sup>3</sup></font>:</td><td class="yfnc_tabledata1">(.*?)%</td>.*$""".r) 
-      if(raw == "N/A") "-" else raw + "%"
+      val raw = html.getGroupOf("""^.*?Trailing Annual Dividend Yield.*?Trailing Annual Dividend Yield<font size="-1"><sup>3</sup></font>:</td><td class="yfnc_tabledata1">(.*?)</td>.*$""".r) 
+      if(raw == "N/A") "0.0%" else raw
     }
     def getPer = {
       val raw = html.getGroupOf("""^.*?Trailing P/E \(ttm, intraday\):</td><td class="yfnc_tabledata1">(.*?)</td>.*$""".r)
+      if(raw == "N/A") "0.0" else raw
+    }
+    def getRoe = {
+      val raw = html.getGroupOf("""^.*?Return on Equity \(ttm\):</td><td class="yfnc_tabledata1">(.*?)</td>.*$""".r)
       if(raw == "N/A") "-" else raw
     }
-    def getRoe =
-      html.getGroupOf("""^.*?Return on Equity \(ttm\):</td><td class="yfnc_tabledata1">(.*?)</td>.*$""".r)
     def getPbr =
       html.getGroupOf("""^.*?Price/Book \(mrq\):</td><td class="yfnc_tabledata1">(.*?)</td>.*$""".r)
     Map("”­s"   -> getOutstanding,
