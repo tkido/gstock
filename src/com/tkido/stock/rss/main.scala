@@ -7,8 +7,7 @@ object main extends App {
   val codes = TextFile.readLines("data/rss/table.txt")
   val companies = codes.map(Company(_))
   
-  for(company <- companies)
-    ChartMaker.make(company)
+  //for(company <- companies) ChartMaker.make(company)
   val strings =
     for((company, index) <- companies.zipWithIndex)
       yield company.toStringForExcel(Config.offset + index)
