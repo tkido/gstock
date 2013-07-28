@@ -6,22 +6,27 @@ class CompanyUs(code:String) extends Company(code) {
   println(data)
   
   def makeData :Map[String, String] = {
-    makeOtherData ++ parseKeyStatistics //++ parseSummary ++ parseProfile 
+    makeOtherData ++ parseKeyStatistics ++ parseSummary //++ parseProfile 
   }
   
   def parseSummary :Map[String, String] = {
     val html = Html("http://finance.yahoo.com/q?s=%s".format(code))
-    val line = html.getLineOf("""^.*?<div class="title"><h2>(.*?) \(.*?\)</h2>.*$""".r)
-    val re = """^.*?<div class="title"><h2>(.*?) \(.*?\)</h2> <span class="rtq_exch"><span class="rtq_dash">-</span>(.*?)  </span></div></div><div class="yfi_rt_quote_summary_rt_top"><p> <span class="time_rtq_ticker"><span id="yfs_l84_.*?">(.*?)</span></span> <span class=".*? time_rtq_content"><span id="yfs_c63_.*?"><img width="10" height="14" style="margin-right:-2px;" border="0" src="http://l.yimg.com/os/mit/media/m/base/images/transparent-1093278.png" class=".*?_arrow" alt="(.*?)">   .*?</span><span id="yfs_p43_.*?">\((.*?)\)</span>.*$""".r
-    val m = re.findFirstMatchIn(line).get
-    
-    val sign = if(m.group(4) == "Down") "-" else ""
-    val ratio = sign + m.group(5)
-    
+
     def getName =
       html.getGroupOf("""^.*?<div class="title"><h2>(.*?) \(.*?\)</h2>.*$""".r)
     def getMarket =
       html.getGroupOf("""^.*?<span class="rtq_exch"><span class="rtq_dash">-</span>(.*?)  </span>.*$""".r)
+    def getPrice =
+      html.getGroupOf("""^.*?<span class="time_rtq_ticker"><span id="yfs_l84_.*?">(.*?)</span></span>.*$""".r)
+    def getRatio = {
+      val raw = html.getGroupOf("""^.*?class=".*?_arrow" alt=".*?">   (.*?)</span>.*$""".r)
+      println(html.getGroupOf("""^.*?class=".*?_arrow" alt="(.*?)".*$""".r))
+      val sign = html.getGroupOf("""^.*?class=".*?_arrow" alt="(.*?)".*$""".r) match{
+        case "Up"   => ""
+        case "Down" => "-"
+      }
+      sign + raw + "%"
+    }
     def getVolume = {
       val raw = html.getGroupOf("""^.*?Volume:</th><td class="yfnc_tabledata1"><span id="yfs_v53_.*?">(.*?)</span>.*$""".r)
       raw.replaceAll(",", "") + "/y”­sz"
@@ -37,8 +42,8 @@ class CompanyUs(code:String) extends Company(code) {
     
     Map("–¼Ì" -> getName,
         "Žs"   -> getMarket,
-        "Œ»’l" -> m.group(3),
-        "‘O”ä" -> ratio,
+        "Œ»’l" -> getPrice,
+        "‘O”ä" -> getRatio,
         "o—ˆ" -> getVolume,
         "—˜"   -> getDivYield,
         "PER"  -> getPer,
