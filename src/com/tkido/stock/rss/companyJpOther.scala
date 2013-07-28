@@ -39,9 +39,9 @@ class CompanyJpOther(code:String) extends CompanyJp(code) {
     def getLowestDate() :String =
       html.getPreviousLineOf("""<dt class="title">年初来安値""".r).takeRight(10).init.tail
     def getDividendYield() :String =
-      html.getPreviousLineOf("""<dt class="title">配当利回り""".r).replaceFirst("""（.*""", "").replaceFirst("---", "-")
+      html.getPreviousLineOf("""<dt class="title">配当利回り""".r).replaceFirst("""（.*""", "").replaceFirst("---", "0")
     def getPer() :String =
-      html.getPreviousLineOf("""<dt class="title">PER""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "-")
+      html.getPreviousLineOf("""<dt class="title">PER""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "0")
     def getPbr() :String =
       html.getPreviousLineOf("""<dt class="title">PBR""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "-")
     
