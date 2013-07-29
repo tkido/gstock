@@ -1,0 +1,21 @@
+syntax: glob
+.cache
+.classpath
+.project
+.settings
+bin\
+levels\
+*.class
+org.eclipse.jdt.core.prefs
+*.pyc
+*.BAK
+*.bak
+~$*
+.picasa.ini
+log/*.log
+data/xbrl/xbrl/
+data/rss/table.txt
+data/rss/result.txt
+data/rss/*.html
+ant/build.properties
+conf.properties
