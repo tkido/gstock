@@ -3,8 +3,8 @@ syntax: glob
 .classpath
 .project
 .settings
-bin\
-levels\
+bin/
+levels/
 *.class
 org.eclipse.jdt.core.prefs
 *.pyc
