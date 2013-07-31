@@ -5,7 +5,7 @@ object main extends App {
   Logger.level = Config.loglevel
   
   val codes = TextFile.readLines("data/rss/table.txt")
-  val companies = codes.map(Company(_))
+  val companies = codes.par.map(Company(_))
   
   val strings =
     for((company, index) <- companies.zipWithIndex)
