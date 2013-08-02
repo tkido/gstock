@@ -101,6 +101,8 @@ object CompanyJp{
   val reJpT = """“ŒØ.*""".r
   
   def apply(code:String, row:Int) :CompanyJp = {
+    if(row > 300) return CompanyJpOther(code, row)
+    
     val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
     html.getNextLineOf("""<dt>%s</dt>""".format(code).r) match {
       case reJpT()    => CompanyJpRss(code, row)
