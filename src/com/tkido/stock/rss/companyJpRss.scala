@@ -1,6 +1,6 @@
 package com.tkido.stock.rss
 
-class CompanyJpRss(code:String) extends CompanyJp(code) {
+class CompanyJpRss(code:String, row:Int) extends CompanyJp(code, row) {
   override val data = makeData
   
   override def makeData :Map[String, String] = {    
@@ -48,8 +48,8 @@ class CompanyJpRss(code:String) extends CompanyJp(code) {
 }
 
 object CompanyJpRss{
-  def apply(code:String) = {
-    new CompanyJpRss(code)
+  def apply(code:String, row:Int) = {
+    new CompanyJpRss(code, row)
   }
 }
 

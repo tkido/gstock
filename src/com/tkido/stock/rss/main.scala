@@ -5,11 +5,11 @@ object main extends App {
   Logger.level = Config.loglevel
   
   val codes = TextFile.readLines("data/rss/table.txt")
-  val companies = codes.par.map(Company(_))
+  val range = Range(Config.offset, Config.offset + codes.size)
+  val pairs = codes zip range
+  val companies = pairs.par.map(pair => Company(pair._1, pair._2))
   
-  val strings =
-    for((company, index) <- companies.zipWithIndex)
-      yield company.toStringForExcel(Config.offset + index)
+  val strings = companies.map(_.toStringForExcel)
   TextFile.writeString("data/rss/result.txt", strings.mkString("\n"))
   
   companies.collect{ case company:CompanyJp => ChartMaker.make(company)}

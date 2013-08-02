@@ -1,12 +1,12 @@
 package com.tkido.stock.rss
 
-abstract class Company(code:String) {
+abstract class Company(code:String, row:Int) {
   import com.tkido.stock.xbrl
   println(code)
 
   val data :Map[String, String]
   
-  def toStringForExcel(row:Int) :String =
+  def toStringForExcel :String =
     Company.replaceColumn(data, row.toString).mkString("\t")
   
   def makeOtherData :Map[String, String] = {
@@ -52,10 +52,10 @@ object Company{
   val reJp = """[0-9]{4}""".r
   val reUs = """[A-Z]{1,5}""".r
   
-  def apply(code:String) :Company = {
+  def apply(code:String, row:Int) :Company = {
     code match {
-      case reJp() => CompanyJp(code)
-      case reUs() => CompanyUs(code)
+      case reJp() => CompanyJp(code, row)
+      case reUs() => CompanyUs(code, row)
     }
   }
   

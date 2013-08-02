@@ -1,6 +1,6 @@
 package com.tkido.stock.rss
 
-class CompanyUs(code:String) extends Company(code) {
+class CompanyUs(code:String, row:Int) extends Company(code:String, row:Int) {
   val data = makeData
   
   def makeData :Map[String, String] = {
@@ -138,7 +138,7 @@ class CompanyUs(code:String) extends Company(code) {
   
 }
 object CompanyUs{
-  def apply(code:String) = {
-    new CompanyUs(code)
+  def apply(code:String, row:Int) = {
+    new CompanyUs(code, row)
   }
 }
