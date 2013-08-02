@@ -14,10 +14,14 @@ class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
     def getMarketName() :String = {
       val raw = html.getNextLineOf("""<dt>%s</dt>""".format(code).r)
       raw match {
-        case "–¼Ø1•”" => "–¼1"
-        case "–¼Ø2•”" => "–¼2"
-        case "ŽDØ"    => "ŽD"
-        case "•ŸØ"    => "•Ÿ"
+        case "“ŒØ1•”"  => "“Œ‚P"
+        case "“ŒØ2•”"  => "“Œ‚Q"
+        case "“ŒØJQS"  => "“Œ‚i"
+        case "ƒ}ƒU[ƒY" => "“Œƒ}"
+        case "–¼Ø1•”"  => "–¼‚P"
+        case "–¼Ø2•”"  => "–¼‚Q"
+        case "ŽDØ"     => "ŽD"
+        case "•ŸØ"     => "•Ÿ"
         case _ => raw
       }
     }
