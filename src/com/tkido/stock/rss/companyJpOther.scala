@@ -27,19 +27,19 @@ class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
     }
     
     def getCurrentPrice() :String =
-      html.getGroupOf("""<td class="stoksPrice">(.*?)</td>""".r)
+      html.getGroupOf("""<td class="stoksPrice">(.*?)</td>""".r).replaceFirst("---", " ")
     def getLastClose() :String =
       html.getPreviousLineOf("""<dt class="title">前日終値""".r).dropRight(7)
     def getRatioLast() :String =
       html.getGroupOf("""<td class="change"><span class="yjSt">前日比</span><span class=".*? yjMSt">.*?（(.*?)%）</span></td>""".r)
     def getValume() :String =
-      html.getPreviousLineOf("""<dt class="title">出来高""".r).dropRight(8).replaceAll(",", "")
+      html.getPreviousLineOf("""<dt class="title">出来高""".r).dropRight(8).replaceAll(",", "").replaceFirst("-", "0")
     def getHighest() :String =
-      html.getPreviousLineOf("""<dt class="title">年初来高値""".r).dropRight(10).replaceAll(",", "")
+      html.getPreviousLineOf("""<dt class="title">年初来高値""".r).dropRight(10).replaceAll(",", "").replaceFirst("更新", "")
     def getHighestDate() :String =
       html.getPreviousLineOf("""<dt class="title">年初来高値""".r).takeRight(10).init.tail
     def getLowest() :String =
-      html.getPreviousLineOf("""<dt class="title">年初来安値""".r).dropRight(10).replaceAll(",", "")
+      html.getPreviousLineOf("""<dt class="title">年初来安値""".r).dropRight(10).replaceAll(",", "").replaceFirst("更新", "")
     def getLowestDate() :String =
       html.getPreviousLineOf("""<dt class="title">年初来安値""".r).takeRight(10).init.tail
     def getDividendYield() :String =
