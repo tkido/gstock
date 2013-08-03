@@ -48,20 +48,27 @@ class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
       html.getPreviousLineOf("""<dt class="title">PER""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "0")
     def getPbr() :String =
       html.getPreviousLineOf("""<dt class="title">PBR""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "-")
-    
-    
+    def getBuyOnCredit =
+      html.getPreviousLineOf("""<dt class="title">信用買残""".r).replaceFirst("""株.*""", "").replaceAll(",", "").replaceFirst("---", "-")
+    def getSellOnCredit =
+      html.getPreviousLineOf("""<dt class="title">信用売残""".r).replaceFirst("""株.*""", "").replaceAll(",", "").replaceFirst("---", "-")
+    def getBuyOnCreditDelta =
+      html.getPreviousLineOf("""<dt class="title"><span class="icoL">前週比</span>.*?shinyoubaizann_zensyuuhi""".r).replaceFirst("""株.*""", "").replaceAll(",", "").replaceFirst("---", "-")
+    def getSellOnCreditDelta =
+      html.getPreviousLineOf("""<dt class="title"><span class="icoL">前週比</span>.*?shinyouuriage_zensyuuhi""".r).replaceFirst("""株.*""", "").replaceAll(",", "").replaceFirst("---", "-")    
     object DivType extends Enumeration {
       val OUTSTANDING, CURRENT, NONE = Value
     }
     import DivType._
     
-    def divCode(id:String, div:DivType.Value) :String = {
+    def divCode(content:String, div:DivType.Value) :String = {
+      if(content == "-") return "-"
       val divStr = div match {
         case OUTSTANDING => "/【発行】"
         case CURRENT     => "/【値】"
         case _ => ""
       }
-      "=%s%s".format(id, divStr)
+      "=%s%s".format(content, divStr)
     }
     
     Map("現値"     -> getCurrentPrice,
@@ -73,10 +80,10 @@ class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
         "前比"     -> getRatioLast,
         "出来"     -> divCode(getValume, OUTSTANDING),
         "落日"     -> "",
-        "買残"     -> "",
-        "買残週差" -> "",
-        "売残"     -> "",
-        "売残週差" -> "",
+        "買残"     -> divCode(getBuyOnCredit, OUTSTANDING),
+        "買残週差" -> divCode(getBuyOnCreditDelta, OUTSTANDING),
+        "売残"     -> divCode(getSellOnCredit, OUTSTANDING),
+        "売残週差" -> divCode(getSellOnCreditDelta, OUTSTANDING),
         "年高"     -> divCode(getHighest, CURRENT),
         "年高日"   -> getHighestDate,
         "年安"     -> divCode(getLowest, CURRENT),
