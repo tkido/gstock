@@ -5,28 +5,9 @@ class CompanyUs(code:String, row:Int) extends Company(code:String, row:Int) {
   
   def makeData :Map[String, String] = {
     val parsedData = parseKeyStatistics ++ parseSummary ++ parseProfile
-    parsedData ++ makeOtherData ++ makeSpaceData
+    parsedData ++ makeOtherData
   }
-  
-  def makeSpaceData :Map[String, String] = {
-    Map("Ž©"       -> "-",
-        "ŒˆŽZ"     -> "-",
-        "—Ž“ú"     -> "-",
-        "ŒˆŠú"     -> "-",
-        "‘ã•\"     -> "-",
-        "Ý—§"     -> "-",
-        "ãê"     -> "-",
-        "”ƒŽc"     -> "-",
-        "”ƒŽcT·" -> "-",
-        "”„Žc"     -> "-",
-        "”„ŽcT·" -> "-",
-        "]’P"     -> "-",
-        "—î"       -> "-",
-        "Žû"       -> "-",
-        "—D‘Ò"     -> "-",
-        "R"        -> "-")
-  }
-  
+    
   def parseSummary :Map[String, String] = {
     val html = Html("http://finance.yahoo.com/q?s=%s".format(code))
 

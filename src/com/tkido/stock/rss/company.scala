@@ -61,7 +61,7 @@ object Company{
   
   def replaceColumn(data:Map[String, String], row:String) :List[String] = {
     order.map(x =>
-      reColumn.replaceAllIn(data(x), m => columnsMap(m.group(1)) + row)
+      reColumn.replaceAllIn(data.getOrElse(x, "-"), m => columnsMap(m.group(1)) + row)
     )
   }  
 }

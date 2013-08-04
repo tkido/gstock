@@ -72,14 +72,9 @@ class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
     }
     
     Map("現値"     -> getCurrentPrice,
-        "最売"     -> "",
-        "最売数"   -> "",
-        "最買"     -> "",
-        "最買数"   -> "",
         "前終"     -> getLastClose,
         "前比"     -> getRatioLast,
         "出来"     -> divCode(getValume, OUTSTANDING),
-        "落日"     -> "",
         "買残"     -> divCode(getBuyOnCredit, OUTSTANDING),
         "買残週差" -> divCode(getBuyOnCreditDelta, OUTSTANDING),
         "売残"     -> divCode(getSellOnCredit, OUTSTANDING),
@@ -91,8 +86,7 @@ class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
         "市"       -> getMarketName,
         "利"       -> getDividendYield,
         "PER"      -> getPer,
-        "PBR"      -> getPbr,
-        "R"        -> "-")
+        "PBR"      -> getPbr )
   }
 }
 
