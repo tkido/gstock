@@ -17,6 +17,7 @@ class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
         case "“ŒØ1•”"  => "“Œ‚P"
         case "“ŒØ2•”"  => "“Œ‚Q"
         case "“ŒØJQS"  => "“Œ‚i"
+        case "“ŒØJQG"  => "“Œ‚i"
         case "ƒ}ƒU[ƒY" => "“Œƒ}"
         case "–¼Ø1•”"  => "–¼‚P"
         case "–¼Ø2•”"  => "–¼‚Q"
