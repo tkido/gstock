@@ -43,7 +43,8 @@ class CompanyJpRss(code:String, row:Int) extends CompanyJp(code, row) {
         "Žs"       -> rssCode("Žsê•”—ªÌ", NONE),
         "—˜"       -> rssCode("”z“–", CURRENT),
         "PER"      -> rssCode("‚o‚d‚q", NONE),
-        "PBR"      -> rssCode("‚o‚a‚q", NONE))
+        "PBR"      -> rssCode("‚o‚a‚q", NONE),
+        "R"        -> "R")
   }
 }
 

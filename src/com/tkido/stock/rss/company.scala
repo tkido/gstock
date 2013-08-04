@@ -29,7 +29,7 @@ abstract class Company(code:String, row:Int) {
     
 }
 object Company{
-  val order = List("ID", "名称", "値", 
+  val order = List("ID", "名称", "R", "値", 
                    "最売", "最売数", "最買", "最買数",
                    "現値", "前終", "前比", "出来",
                    "買残", "買残週差", "売残", "売残週差",

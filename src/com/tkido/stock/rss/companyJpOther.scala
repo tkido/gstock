@@ -91,7 +91,8 @@ class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
         "Žs"       -> getMarketName,
         "—˜"       -> getDividendYield,
         "PER"      -> getPer,
-        "PBR"      -> getPbr)
+        "PBR"      -> getPbr,
+        "R"        -> "-")
   }
 }
 
