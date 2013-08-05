@@ -10,12 +10,13 @@ abstract class Company(code:String, row:Int) {
     Company.replaceColumn(data, row.toString).mkString("\t")
   
   def makeOtherData :Map[String, String] = {
-    def getEnterpriseValue() :String =
+    def getEnterpriseValue() :String = {
       try{
         xbrl.Company(code).fairValue.toString
       }catch{
         case _ => ""
       }
+    }
     Map("ID"   -> code,
         "値"   -> """=IF(【現値】=" ", 【前終】, 【現値】)""",
         "時価" -> """=【値】*【発行】/100000""",
@@ -29,6 +30,17 @@ abstract class Company(code:String, row:Int) {
     
 }
 object Company{
+  val reJp = """[0-9]{4}""".r
+  val reUs = """[A-Z]{1,5}""".r
+  
+  def apply(code:String, row:Int) :Company = {
+    code match {
+      case reJp() => CompanyJp(code, row)
+      case reUs() => CompanyUs(code, row)
+    }
+  }
+  
+  /* column treatment */
   val order = List("ID", "名称", "R", "値", 
                    "最売", "最売数", "最買", "最買数",
                    "現値", "前終", "前比", "出来",
@@ -41,23 +53,11 @@ object Company{
                    "代表", "設立", "上場", "決期",
                    "従連", "従単", "齢", "収",
                    "率", "株価", "企価", "更新")
-  val abc = {
-    for(char <- "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-      yield char.toString
-    }.toList
+  
+  val abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".map(_.toString).toList
   val columns = abc ::: abc.map("A"+_) ::: abc.map("B"+_)
-  val columnsMap = order.zip(columns).toMap
+  val columnsMap = (order zip columns).toMap
   val reColumn = """【(.*?)】""".r
-  
-  val reJp = """[0-9]{4}""".r
-  val reUs = """[A-Z]{1,5}""".r
-  
-  def apply(code:String, row:Int) :Company = {
-    code match {
-      case reJp() => CompanyJp(code, row)
-      case reUs() => CompanyUs(code, row)
-    }
-  }
   
   def replaceColumn(data:Map[String, String], row:String) :List[String] = {
     order.map(x =>
