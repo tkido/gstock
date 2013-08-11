@@ -3,10 +3,8 @@ package com.tkido.stock.rss
 class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
   val data = makeData
   
-  override def makeData :Map[String, String] = {    
-    val rssData = makeNonRssData
-    super.makeData ++ rssData
-  }
+  override def makeData :Map[String, String] =
+    super.makeData ++ makeNonRssData
   
   def makeNonRssData :Map[String, String] = {
     val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
@@ -56,33 +54,22 @@ class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
     def getBuyOnCreditDelta =
       html.getPreviousLineOf("""<dt class="title"><span class="icoL">ëOèTî‰</span>.*?shinyoubaizann_zensyuuhi""".r).replaceFirst("""äî.*""", "").replaceAll(",", "").replaceFirst("---", "-")
     def getSellOnCreditDelta =
-      html.getPreviousLineOf("""<dt class="title"><span class="icoL">ëOèTî‰</span>.*?shinyouuriage_zensyuuhi""".r).replaceFirst("""äî.*""", "").replaceAll(",", "").replaceFirst("---", "-")    
-    object DivType extends Enumeration {
-      val OUTSTANDING, CURRENT, NONE = Value
-    }
-    import DivType._
+      html.getPreviousLineOf("""<dt class="title"><span class="icoL">ëOèTî‰</span>.*?shinyouuriage_zensyuuhi""".r).replaceFirst("""äî.*""", "").replaceAll(",", "").replaceFirst("---", "-")
     
-    def divCode(content:String, div:DivType.Value) :String = {
-      if(content == "-") return "-"
-      val divStr = div match {
-        case OUTSTANDING => "/Åyî≠çsÅz"
-        case CURRENT     => "/ÅyílÅz"
-        case _ => ""
-      }
-      "=%s%s".format(content, divStr)
-    }
+    def divCode(content:String, div:String) :String =
+      if(content == "-") "-" else "=%s/%s".format(content, div)
     
     Map("åªíl"     -> getCurrentPrice,
         "ëOèI"     -> getLastClose,
         "ëOî‰"     -> getRatioLast,
-        "èoóà"     -> divCode(getValume, OUTSTANDING),
-        "îÉéc"     -> divCode(getBuyOnCredit, OUTSTANDING),
-        "îÉécèTç∑" -> divCode(getBuyOnCreditDelta, OUTSTANDING),
-        "îÑéc"     -> divCode(getSellOnCredit, OUTSTANDING),
-        "îÑécèTç∑" -> divCode(getSellOnCreditDelta, OUTSTANDING),
-        "îNçÇ"     -> divCode(getHighest, CURRENT),
+        "èoóà"     -> divCode(getValume, "Åyî≠çsÅz"),
+        "îÉéc"     -> divCode(getBuyOnCredit, "Åyî≠çsÅz"),
+        "îÉécèTç∑" -> divCode(getBuyOnCreditDelta, "Åyî≠çsÅz"),
+        "îÑéc"     -> divCode(getSellOnCredit, "Åyî≠çsÅz"),
+        "îÑécèTç∑" -> divCode(getSellOnCreditDelta, "Åyî≠çsÅz"),
+        "îNçÇ"     -> divCode(getHighest, "ÅyílÅz"),
         "îNçÇì˙"   -> getHighestDate,
-        "îNà¿"     -> divCode(getLowest, CURRENT),
+        "îNà¿"     -> divCode(getLowest, "ÅyílÅz"),
         "îNà¿ì˙"   -> getLowestDate,
         "és"       -> getMarketName,
         "óò"       -> getDividendYield,
