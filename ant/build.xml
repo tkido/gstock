@@ -32,4 +32,18 @@
     </delete>
   </target>
   
+  <target name="clean">
+    <echo message="clean"/>
+    <property file="build.properties"/>
+    <!--
+    <property name="download_dir" location="D:\Users\tkido\Downloads"/>
+    <property name="xbrl_dir" location="D:\Users\tkido\Documents\Dropbox\xbrl"/>
+    -->
+    <delete>
+      <fileset dir="${download_dir}">
+        <include name="*.*"/>
+      </fileset>
+    </delete>
+  </target>
+  
 </project>
