@@ -1,6 +1,8 @@
 package com.tkido.stock.rss
 
 class CompanyUs(code:String, row:Int) extends Company(code:String, row:Int) {
+  import com.tkido.tools.Html
+  
   val data = makeData
   
   def makeData :Map[String, String] = {

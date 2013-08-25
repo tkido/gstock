@@ -1,6 +1,8 @@
 package com.tkido.stock.rss
 
 abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
+  import com.tkido.tools.Html
+  
   def makeData :Map[String, String] = {    
     val parsedData = parseProfilePage ++
                      parseConsolidatePage ++
@@ -98,6 +100,8 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
   
 }
 object CompanyJp{
+  import com.tkido.tools.Html
+  
   val reJpT = """ìåèÿ.*""".r
   
   def apply(code:String, row:Int) :CompanyJp = {

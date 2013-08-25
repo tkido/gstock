@@ -1,6 +1,8 @@
 package com.tkido.stock.rss
 
 class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
+  import com.tkido.tools.Html
+  
   val data = makeData
   
   override def makeData :Map[String, String] =

@@ -1,4 +1,4 @@
-package com.tkido.stock.rss
+package com.tkido.tools
 
 class Html(url:String, charset:String) {
   import scala.io.Source
