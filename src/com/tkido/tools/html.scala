@@ -8,37 +8,32 @@ class Html(url:String, charset:String) {
   
   def getPreviousLineOf(rgex:Regex) :String = {
     var last = ""
-    var target = ""
     for(line <- lines){
       if(rgex.findFirstIn(line).isDefined)
-        target = last
+        return Html.removeTags(last)
       last = line
     }
-    Html.removeTags(target)
+    ""
   }
   
   def getNextLineOf(rgex:Regex) :String = {
     var flag = false
-    var target = ""
     
     for(line <- lines){
-      if(flag){
-        target = line
-        flag = false
-      }
+      if(flag)
+        return Html.removeTags(line)
       if(rgex.findFirstIn(line).isDefined)
         flag = true
     }
-    Html.removeTags(target)
+    ""
   }
   
   def getLineOf(rgex:Regex) :String = {
-    var target = ""
     for(line <- lines){
       if(rgex.findFirstIn(line).isDefined)
-        target = line
+        return line
     }
-    target
+    ""
   }
   
   def getGroupOf(rgex:Regex) :String = {
