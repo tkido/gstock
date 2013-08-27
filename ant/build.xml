@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <project name="xbrl" default="deploy">
 
   <target name="deploy">
@@ -44,6 +44,20 @@
         <include name="*.*"/>
       </fileset>
     </delete>
+  </target>
+  
+  <target name="publish">
+    <echo message="publish"/>
+    <property name="html_dir" location="/home/jenkins/gstock/data/rss"/>
+    <property name="publish_dir" location="/var/www/html/stock"/>
+    
+    <copy todir="${publish_dir}">
+      <fileset dir="${html_dir}">
+        <include name="*.html"/>
+        <exclude name="template.html"/>
+        <include name="result.txt"/>
+      </fileset>
+    </copy>
   </target>
   
 </project>
