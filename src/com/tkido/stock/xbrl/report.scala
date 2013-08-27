@@ -2,6 +2,7 @@ package com.tkido.stock.xbrl
 
 class Report(path:String) {
   import java.io.File
+  
   val year = new File(path).getName.slice(20, 24).toInt
   val data = XbrlParser.parse(path)
   
