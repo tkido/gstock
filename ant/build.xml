@@ -51,13 +51,13 @@
     <property name="html_dir" location="/home/jenkins/gstock/data/rss"/>
     <property name="publish_dir" location="/var/www/html/stock"/>
     
-    <copy todir="${publish_dir}">
+    <move todir="${publish_dir}">
       <fileset dir="${html_dir}">
         <include name="*.html"/>
         <exclude name="template.html"/>
         <include name="result.txt"/>
       </fileset>
-    </copy>
+    </move>
   </target>
   
 </project>
