@@ -2,6 +2,8 @@ package com.tkido.tools
 
 object TextFile {
   import scala.io.Source
+  import java.io.FileOutputStream
+  import java.io.OutputStreamWriter
   import java.io.PrintWriter
 
   def readLines(path:String, charset:String) :List[String] = {
@@ -17,10 +19,14 @@ object TextFile {
   def read(path:String) :String =
     read(path, "UTF-8")
 
-  def write(path:String, data:String) {
-    val out = new PrintWriter(path)
-    out.println(data)
-    out.close
+  def write(path:String, data:String, charset:String) {
+    val fos = new FileOutputStream(path)
+    val osw = new OutputStreamWriter(fos, charset)
+    val pw = new PrintWriter(osw)
+    pw.println(data)
+    pw.close
   }  
-  
+  def write(path:String, data:String) {
+    write(path, data, "UTF-8")
+  }
 }

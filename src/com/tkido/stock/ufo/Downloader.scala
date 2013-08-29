@@ -11,7 +11,7 @@ object Downloader {
     val root = new File(Config.rootPath, code)
     if(!root.exists) root.mkdir
     
-    val url = "http://resource.ufocatch.com/atom/edinetx/query/" + code
+    val url = "http://resource.ufocatch.com/atom/edinetx/query/%s".format(code)
     val xml = XML.load(url)
     
     def isUfo(node:Node) :Boolean = {
@@ -20,7 +20,6 @@ object Downloader {
       reUfo.findFirstIn(title).isDefined
     }
     val ufos = (xml \ "entry").filter(isUfo)
-    //println(ufos)
     
     def getXbrl(node:Node) :String = {
       val reXbrl = """\.xbrl$""".r
@@ -28,15 +27,11 @@ object Downloader {
       hrefs.find(reXbrl.findFirstIn(_).isDefined).get
     }
     val xbrls = ufos.map(getXbrl) 
-    println(xbrls)
     
     for(xbrl <- xbrls){
-      val data = Source.fromURL(xbrl).getLines.mkString("\n")
+      val data = Source.fromURL(xbrl, "UTF-8").getLines.mkString("\n")
       val fileName = xbrl.split("/").last
       val filePath = new File(root, fileName).getPath
-      println(fileName)
-      println(filePath)
-      
       TextFile.write(filePath, data)
     }
   }
