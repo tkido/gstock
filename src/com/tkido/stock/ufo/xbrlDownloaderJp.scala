@@ -1,6 +1,6 @@
 package com.tkido.stock.ufo
 
-object Downloader {
+object XbrlDownloaderJp {
   import com.tkido.tools.TextFile
   import java.io.File
   import java.net.URL

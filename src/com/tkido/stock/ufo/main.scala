@@ -6,7 +6,7 @@ object main extends App {
   Logger.level = Config.loglevel
   
   val codes = TextFile.readLines("data/ufo/table.txt")
-  for (code <- codes) Downloader.download(code)
+  for (code <- codes) XbrlDownloader.download(code)
   
   Logger.close()
 }
