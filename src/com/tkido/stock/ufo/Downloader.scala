@@ -8,9 +8,6 @@ object Downloader {
   import scala.xml._
   
   def download(code:String) {
-    val root = new File(Config.rootPath, code)
-    if(!root.exists) root.mkdir
-    
     val url = "http://resource.ufocatch.com/atom/edinetx/query/%s".format(code)
     val xml = XML.load(url)
     
@@ -28,11 +25,18 @@ object Downloader {
     }
     val xbrls = ufos.map(getXbrl) 
     
-    for(xbrl <- xbrls){
-      val data = Source.fromURL(xbrl, "UTF-8").getLines.mkString("\n")
-      val fileName = xbrl.split("/").last
-      val filePath = new File(root, fileName).getPath
-      TextFile.write(filePath, data)
+    if(xbrls.nonEmpty){
+      val root = new File(Config.rootPath, code)
+	  if(!root.exists) root.mkdir
+	  
+      for(xbrl <- xbrls){
+        val fileName = xbrl.split("/").last
+        val file = new File(root, fileName)
+        if(!file.exists){
+          val data = Source.fromURL(xbrl, "UTF-8").getLines.mkString("\n")
+          TextFile.write(file.getPath, data)
+        }
+      }
     }
   }
 }
