@@ -17,5 +17,7 @@ data/xbrl/xbrl/
 data/rss/table.txt
 data/rss/result.txt
 data/rss/*.html
+data/ufo/table.txt
+data/ufo/result.txt
 ant/build.properties
 conf.properties
