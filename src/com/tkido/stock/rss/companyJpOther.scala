@@ -14,15 +14,15 @@ class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
     def getMarketName() :String = {
       val raw = html.getNextLineOf("""<dt>%s</dt>""".format(code).r)
       raw match {
-        case "“ŒØ1•”"  => "“Œ‚P"
-        case "“ŒØ2•”"  => "“Œ‚Q"
-        case "“ŒØJQS"  => "“Œ‚i"
-        case "“ŒØJQG"  => "“Œ‚i"
-        case "ƒ}ƒU[ƒY" => "“Œƒ}"
-        case "–¼Ø1•”"  => "–¼‚P"
-        case "–¼Ø2•”"  => "–¼‚Q"
-        case "DØ"     => "D"
-        case "•ŸØ"     => "•Ÿ"
+        case "æ±è¨¼1éƒ¨"  => "æ±ï¼‘"
+        case "æ±è¨¼2éƒ¨"  => "æ±ï¼’"
+        case "æ±è¨¼JQS"  => "æ±ï¼ª"
+        case "æ±è¨¼JQG"  => "æ±ï¼ª"
+        case "ãƒã‚¶ãƒ¼ã‚º" => "æ±ãƒ"
+        case "åè¨¼1éƒ¨"  => "åï¼‘"
+        case "åè¨¼2éƒ¨"  => "åï¼’"
+        case "æœ­è¨¼"     => "æœ­"
+        case "ç¦è¨¼"     => "ç¦"
         case _ => raw
       }
     }
@@ -30,51 +30,51 @@ class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
     def getCurrentPrice() :String =
       html.getGroupOf("""<td class="stoksPrice">(.*?)</td>""".r).replaceFirst("---", " ")
     def getLastClose() :String =
-      html.getPreviousLineOf("""<dt class="title">‘O“úI’l""".r).dropRight(7)
+      html.getPreviousLineOf("""<dt class="title">å‰æ—¥çµ‚å€¤""".r).dropRight(7)
     def getRatioLast() :String =
-      html.getGroupOf("""<td class="change"><span class="yjSt">‘O“ú”ä</span><span class=".*? yjMSt">.*?i(.*?)%j</span></td>""".r)
+      html.getGroupOf("""<td class="change"><span class="yjSt">å‰æ—¥æ¯”</span><span class=".*? yjMSt">.*?ï¼ˆ(.*?)%ï¼‰</span></td>""".r)
     def getValume() :String =
-      html.getPreviousLineOf("""<dt class="title">o—ˆ‚""".r).dropRight(8).replaceAll(",", "").replaceFirst("-", "0")
+      html.getPreviousLineOf("""<dt class="title">å‡ºæ¥é«˜""".r).dropRight(8).replaceAll(",", "").replaceFirst("-", "0")
     def getHighest() :String =
-      html.getPreviousLineOf("""<dt class="title">”N‰—ˆ‚’l""".r).dropRight(10).replaceAll(",", "").replaceFirst("XV", "")
+      html.getPreviousLineOf("""<dt class="title">å¹´åˆæ¥é«˜å€¤""".r).dropRight(10).replaceAll(",", "").replaceFirst("æ›´æ–°", "")
     def getHighestDate() :String =
-      html.getPreviousLineOf("""<dt class="title">”N‰—ˆ‚’l""".r).takeRight(10).init.tail
+      html.getPreviousLineOf("""<dt class="title">å¹´åˆæ¥é«˜å€¤""".r).takeRight(10).init.tail
     def getLowest() :String =
-      html.getPreviousLineOf("""<dt class="title">”N‰—ˆˆÀ’l""".r).dropRight(10).replaceAll(",", "").replaceFirst("XV", "")
+      html.getPreviousLineOf("""<dt class="title">å¹´åˆæ¥å®‰å€¤""".r).dropRight(10).replaceAll(",", "").replaceFirst("æ›´æ–°", "")
     def getLowestDate() :String =
-      html.getPreviousLineOf("""<dt class="title">”N‰—ˆˆÀ’l""".r).takeRight(10).init.tail
+      html.getPreviousLineOf("""<dt class="title">å¹´åˆæ¥å®‰å€¤""".r).takeRight(10).init.tail
     def getDividendYield() :String =
-      html.getPreviousLineOf("""<dt class="title">”z“–—˜‰ñ‚è""".r).replaceFirst("""i.*""", "").replaceFirst("---", "0")
+      html.getPreviousLineOf("""<dt class="title">é…å½“åˆ©å›ã‚Š""".r).replaceFirst("""ï¼ˆ.*""", "").replaceFirst("---", "0")
     def getPer() :String =
-      html.getPreviousLineOf("""<dt class="title">PER""".r).replaceFirst("""”{.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "0")
+      html.getPreviousLineOf("""<dt class="title">PER""".r).replaceFirst("""å€.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "0")
     def getPbr() :String =
-      html.getPreviousLineOf("""<dt class="title">PBR""".r).replaceFirst("""”{.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "-")
+      html.getPreviousLineOf("""<dt class="title">PBR""".r).replaceFirst("""å€.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "-")
     def getBuyOnCredit =
-      html.getPreviousLineOf("""<dt class="title">M—p”ƒc""".r).replaceFirst("""Š”.*""", "").replaceAll(",", "").replaceFirst("---", "-")
+      html.getPreviousLineOf("""<dt class="title">ä¿¡ç”¨è²·æ®‹""".r).replaceFirst("""æ ª.*""", "").replaceAll(",", "").replaceFirst("---", "-")
     def getSellOnCredit =
-      html.getPreviousLineOf("""<dt class="title">M—p”„c""".r).replaceFirst("""Š”.*""", "").replaceAll(",", "").replaceFirst("---", "-")
+      html.getPreviousLineOf("""<dt class="title">ä¿¡ç”¨å£²æ®‹""".r).replaceFirst("""æ ª.*""", "").replaceAll(",", "").replaceFirst("---", "-")
     def getBuyOnCreditDelta =
-      html.getPreviousLineOf("""<dt class="title"><span class="icoL">‘OT”ä</span>.*?shinyoubaizann_zensyuuhi""".r).replaceFirst("""Š”.*""", "").replaceAll(",", "").replaceFirst("---", "-")
+      html.getPreviousLineOf("""<dt class="title"><span class="icoL">å‰é€±æ¯”</span>.*?shinyoubaizann_zensyuuhi""".r).replaceFirst("""æ ª.*""", "").replaceAll(",", "").replaceFirst("---", "-")
     def getSellOnCreditDelta =
-      html.getPreviousLineOf("""<dt class="title"><span class="icoL">‘OT”ä</span>.*?shinyouuriage_zensyuuhi""".r).replaceFirst("""Š”.*""", "").replaceAll(",", "").replaceFirst("---", "-")
+      html.getPreviousLineOf("""<dt class="title"><span class="icoL">å‰é€±æ¯”</span>.*?shinyouuriage_zensyuuhi""".r).replaceFirst("""æ ª.*""", "").replaceAll(",", "").replaceFirst("---", "-")
     
     def divCode(content:String, div:String) :String =
       if(content == "-") "-" else "=%s/%s".format(content, div)
     
-    Map("Œ»’l"     -> getCurrentPrice,
-        "‘OI"     -> getLastClose,
-        "‘O”ä"     -> getRatioLast,
-        "o—ˆ"     -> divCode(getValume, "y”­sz"),
-        "”ƒc"     -> divCode(getBuyOnCredit, "y”­sz"),
-        "”ƒcT·" -> divCode(getBuyOnCreditDelta, "y”­sz"),
-        "”„c"     -> divCode(getSellOnCredit, "y”­sz"),
-        "”„cT·" -> divCode(getSellOnCreditDelta, "y”­sz"),
-        "”N‚"     -> divCode(getHighest, "y’lz"),
-        "”N‚“ú"   -> getHighestDate,
-        "”NˆÀ"     -> divCode(getLowest, "y’lz"),
-        "”NˆÀ“ú"   -> getLowestDate,
-        "s"       -> getMarketName,
-        "—˜"       -> getDividendYield,
+    Map("ç¾å€¤"     -> getCurrentPrice,
+        "å‰çµ‚"     -> getLastClose,
+        "å‰æ¯”"     -> getRatioLast,
+        "å‡ºæ¥"     -> divCode(getValume, "ã€ç™ºè¡Œã€‘"),
+        "è²·æ®‹"     -> divCode(getBuyOnCredit, "ã€ç™ºè¡Œã€‘"),
+        "è²·æ®‹é€±å·®" -> divCode(getBuyOnCreditDelta, "ã€ç™ºè¡Œã€‘"),
+        "å£²æ®‹"     -> divCode(getSellOnCredit, "ã€ç™ºè¡Œã€‘"),
+        "å£²æ®‹é€±å·®" -> divCode(getSellOnCreditDelta, "ã€ç™ºè¡Œã€‘"),
+        "å¹´é«˜"     -> divCode(getHighest, "ã€å€¤ã€‘"),
+        "å¹´é«˜æ—¥"   -> getHighestDate,
+        "å¹´å®‰"     -> divCode(getLowest, "ã€å€¤ã€‘"),
+        "å¹´å®‰æ—¥"   -> getLowestDate,
+        "å¸‚"       -> getMarketName,
+        "åˆ©"       -> getDividendYield,
         "PER"      -> getPer,
         "PBR"      -> getPbr )
   }

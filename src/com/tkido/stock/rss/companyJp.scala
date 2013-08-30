@@ -16,9 +16,9 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
     val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
     
     def getOutstanding() :String =
-      html.getPreviousLineOf("""<dt class="title">”­sÏŠ”®”""".r).dropRight(12)
+      html.getPreviousLineOf("""<dt class="title">ç™ºè¡Œæ¸ˆæ ªå¼æ•°""".r).dropRight(12)
     
-    Map("”­s" -> getOutstanding)
+    Map("ç™ºè¡Œ" -> getOutstanding)
   }
   
   def parseProfilePage :Map[String, String] = {
@@ -26,61 +26,61 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
     
     def getName() :String = {
       val raw = html.getNextLineOf("""<meta http-equiv="Refresh" content="60">""".r)
-      raw.dropRight(27).replaceFirst("""\(Š”\)""", "")
+      raw.dropRight(27).replaceFirst("""\(æ ª\)""", "")
     }
     def getFeature() :String =
-      html.getNextLineOf("""<th width="1%" nowrap>“ÁF</th>""".r).replaceFirst(""" \[Šé‹Æ“ÁF\]""", "")
+      html.getNextLineOf("""<th width="1%" nowrap>ç‰¹è‰²</th>""".r).replaceFirst(""" \[ä¼æ¥­ç‰¹è‰²\]""", "")
     def getConsolidated() :String =
-      html.getNextLineOf("""<th nowrap>˜AŒ‹–‹Æ</th>""".r)
+      html.getNextLineOf("""<th nowrap>é€£çµäº‹æ¥­</th>""".r)
     def getCategory() :String = {
-      html.getNextLineOf("""<th nowrap>‹Æí•ª—Ş</th>""".r).replaceAll("‹Æ", "").replaceAll("E", "")
+      html.getNextLineOf("""<th nowrap>æ¥­ç¨®åˆ†é¡</th>""".r).replaceAll("æ¥­", "").replaceAll("ãƒ»", "")
     }
     def getRepresentative() :String = {
-      val raw = html.getNextLineOf("""<th nowrap>‘ã•\Ò–¼</th>""".r)
-      raw.replaceAll("@", "").replaceAll(""" \[–ğˆõ\]""", "")
+      val raw = html.getNextLineOf("""<th nowrap>ä»£è¡¨è€…å</th>""".r)
+      raw.replaceAll("ã€€", "").replaceAll(""" \[å½¹å“¡\]""", "")
     }
     def getFoundated() :String =
-      html.getNextLineOf("""<th nowrap>İ—§”NŒ“ú</th>""".r).slice(0, 4)
+      html.getNextLineOf("""<th nowrap>è¨­ç«‹å¹´æœˆæ—¥</th>""".r).slice(0, 4)
     def getListed() :String =
-      html.getNextLineOf("""<th nowrap>ãê”NŒ“ú</th>""".r).slice(0, 4)
+      html.getNextLineOf("""<th nowrap>ä¸Šå ´å¹´æœˆæ—¥</th>""".r).slice(0, 4)
     def getSettlement() :String = {
-      html.getNextLineOf("""<th nowrap>ŒˆZ</th>""".r).replaceAll("––“ú", "").replaceAll(""" \[ŒˆZî•ñ@”NŸ\]""", "")
+      html.getNextLineOf("""<th nowrap>æ±ºç®—</th>""".r).replaceAll("æœ«æ—¥", "").replaceAll(""" \[æ±ºç®—æƒ…å ±ã€€å¹´æ¬¡\]""", "")
     }
     def getSingleEmployees() :String =
-      html.getNextLineOf("""<th width="1%">]‹Æˆõ”<br><span class="yjSt">i’P“Æj</span></th>""".r).dropRight(1)
+      html.getNextLineOf("""<th width="1%">å¾“æ¥­å“¡æ•°<br><span class="yjSt">ï¼ˆå˜ç‹¬ï¼‰</span></th>""".r).dropRight(1)
     def getConsolidatedEmployees() :String =
-      html.getNextLineOf("""<th width="1%">]‹Æˆõ”<br><span class="yjSt">i˜AŒ‹j</span></th>""".r).dropRight(1)
+      html.getNextLineOf("""<th width="1%">å¾“æ¥­å“¡æ•°<br><span class="yjSt">ï¼ˆé€£çµï¼‰</span></th>""".r).dropRight(1)
     def getAge() :String =
-      html.getNextLineOf("""<th nowrap>•½‹Ï”N—î</th>""".r).dropRight(1)
+      html.getNextLineOf("""<th nowrap>å¹³å‡å¹´é½¢</th>""".r).dropRight(1)
     def getIncome() :String =
-      html.getNextLineOf("""<th nowrap>•½‹Ï”Nû</th>""".r).dropRight(3).replaceAll(",", "")
+      html.getNextLineOf("""<th nowrap>å¹³å‡å¹´å</th>""".r).dropRight(3).replaceAll(",", "")
     
-    Map("–¼Ì" -> getName,
-        "“ÁF" -> getFeature,
-        "–‹Æ" -> getConsolidated,
-        "•ª—Ş" -> getCategory,
-        "İ—§" -> getFoundated,
-        "ãê" -> getListed,
-        "ŒˆŠú" -> getSettlement,
-        "]˜A" -> getConsolidatedEmployees,
-        "]’P" -> getSingleEmployees,
-        "—î"   -> getAge,
-        "û"   -> getIncome,
-        "‘ã•\" -> getRepresentative)
+    Map("åç§°" -> getName,
+        "ç‰¹è‰²" -> getFeature,
+        "äº‹æ¥­" -> getConsolidated,
+        "åˆ†é¡" -> getCategory,
+        "è¨­ç«‹" -> getFoundated,
+        "ä¸Šå ´" -> getListed,
+        "æ±ºæœŸ" -> getSettlement,
+        "å¾“é€£" -> getConsolidatedEmployees,
+        "å¾“å˜" -> getSingleEmployees,
+        "é½¢"   -> getAge,
+        "å"   -> getIncome,
+        "ä»£è¡¨" -> getRepresentative)
   }
   
   def parseConsolidatePage :Map[String, String] = {
     val html = Html("http://profile.yahoo.co.jp/consolidate/%s".format(code), "EUC-JP")
     
     def getSettlement() :String =
-      html.getNextLineOf("""<td bgcolor="#ebf4ff">ŒˆZ”­•\“ú</td>""".r).replaceFirst("---", "-")
+      html.getNextLineOf("""<td bgcolor="#ebf4ff">æ±ºç®—ç™ºè¡¨æ—¥</td>""".r).replaceFirst("---", "-")
     def getCapitalToAssetRatio() :String =
-      html.getNextLineOf("""<td bgcolor="#ebf4ff">©ŒÈ‘–{”ä—¦</td>""".r).replaceFirst("---", "-")
+      html.getNextLineOf("""<td bgcolor="#ebf4ff">è‡ªå·±è³‡æœ¬æ¯”ç‡</td>""".r).replaceFirst("---", "-")
     def getRoe() :String =
-      html.getNextLineOf("""<td bgcolor="#ebf4ff">ROEi©ŒÈ‘–{—˜‰v—¦j</td>""".r).replaceFirst("---", "-")
+      html.getNextLineOf("""<td bgcolor="#ebf4ff">ROEï¼ˆè‡ªå·±è³‡æœ¬åˆ©ç›Šç‡ï¼‰</td>""".r).replaceFirst("---", "-")
     
-    Map("ŒˆZ" -> getSettlement,
-        "©"   -> getCapitalToAssetRatio,
+    Map("æ±ºç®—" -> getSettlement,
+        "è‡ª"   -> getCapitalToAssetRatio,
         "ROE"  -> getRoe)
   }
   
@@ -88,21 +88,21 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
     val html = Html("http://info.finance.yahoo.co.jp/stockholder/detail/?code=%s".format(code))
     
     def getMonth() :String = {
-      val rgex = """<tr><th>Œ —˜Šm’èŒ</th><td>(.*?)</td></tr>""".r
+      val rgex = """<tr><th>æ¨©åˆ©ç¢ºå®šæœˆ</th><td>(.*?)</td></tr>""".r
       val opt = html.lines.collectFirst{ case rgex(m) => m }
       if(opt.isDefined)
-        Html.removeTags(opt.get.replaceFirst("Œ —˜Šm’èŒ", "").replaceAll("––“ú", ""))
+        Html.removeTags(opt.get.replaceFirst("æ¨©åˆ©ç¢ºå®šæœˆ", "").replaceAll("æœ«æ—¥", ""))
       else
         ""
     }
-    Map("—D‘Ò" -> getMonth)
+    Map("å„ªå¾…" -> getMonth)
   }  
   
 }
 object CompanyJp{
   import com.tkido.tools.Html
   
-  val reJpT = """“ŒØ.*""".r
+  val reJpT = """æ±è¨¼.*""".r
   
   def apply(code:String, row:Int) :CompanyJp = {
     if(row > 300) return CompanyJpOther(code, row)
@@ -110,7 +110,7 @@ object CompanyJp{
     val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
     html.getNextLineOf("""<dt>%s</dt>""".format(code).r) match {
       case reJpT()    => CompanyJpRss(code, row)
-      case "ƒ}ƒU[ƒY" => CompanyJpRss(code, row)
+      case "ãƒã‚¶ãƒ¼ã‚º" => CompanyJpRss(code, row)
       case _          => CompanyJpOther(code, row)
     }
   }

@@ -30,7 +30,7 @@ class CompanyUs(code:String, row:Int) extends Company(code:String, row:Int) {
     }
     def getVolume = {
       val raw = html.getGroupOf("""^.*?Volume:</th><td class="yfnc_tabledata1"><span id="yfs_v53_.*?">(.*?)</span>.*$""".r)
-      "=" + raw.replaceAll(",", "") + "/Åyî≠çsÅz"
+      "=" + raw.replaceAll(",", "") + "/„ÄêÁô∫Ë°å„Äë"
     }
     def getLastClose =
       html.getGroupOf("""^.*?Prev Close:</th><td class="yfnc_tabledata1">(.*?)</td>.*$""".r)
@@ -42,16 +42,16 @@ class CompanyUs(code:String, row:Int) extends Company(code:String, row:Int) {
       html.getGroupOf("""^.*?Ask:</th><td class="yfnc_tabledata1"><span id="yfs_a00_.*?">(.*?)</span>.*$""".r)
     def getAskNum =
       html.getGroupOf("""^.*?Ask:</th><td class="yfnc_tabledata1"><span id="yfs_a00_.*?">.*?</span><small> x <span id="yfs_a50_.*?">(.*?)</span>.*$""".r)
-    Map("ñºèÃ"   -> getName,
-        "és"     -> getMarket,
-        "åªíl"   -> getPrice,
-        "ëOî‰"   -> getRatio,
-        "èoóà"   -> getVolume,
-        "ëOèI"   -> getLastClose,
-        "ç≈îÑ"   -> getAsk,
-        "ç≈îÑêî" -> getAskNum,
-        "ç≈îÉ"   -> getBid,
-        "ç≈îÉêî" -> getBidNum )
+    Map("ÂêçÁß∞"   -> getName,
+        "Â∏Ç"     -> getMarket,
+        "ÁèæÂÄ§"   -> getPrice,
+        "ÂâçÊØî"   -> getRatio,
+        "Âá∫Êù•"   -> getVolume,
+        "ÂâçÁµÇ"   -> getLastClose,
+        "ÊúÄÂ£≤"   -> getAsk,
+        "ÊúÄÂ£≤Êï∞" -> getAskNum,
+        "ÊúÄË≤∑"   -> getBid,
+        "ÊúÄË≤∑Êï∞" -> getBidNum )
   }
   
   def parseProfile :Map[String, String] = {
@@ -62,22 +62,22 @@ class CompanyUs(code:String, row:Int) extends Company(code:String, row:Int) {
       html.getGroupOf("""^.*?Full Time Employees:</td><td class="yfnc_tabledata1">(.*?)</td>.*$""".r).replaceAll(",", "")
     def getSector :String =
       html.getGroupOf("""^.*?Sector:</td><td class="yfnc_tabledata1"><a href=".*?">(.*?)</a></td>.*$""".r)
-    Map("ï™óﬁ" -> getSector,
-        "ì¡êF" -> getFeatrue,
-        "è]òA" -> getEmployees)
+    Map("ÂàÜÈ°û" -> getSector,
+        "ÁâπËâ≤" -> getFeatrue,
+        "ÂæìÈÄ£" -> getEmployees)
   }
   
   def parseKeyStatistics :Map[String, String] = {
     val html = Html("http://finance.yahoo.com/q/ks?s=%s+Key+Statistics".format(code))
     def get52wkHigh = {
       val raw = html.getGroupOf("""^.*?52-Week High \(.*?\)<font size="-1"><sup>3</sup></font>:</td><td class="yfnc_tabledata1">(.*?)</td>.*$""".r)
-      "=%s/ÅyílÅz".format(raw)
+      "=%s/„ÄêÂÄ§„Äë".format(raw)
     }
     def get52wkHighDate =
       html.getGroupOf("""^.*?52-Week High \((.*?)\)<font size="-1"><sup>3</sup></font>:</td><td class="yfnc_tabledata1">.*?</td>.*$""".r)
     def get52wkLow = {
       val raw = html.getGroupOf("""^.*?>52-Week Low \(.*?\)<font size="-1"><sup>3</sup></font>:</td><td class="yfnc_tabledata1">(.*?)</td>.*$""".r)
-      "=%s/ÅyílÅz".format(raw)
+      "=%s/„ÄêÂÄ§„Äë".format(raw)
     }
     def get52wkLowDate =
       html.getGroupOf("""^.*?>52-Week Low \((.*?)\)<font size="-1"><sup>3</sup></font>:</td><td class="yfnc_tabledata1">.*?</td>.*$""".r)
@@ -99,15 +99,15 @@ class CompanyUs(code:String, row:Int) extends Company(code:String, row:Int) {
     }
     def getPbr =
       html.getGroupOf("""^.*?Price/Book \(mrq\):</td><td class="yfnc_tabledata1">(.*?)</td>.*$""".r)
-    Map("î≠çs"   -> getOutstanding,
-        "óò"     -> getDivYield,
+    Map("Áô∫Ë°å"   -> getOutstanding,
+        "Âà©"     -> getDivYield,
         "PER"    -> getPer,
         "ROE"    -> getRoe,
         "PBR"    -> getPbr,
-        "îNçÇ"   -> get52wkHigh,
-        "îNçÇì˙" -> get52wkHighDate,
-        "îNà¿"   -> get52wkLow,
-        "îNà¿ì˙" -> get52wkLowDate )
+        "Âπ¥È´ò"   -> get52wkHigh,
+        "Âπ¥È´òÊó•" -> get52wkHighDate,
+        "Âπ¥ÂÆâ"   -> get52wkLow,
+        "Âπ¥ÂÆâÊó•" -> get52wkLowDate )
   }
   
   def unRound(source:String) :String = {

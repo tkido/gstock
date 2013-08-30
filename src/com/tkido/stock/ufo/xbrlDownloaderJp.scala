@@ -12,7 +12,7 @@ object XbrlDownloaderJp {
     val xml = XML.load(url)
     
     def isUfo(node:Node) :Boolean = {
-      val reUfo = """—L‰¿ØŒ”•ñ‘""".r
+      val reUfo = """æœ‰ä¾¡è¨¼åˆ¸å ±å‘Šæ›¸""".r
       val title = (node \ "title").text
       reUfo.findFirstIn(title).isDefined
     }

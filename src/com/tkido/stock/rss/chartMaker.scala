@@ -6,9 +6,9 @@ object ChartMaker {
   
   def make(company:Company){
     val code = company.data("ID")
-    val name = company.data("–¼Ì")
-    val feature = company.data("“ÁF")
-    val business = company.data("–‹Æ")
+    val name = company.data("åç§°")
+    val feature = company.data("ç‰¹è‰²")
+    val business = company.data("äº‹æ¥­")
     
     def getDate() :String = {
       val rgexDate = """\([0-9]{4}\.[0-9]{1,2}\)""".r
@@ -17,20 +17,20 @@ object ChartMaker {
       else ""
     }
     def getHeader() :String = {
-      val rgexHeader = """y.*?z""".r
+      val rgexHeader = """ã€.*?ã€‘""".r
       val m = rgexHeader.findFirstMatchIn(business)
       if(m.isDefined) m.get.group(0)
       else ""
     }
     def getOther() :String = {
-      val rgexHeader = """y.*?z.*?(y.*)""".r
+      val rgexHeader = """ã€.*?ã€‘.*?(ã€.*)""".r
       val m = rgexHeader.findFirstMatchIn(business)
       if(m.isDefined) m.get.group(1).replaceFirst("""\([0-9]{4}\.[0-9]{1,2}\)""", "")
       else ""
     }
     def getRows() :String = {
-      val rawStr = business.replaceFirst("""\([0-9]{4}\.[0-9]{1,2}\)""", "").replaceFirst("""y.*?z""", "").replaceFirst("""y.*""", "")
-      val rawRows = rawStr.split('A')
+      val rawStr = business.replaceFirst("""\([0-9]{4}\.[0-9]{1,2}\)""", "").replaceFirst("""ã€.*?ã€‘""", "").replaceFirst("""ã€.*""", "")
+      val rawRows = rawStr.split('ã€')
       
       def stringToPairs(raw: String): Pair[String, String] = {
         val rgex = """(.*?)([0-9]+)(\([0-9]+\))?""".r
