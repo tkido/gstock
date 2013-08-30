@@ -1,7 +1,7 @@
 package com.tkido.stock.ufo
 
 object XbrlDownloaderJp {
-  import com.tkido.tools.TextFile
+  import com.tkido.tools.Text
   import java.io.File
   import java.net.URL
   import scala.io.Source
@@ -34,7 +34,7 @@ object XbrlDownloaderJp {
         val file = new File(root, fileName)
         if(!file.exists){
           val data = Source.fromURL(xbrl, "UTF-8").getLines.mkString("\n")
-          TextFile.write(file.getPath, data)
+          Text.write(file.getPath, data)
         }
       }
     }

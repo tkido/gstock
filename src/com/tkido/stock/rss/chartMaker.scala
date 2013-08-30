@@ -1,8 +1,8 @@
 package com.tkido.stock.rss
 
 object ChartMaker {
-  import com.tkido.tools.TextFile
-  private val templete = TextFile.read("data/rss/template.html")
+  import com.tkido.tools.Text
+  private val templete = Text.read("data/rss/template.html")
   
   def make(company:Company){
     val code = company.data("ID")
@@ -59,7 +59,7 @@ object ChartMaker {
     val title = name + header + date
     
     val html = templete.format(title, rows, title, feature, other)
-    TextFile.write("data/rss/%s.html".format(code), html)
+    Text.write("data/rss/%s.html".format(code), html)
   }
 }
 

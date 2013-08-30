@@ -1,6 +1,6 @@
 package com.tkido.tools
 
-object TextFile {
+object Text {
   import scala.io.Source
   import java.io.FileOutputStream
   import java.io.OutputStreamWriter

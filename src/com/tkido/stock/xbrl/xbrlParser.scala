@@ -2,7 +2,7 @@ package com.tkido.stock.xbrl
 
 object XbrlParser {
   import scala.xml._
-  import com.tkido.tools.TextFile
+  import com.tkido.tools.Text
   
   val breakupData      = parseItems("data/xbrl/breakup_items.txt")
   val netCashData      = parseItems("data/xbrl/netcash_items.txt")
@@ -16,7 +16,7 @@ object XbrlParser {
     }
     def isValid(line:String) :Boolean =
       line.nonEmpty && line.head != '#'
-    val lines = TextFile.readLines(path)
+    val lines = Text.readLines(path)
     lines.filter(isValid).map(lineToPair).toMap
   }
   
