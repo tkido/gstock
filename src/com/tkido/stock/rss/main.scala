@@ -1,12 +1,14 @@
 package com.tkido.stock.rss
 
 object main extends App {
+  import com.tkido.stock.ufo.XbrlDownloader
   import com.tkido.tools.Text
-    
+  
   Logger.level = Config.loglevel
   
   val codes = Text.readLines("data/rss/table.txt")
   
+  for(code <- codes) { XbrlDownloader.download(code) }
   
   val range = Range(Config.offset, Config.offset + codes.size)
   val pairs = codes zip range
