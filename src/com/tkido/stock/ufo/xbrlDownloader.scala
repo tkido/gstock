@@ -7,6 +7,7 @@ object XbrlDownloader {
   def download(code:String) {  
     code match {
       case reJp() => XbrlDownloaderJp.download(code)
+      case _ => ()
     }
   }
 }
