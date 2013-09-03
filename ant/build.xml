@@ -1,53 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="xbrl" default="deploy">
+<project name="xbrl" default="publish">
 
-  <target name="deploy">
-    <echo message="${code}"/>
-    <property file="build.properties"/>
-    <!--
-    <property name="download_dir" location="D:\Users\tkido\Downloads"/>
-    <property name="xbrl_dir" location="D:\Users\tkido\Documents\Dropbox\xbrl"/>
-    -->
-    <property name="target_dir" location="${xbrl_dir}/${code}"/>
-    <mkdir dir="${target_dir}" />
-    
-    <move todir="${target_dir}">
-      <fileset dir="${download_dir}">
-        <include name="**/*.zip"/>
-        <include name="**/*.pdf"/>
-      </fileset>
-    </move>
-    
-    <unzip dest="${target_dir}">
-        <fileset dir="${target_dir}">
-            <include name="*.zip"/>
-        </fileset>
-    </unzip>
-    
-    <delete>
-      <fileset dir="${target_dir}">
-        <include name="*.zip"/>
-        <include name="XbrlDlInfo.csv"/>
-      </fileset>
-    </delete>
-  </target>
-  
-  <target name="clean">
-    <echo message="clean"/>
-    <property file="build.properties"/>
-    <!--
-    <property name="download_dir" location="D:\Users\tkido\Downloads"/>
-    <property name="xbrl_dir" location="D:\Users\tkido\Documents\Dropbox\xbrl"/>
-    -->
-    <delete>
-      <fileset dir="${download_dir}">
-        <include name="*.*"/>
-      </fileset>
-    </delete>
-  </target>
-  
   <target name="publish">
-    <echo message="publish"/>
     <property name="html_dir" location="/home/jenkins/gstock/data/rss"/>
     <property name="publish_dir" location="/var/www/html/stock"/>
     
