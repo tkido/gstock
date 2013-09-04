@@ -1,6 +1,0 @@
-From: jenkins@tkido.com
-To: takanorikido@gmail.com
-Subject: RSS build complete!!
-
-Download URL:
-http://tkido.com/stock/result.txt
