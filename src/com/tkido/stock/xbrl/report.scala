@@ -24,6 +24,11 @@ class Report(path:String) {
     val list = List(year, breakupValue, netCash, accruals, netIncome, freeCashFlow)
     list.map(_.toString).mkString("\t")
   }
+  
+  def toTr :String = {
+    val list = List(year, breakupValue, netCash, accruals, netIncome, freeCashFlow)
+    list.map(_.toString).mkString("<tr><td>", "</td><td>", "</td></tr>")
+  }
 }
 
 object Report{

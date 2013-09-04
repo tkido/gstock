@@ -17,6 +17,13 @@ abstract class Company(code:String, row:Int) {
         case _ => ""
       }
     }
+    def getTable() :String = {
+      try{
+        xbrl.Company(code).toTable
+      }catch{
+        case _ => ""
+      }
+    }
     Map("ID"   -> code,
         "値"   -> """=IF(【現値】=" ", 【前終】, 【現値】)""",
         "時価" -> """=【値】*【発行】/100000""",
@@ -25,7 +32,8 @@ abstract class Company(code:String, row:Int) {
         "率"   -> """=IF(【企価】=0, 0, 【値】/【株価】)""",
         "株価" -> """=IF(【企価】="", 0, 【企価】/1000/【発行】)""",
         "更新" -> Logger.today,
-        "企価" -> getEnterpriseValue )
+        "企価" -> getEnterpriseValue,
+        "表"   -> getTable)
   }
     
 }

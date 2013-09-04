@@ -9,6 +9,7 @@ object ChartMaker {
     val name = company.data("名称")
     val feature = company.data("特色")
     val business = company.data("事業")
+    val table = company.data("表")
     
     def getDate() :String = {
       val rgexDate = """\([0-9]{4}\.[0-9]{1,2}\)""".r
@@ -58,7 +59,7 @@ object ChartMaker {
     val rows = getRows
     val title = name + header + date
     
-    val html = templete.format(title, rows, title, feature, other)
+    val html = templete.format(title, rows, title, feature, other, table)
     Text.write("data/rss/%s.html".format(code), html)
   }
 }

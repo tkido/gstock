@@ -45,6 +45,12 @@ class Company(code:String) {
     val list = header :: reports.map(_.toString)
     list.mkString("\n")
   }
+  
+  def toTable :String = {
+    val header = List("年度", "解散価値", "NetCash", "accruals", "純利益", "FCF").mkString("<tr><th>", "</th><th>", "</th></tr>")
+    val list = "<table border=\"1\"><tbody>" :: header :: reports.map(_.toTr) ::: List("</tbody></table>")
+    list.mkString("\n")
+  }
 }
 
 object Company{

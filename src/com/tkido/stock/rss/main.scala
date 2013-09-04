@@ -12,7 +12,7 @@ object main extends App {
   
   val range = Range(Config.offset, Config.offset + codes.size)
   val pairs = codes zip range
-  val companies = pairs.par.map(pair => Company(pair._1, pair._2))
+  val companies = pairs.map(pair => Company(pair._1, pair._2))
   
   val strings = companies.map(_.toStringForExcel)
   Text.write("data/rss/result.txt", strings.mkString("\n"))
