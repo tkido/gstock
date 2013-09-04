@@ -19,5 +19,5 @@ data/rss/result.txt
 data/rss/*.html
 data/ufo/table.txt
 data/ufo/result.txt
-ant/build.properties
+build.properties
 conf.properties
