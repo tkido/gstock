@@ -1,7 +1,17 @@
-<html>
+<html lang="jp">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
     <title>%s</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="css/stock.css" rel="stylesheet">
     
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -36,10 +46,15 @@
   </head>
 
   <body>
-    <h1>%s</h1>
-    <p>%s%s</p>
-    <!--Div that will hold the pie chart-->
-    <div id="chart_div"></div>
-    %s
+	<div class="container"> 
+      <div class="starter-template">
+        <h1>%s</h1>
+        <p>%s%s</p>
+        <!--Div that will hold the pie chart-->
+        <div id="chart_div"></div>
+        %s
+      </div>
+    </div>
+    
   </body>
 </html>
