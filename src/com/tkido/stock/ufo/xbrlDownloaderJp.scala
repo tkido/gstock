@@ -8,6 +8,9 @@ object XbrlDownloaderJp {
   import scala.xml._
   
   def download(code:String) {
+    val root = new File(Config.rootPath, code)
+    if(!root.exists) root.mkdir
+    
     val url = "http://resource.ufocatch.com/atom/edinetx/query/%s".format(code)
     val xml = XML.load(url)
     
@@ -23,19 +26,14 @@ object XbrlDownloaderJp {
       val hrefs = (node \\ "@href").map(_.text)
       hrefs.find(reXbrl.findFirstIn(_).isDefined).get
     }
-    val xbrls = ufos.map(getXbrl) 
+    val xbrls = ufos.map(getXbrl)
     
-    if(xbrls.nonEmpty){
-      val root = new File(Config.rootPath, code)
-	  if(!root.exists) root.mkdir
-	  
-      for(xbrl <- xbrls){
-        val fileName = xbrl.split("/").last
-        val file = new File(root, fileName)
-        if(!file.exists){
-          val data = Source.fromURL(xbrl, "UTF-8").getLines.mkString("\n")
-          Text.write(file.getPath, data)
-        }
+    for(xbrl <- xbrls){
+      val fileName = xbrl.split("/").last
+      val file = new File(root, fileName)
+      if(!file.exists){
+        val data = Source.fromURL(xbrl, "UTF-8").getLines.mkString("\n")
+        Text.write(file.getPath, data)
       }
     }
   }

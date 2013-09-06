@@ -12,7 +12,7 @@ object XbrlParser {
   def parseItems(path:String): Map[String, Int] = {
     def lineToPair(line:String) :Pair[String, Int] = {
       val arr = line.split("\t")
-      Pair(arr(0), arr(1).toInt)
+      arr(0) -> arr(1).toInt
     }
     def isValid(line:String) :Boolean =
       line.nonEmpty && line.head != '#'
@@ -47,13 +47,10 @@ object XbrlParser {
             case _                                    => false
           }
       }
-      node.text.nonEmpty &&
-      isValidPrefix      &&
-      isValidContext
+      node.text.nonEmpty && isValidPrefix && isValidContext
     }
     val nodes = xml.child.filter(isValid)
-        
     //for(node <- nodes) println(node.prefix + "\t" + node.label + "\t" + BigInt(node.text))
-    nodes.toList.map(x => Pair(x.label, BigInt(x.text))).toMap
+    nodes.toList.map(x => x.label -> BigInt(x.text) ).toMap
   }
 }
