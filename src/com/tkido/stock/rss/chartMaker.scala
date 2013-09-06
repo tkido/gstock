@@ -8,58 +8,47 @@ object ChartMaker {
   def make(company:Company){
     val data = company.data
     
-    val code = data("ID")
     val business = data("事業")
     
-    val reStringDate = """\([0-9]{4}\.[0-9]{1,2}\)"""
+    val reDate = """\(\d{4}\.\d{1,2}\)"""
+    val reHeader = "【.*?】"
+    val reOther = "【.*"
     
     def getDate() :String = {
-      val reDate = reStringDate.r
-      val m = reDate.findFirstMatchIn(business)
-      if(m.isDefined) m.get.group(0)
-      else ""
+      val opt = reDate.r.findFirstMatchIn(business)
+      if(opt.isEmpty) "" else opt.get.group(0)
     }
-    
     def getHeader() :String = {
-      val reHeader = """【.*?】""".r
-      val m = reHeader.findFirstMatchIn(business)
-      if(m.isDefined) m.get.group(0)
-      else ""
+      val opt = reHeader.r.findFirstMatchIn(business)
+      if(opt.isEmpty) "" else opt.get.group(0)
     }
-    
     def getOther() :String = {
-      val reHeader = """【.*?】.*?(【.*)""".r
-      val m = reHeader.findFirstMatchIn(business)
-      if(m.isDefined) m.get.group(1).replaceFirst(reStringDate, "")
-      else ""
+      val opt = reOther.r.findFirstMatchIn(business.replaceFirst(reHeader, ""))
+      if(opt.isEmpty) "" else opt.get.group(0).replaceFirst(reDate, "")
     }
     
     def getRows() :String = {
-      val rawStr = business.replaceFirst(reStringDate, "").replaceFirst("""【.*?】""", "").replaceFirst("""【.*""", "")
-      val rawRows = rawStr.split('、')
+      val str = business.replaceFirst(reDate, "").replaceFirst(reHeader, "").replaceFirst(reOther, "")
+      val rows = str.split('、')
       
       def stringToPairs(raw: String): Pair[String, String] = {
-        val re = """(.*?)([0-9]+)(\([0-9]+\))?""".r
-        val m = re.findFirstMatchIn(raw)
-        if(m.isDefined){
-          val g3 = m.get.group(3)
-          val profitability = if(g3 == null) "" else g3
-          Pair(m.get.group(1)+profitability, m.get.group(2))
-        }else{
-          Pair("", "")
+        val reData = """(.*?)(\d+)(\(\d+\))?""".r
+        val opt = reData.findFirstMatchIn(raw)
+        if(opt.isEmpty) "" -> ""
+        else{
+          val m = opt.get
+          val g3 = if(m.group(3) == null) "" else m.group(3)
+          Pair(m.group(1)+g3, m.group(2))
         }
       }
-      val pairs = rawRows.map(stringToPairs)
+      val pairs = rows.map(stringToPairs)
       pairs.map(x => """['%s', %s]""".format(x._1, x._2) ).mkString(",\n")
     }
     
-    val date = getDate
-    val other = getOther
-    val header = getHeader
-    val rows = getRows
-    val title = data("名称") + header + date
+    val code = data("ID")
+    val title = code + " " + data("名称") + getHeader + getDate
     
-    val html = templete.format(title, rows, title, data("特色"), other, data("表"))
+    val html = templete.format(title, getRows, title, data("特色"), getOther, data("表"))
     Text.write("data/rss/%s.html".format(code), html)
   }
 }
