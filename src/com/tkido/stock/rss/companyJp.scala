@@ -2,17 +2,18 @@ package com.tkido.stock.rss
 
 abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
   import com.tkido.tools.Html
+  import java.io.FileNotFoundException
   
-  def makeData :Map[String, String] = {    
-    val parsedData = parseProfilePage ++
-                     parseConsolidatePage ++
-                     parseDetailPage ++
-                     parseStockholderPage
-    val otherData = makeOtherData
-    parsedData ++ otherData
+  def makeData :Map[String, String] = {
+    val parsedData = try{
+      parseProfile ++ parseConsolidate ++ parseDetail ++ parseStockholder
+    }catch{
+      case ex: FileNotFoundException => Map()
+    }
+    parsedData ++ makeOtherData
   }
   
-  def parseDetailPage :Map[String, String] = {
+  def parseDetail :Map[String, String] = {
     val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
     
     def getOutstanding() :String =
@@ -21,7 +22,7 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
     Map("発行" -> getOutstanding)
   }
   
-  def parseProfilePage :Map[String, String] = {
+  def parseProfile :Map[String, String] = {
     val html = Html("http://stocks.finance.yahoo.co.jp/stocks/profile/?code=%s".format(code))
     
     def getName() :String = {
@@ -69,7 +70,7 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
         "代表" -> getRepresentative)
   }
   
-  def parseConsolidatePage :Map[String, String] = {
+  def parseConsolidate :Map[String, String] = {
     val html = Html("http://profile.yahoo.co.jp/consolidate/%s".format(code), "EUC-JP")
     
     def getSettlement() :String =
@@ -84,7 +85,7 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
         "ROE"  -> getRoe)
   }
   
-  def parseStockholderPage :Map[String, String] = {
+  def parseStockholder :Map[String, String] = {
     val html = Html("http://info.finance.yahoo.co.jp/stockholder/detail/?code=%s".format(code))
     
     def getMonth() :String = {
@@ -101,17 +102,21 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
 }
 object CompanyJp{
   import com.tkido.tools.Html
+  import java.io.FileNotFoundException
   
   val reJpT = """東証.*""".r
   
   def apply(code:String, row:Int) :CompanyJp = {
     if(row > 300) return CompanyJpOther(code, row)
-    
-    val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
-    html.getNextLineOf("""<dt>%s</dt>""".format(code).r) match {
-      case reJpT()    => CompanyJpRss(code, row)
-      case "マザーズ" => CompanyJpRss(code, row)
-      case _          => CompanyJpOther(code, row)
+    try{
+      val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
+      html.getNextLineOf("""<dt>%s</dt>""".format(code).r) match {
+        case reJpT()    => CompanyJpRss(code, row)
+        case "マザーズ" => CompanyJpRss(code, row)
+        case _          => CompanyJpOther(code, row)
+      }
+    }catch{
+      case ex: FileNotFoundException => CompanyJpOther(code, row)
     }
   }
 }

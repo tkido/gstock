@@ -2,14 +2,19 @@ package com.tkido.stock.rss
 
 class CompanyUs(code:String, row:Int) extends Company(code:String, row:Int) {
   import com.tkido.tools.Html
+  import java.io.FileNotFoundException
   
   val data = makeData
   
   def makeData :Map[String, String] = {
-    val parsedData = parseKeyStatistics ++ parseSummary ++ parseProfile
+    val parsedData = try{
+      parseKeyStatistics ++ parseSummary ++ parseProfile
+    }catch{
+      case ex: FileNotFoundException => Map()
+    }
     parsedData ++ makeOtherData
   }
-    
+  
   def parseSummary :Map[String, String] = {
     val html = Html("http://finance.yahoo.com/q?s=%s".format(code))
 

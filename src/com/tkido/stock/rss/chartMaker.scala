@@ -8,7 +8,10 @@ object ChartMaker {
   def make(company:Company){
     val data = company.data
     
-    val business = data("事業")
+    val business = data.getOrElse("事業", "")
+    val name     = data.getOrElse("名称", "")
+    val feature  = data.getOrElse("特色", "")
+    val table    = data.getOrElse("表", "")
     
     val reDate = """\(\d{4}\.\d{1,2}\)"""
     val reHeader = "【.*?】"
@@ -45,10 +48,10 @@ object ChartMaker {
       pairs.map(x => """['%s', %s]""".format(x._1, x._2) ).mkString(",\n")
     }
     
-    val code = data("ID")
-    val title = code + " " + data("名称") + getHeader + getDate
+    val code = data.getOrElse("ID", "")
+    val title = code + " " + name + getHeader + getDate
     
-    val html = templete.format(title, getRows, title, data("特色"), getOther, data("表"))
+    val html = templete.format(title, getRows, title, feature, getOther, table)
     Text.write("data/rss/%s.html".format(code), html)
   }
 }

@@ -3,7 +3,7 @@ package com.tkido.stock.rss
 abstract class Company(code:String, row:Int) {
   import com.tkido.stock.xbrl
   println(code)
-
+  
   val data :Map[String, String]
   
   def toStringForExcel :String =

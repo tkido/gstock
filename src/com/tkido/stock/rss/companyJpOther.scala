@@ -2,13 +2,20 @@ package com.tkido.stock.rss
 
 class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
   import com.tkido.tools.Html
+  import java.io.FileNotFoundException
   
   val data = makeData
   
-  override def makeData :Map[String, String] =
-    super.makeData ++ makeNonRssData
+  override def makeData :Map[String, String] = {
+    val parsedData = try{
+      parseNonRssData
+    }catch{
+      case ex: FileNotFoundException => Map()
+    }
+    super.makeData ++ parsedData
+  }
   
-  def makeNonRssData :Map[String, String] = {
+  def parseNonRssData :Map[String, String] = {
     val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
     
     def getMarketName() :String = {
