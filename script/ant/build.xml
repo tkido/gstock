@@ -46,11 +46,11 @@
     <copy todir="${deploy.dir}" overwrite="true">
       <fileset dir="${base.dir}">
         <exclude name="doc/**/*"/>
-        <exclude name="doc"/
+        <exclude name="doc"/>
         <exclude name="src/**/*"/>
-        <exclude name="src"/
+        <exclude name="src"/>
         <exclude name=".git/**/*"/>
-        <exclude name=".git"/
+        <exclude name=".git"/>
         <exclude name=".gitignore"/>
       </fileset>
     </copy>
