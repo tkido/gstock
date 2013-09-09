@@ -14,12 +14,17 @@
     </move>
   </target>
   
+  
   <property name="scala.home" value="/usr/local/share/scala-2.9.2" />
+  <property name="base.dir" value="../.." />
+  <property name="sources.dir" value="${base.dir}/src" />
+  <property name="deploy.dir" value="/home/jenkins/gstock" />
+  
   <target name="init">
     <property name="scala-library.jar" value="${scala.home}/lib/scala-library.jar" />
     <path id="build.classpath">
       <pathelement location="${scala-library.jar}" />
-      <pathelement location="${build.dir}" />
+      <pathelement location="${base.dir}" />
     </path>
     <taskdef resource="scala/tools/ant/antlib.xml">
       <classpath>
@@ -29,22 +34,23 @@
     </taskdef>
   </target>
   
-  <property name="base.dir" value="../.." />
   <target name="build" depends="init">
-    <scalac srcdir="${base.dir}/src"
+    <scalac srcdir="${sources.dir}"
             destdir="${base.dir}"
             classpathref="build.classpath">
       <include name="**/*.scala"   />
     </scalac>
   </target>
   
-  <property name="deploy.dir" value="/home/jenkins/gstock" />
   <target name="deploy" depends="build">
     <copy todir="${deploy.dir}" overwrite="true">
       <fileset dir="${base.dir}">
-        <exclude name="doc/**/*.*"/>
-        <exclude name="src/**/*.*"/>
-        <exclude name=".git"/>
+        <exclude name="doc/**/*"/>
+        <exclude name="doc"/
+        <exclude name="src/**/*"/>
+        <exclude name="src"/
+        <exclude name=".git/**/*"/>
+        <exclude name=".git"/
         <exclude name=".gitignore"/>
       </fileset>
     </copy>
