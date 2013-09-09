@@ -10,20 +10,7 @@ abstract class Company(code:String, row:Int) {
     Company.replaceColumn(data, row.toString).mkString("\t")
   
   def makeOtherData :Map[String, String] = {
-    def getEnterpriseValue() :String = {
-      try{
-        xbrl.Company(code).fairValue.toString
-      }catch{
-        case _ => ""
-      }
-    }
-    def getTable() :String = {
-      try{
-        xbrl.Company(code).toTable
-      }catch{
-        case _ => ""
-      }
-    }
+    makeXbrlData ++
     Map("ID"   -> code,
         "値"   -> """=IF(【現値】=" ", 【前終】, 【現値】)""",
         "時価" -> """=【値】*【発行】/100000""",
@@ -31,11 +18,19 @@ abstract class Company(code:String, row:Int) {
         "性"   -> """=IF(【益】=0, 0, 【利】/【益】""",
         "率"   -> """=IF(【企価】=0, 0, 【値】/【株価】)""",
         "株価" -> """=IF(【企価】="", 0, 【企価】/1000/【発行】)""",
-        "更新" -> Logger.today,
-        "企価" -> getEnterpriseValue,
-        "表"   -> getTable)
+        "更新" -> Logger.today)
   }
-    
+  
+  def makeXbrlData :Map[String, String] = {
+    try{
+      val xCompany = xbrl.Company(code)
+      Map("企価" -> xCompany.fairValue.toString,
+          "表"   -> xCompany.toTable)
+    }catch{
+      case _ => Map()
+    }
+  }
+  
 }
 object Company{
   val reJp = """[0-9]{4}""".r
@@ -71,5 +66,5 @@ object Company{
     order.map(x =>
       reColumn.replaceAllIn(data.getOrElse(x, "-"), m => columnsMap(m.group(1)) + row)
     )
-  }  
+  }
 }

@@ -96,7 +96,7 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
         ""
     }
     Map("優待" -> getMonth)
-  }  
+  }
   
 }
 object CompanyJp{
