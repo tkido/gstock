@@ -16,7 +16,10 @@
   
   
   <property name="scala.home" value="/usr/local/share/scala-2.9.2" />
+  <property name="base.dir" value="." />
+  <!--
   <property name="base.dir" value="/home/tkido/work/gstock" />
+  -->
   <property name="sources.dir" value="${base.dir}/src" />
   <property name="build.dir" value="${base.dir}/bin" />
   
