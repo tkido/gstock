@@ -45,8 +45,6 @@
   <target name="deploy" depends="build">
     <copy todir="${deploy.dir}" overwrite="true">
       <fileset dir="${base.dir}">
-        <exclude name="doc/**/*"/>
-        <exclude name="doc"/>
         <exclude name="src/**/*"/>
         <exclude name="src"/>
         <exclude name=".git/**/*"/>
