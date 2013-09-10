@@ -4,7 +4,6 @@ syntax: glob
 .project
 .settings
 bin/
-levels/
 *.class
 org.eclipse.jdt.core.prefs
 *.pyc
@@ -13,11 +12,8 @@ org.eclipse.jdt.core.prefs
 ~$*
 .picasa.ini
 log/*.log
-data/xbrl/xbrl/
-data/rss/table.txt
-data/rss/result.txt
 data/rss/*.html
-data/ufo/table.txt
-data/ufo/result.txt
+table.txt
+result.txt
 build.properties
 conf.properties
