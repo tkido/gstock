@@ -107,7 +107,7 @@ object CompanyJp{
   val reJpT = """東証.*""".r
   
   def apply(code:String, row:Int) :CompanyJp = {
-    if(row > 300) return CompanyJpOther(code, row)
+    if(!Config.rss || row > 300) return CompanyJpOther(code, row)
     try{
       val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
       html.getNextLineOf("""<dt>%s</dt>""".format(code).r) match {
