@@ -4,7 +4,9 @@ class Company(code:String) {
   import Math.pow
   
   val files = XbrlFinder.find(code)
-  val reports = files.map(Report(_)).sort(_.year < _.year)
+  val reports = files.map(Report(_))
+    .groupBy(_.year).mapValues(_.last).toList.map(_._2) //同年度で提出回数最大（最新）のものを抽出
+    .sort(_.year < _.year)
   
   def slope(list:List[BigInt]) :BigInt = {
     val range = Range(0, list.size)
