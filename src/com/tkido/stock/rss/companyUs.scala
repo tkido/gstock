@@ -2,7 +2,6 @@ package com.tkido.stock.rss
 
 class CompanyUs(code:String, row:Int) extends Company(code:String, row:Int) {
   import com.tkido.tools.Html
-  import java.io.FileNotFoundException
   
   val data = makeData
   
@@ -10,7 +9,7 @@ class CompanyUs(code:String, row:Int) extends Company(code:String, row:Int) {
     val parsedData = try{
       parseKeyStatistics ++ parseSummary ++ parseProfile
     }catch{
-      case ex: FileNotFoundException => Map()
+      case _ => Map()
     }
     parsedData ++ makeOtherData
   }
