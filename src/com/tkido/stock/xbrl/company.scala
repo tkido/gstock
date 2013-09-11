@@ -51,7 +51,7 @@ class Company(code:String) {
   def toTable :String = {
     val header = List("年度", "解散価値", "NetCash", "accruals", "純利益", "FCF").mkString("<tr><th>", "</th><th>", "</th></tr>")
     val list = header :: reports.map(_.toTr).reverse
-    list.mkString("<table border=\"2\" class=\"numbers\"><tbody>\n", "\n", "\n</tbody></table>")
+    list.mkString("""<table border="2" class="numbers"><tbody>""", "", "</tbody></table>")
   }
 }
 
