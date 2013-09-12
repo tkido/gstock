@@ -2,13 +2,12 @@ package com.tkido.stock.rss
 
 abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
   import com.tkido.tools.Html
-  import java.io.FileNotFoundException
   
   def makeData :Map[String, String] = {
     val parsedData = try{
       parseProfile ++ parseConsolidate ++ parseDetail ++ parseStockholder
     }catch{
-      case ex: FileNotFoundException => Map()
+      case _ => Map()
     }
     parsedData ++ makeOtherData
   }
@@ -102,7 +101,6 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
 }
 object CompanyJp{
   import com.tkido.tools.Html
-  import java.io.FileNotFoundException
   
   val reJpT = """東証.*""".r
   
@@ -116,7 +114,7 @@ object CompanyJp{
         case _          => CompanyJpOther(code, row)
       }
     }catch{
-      case ex: FileNotFoundException => CompanyJpOther(code, row)
+      case _ => CompanyJpOther(code, row)
     }
   }
 }
