@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="xbrl" default="publish">
-
+  <!-- for RSS task -->
   <target name="publish">
     <property name="html_dir" location="/home/jenkins/gstock/data/rss"/>
     <property name="publish_dir" location="/var/www/html/stock"/>
@@ -9,12 +9,11 @@
       <fileset dir="${html_dir}">
         <include name="*.html"/>
         <exclude name="template.html"/>
-        <include name="result.txt"/>
       </fileset>
     </move>
   </target>
   
-  
+  <!-- for RSS_BUILD task -->
   <property name="scala.home" value="/usr/local/share/scala-2.9.2" />
   <property name="base.dir" value="../.." />
   <property name="sources.dir" value="${base.dir}/src" />
