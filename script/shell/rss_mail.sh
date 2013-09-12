@@ -4,5 +4,5 @@ To: takanorikido@gmail.com
 Subject: ${JOB_NAME}-${BUILD_NUMBER} completed!!
 
 Download URL:
-http://tkido.com/stock/result.txt
+${BUILD_URL}artifact/data/rss/result.txt
 _EOT_
