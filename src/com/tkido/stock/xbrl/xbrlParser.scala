@@ -2,6 +2,7 @@ package com.tkido.stock.xbrl
 
 object XbrlParser {
   import scala.xml._
+  import com.tkido.tools.Logger
   import com.tkido.tools.Text
   
   val breakupData      = parseItems("data/xbrl/breakup_items.txt")
@@ -50,7 +51,10 @@ object XbrlParser {
       node.text.nonEmpty && isValidPrefix && isValidContext
     }
     val nodes = xml.child.filter(isValid)
-    //for(node <- nodes) println(node.prefix + "\t" + node.label + "\t" + BigInt(node.text))
+    
+    for(node <- nodes)
+      Logger.debug(node.prefix + "\t" + node.label + "\t" + BigInt(node.text))
+    
     nodes.toList.map(x => x.label -> BigInt(x.text) ).toMap
   }
 }

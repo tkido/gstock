@@ -2,7 +2,6 @@ package com.tkido.stock.rss
 
 abstract class Company(code:String, row:Int) {
   import com.tkido.stock.xbrl
-  println(code)
   
   val data :Map[String, String]
   
@@ -18,7 +17,7 @@ abstract class Company(code:String, row:Int) {
         "性"   -> """=IF(【益】=0, 0, 【利】/【益】""",
         "率"   -> """=IF(【企価】=0, 0, 【値】/【株価】)""",
         "株価" -> """=IF(【企価】="", 0, 【企価】/1000/【発行】)""",
-        "更新" -> Logger.today)
+        "更新" -> Company.today)
   }
   
   def makeXbrlData :Map[String, String] = {
@@ -33,6 +32,8 @@ abstract class Company(code:String, row:Int) {
   
 }
 object Company{
+  import java.util.Date
+  
   val reJp = """[0-9]{4}""".r
   val reUs = """[A-Z]{1,5}""".r
   
@@ -42,6 +43,8 @@ object Company{
       case reUs() => CompanyUs(code, row)
     }
   }
+  
+  val today = "%tY/%<tm/%<td".format(new Date)
   
   /* column treatment */
   val order = List("ID", "名称", "R", "値", 

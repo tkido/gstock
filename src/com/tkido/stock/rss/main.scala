@@ -4,6 +4,7 @@ object main extends App {
   import com.tkido.stock.Config
   import com.tkido.stock.ufo.XbrlDownloader
   import com.tkido.tools.Text
+  import com.tkido.tools.Logger
   
   Logger.level = Config.logLevel
   
@@ -18,9 +19,7 @@ object main extends App {
   val strings = companies.map(_.toStringForExcel)
   Text.write("data/rss/result.txt", strings.mkString("\n"))
   
-  companies.collect{
-    case company:CompanyJp => ChartMaker.make(company)
-  }
+  companies.collect{ case company:CompanyJp => ChartMaker.make(company) }
   
   Logger.close()
 }
