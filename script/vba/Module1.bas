@@ -53,6 +53,8 @@ Attribute OpenHtml.VB_ProcData.VB_Invoke_Func = "e\n14"
             WSH.Run url, 3
             url = "http://www.nikkei.com/markets/company/kessan/shihyo.aspx?scode=" & code
             WSH.Run url, 3
+            url = "http://profile.yahoo.co.jp/consolidate/" & code
+            WSH.Run url, 3
             url = "http://tkido.com/stock/" & code & ".html"
             WSH.Run url, 3
         Else
