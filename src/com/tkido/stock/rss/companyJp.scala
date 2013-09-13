@@ -1,6 +1,7 @@
 package com.tkido.stock.rss
 
 abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
+  import com.tkido.stock.Config
   import com.tkido.tools.Html
   
   def makeData :Map[String, String] = {
@@ -100,12 +101,13 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
   
 }
 object CompanyJp{
+  import com.tkido.stock.Config
   import com.tkido.tools.Html
   
   val reJpT = """東証.*""".r
   
   def apply(code:String, row:Int) :CompanyJp = {
-    if(!Config.rss || row > 300) return CompanyJpOther(code, row)
+    if(!Config.rssFlag || row > 300) return CompanyJpOther(code, row)
     try{
       val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
       html.getNextLineOf("""<dt>%s</dt>""".format(code).r) match {

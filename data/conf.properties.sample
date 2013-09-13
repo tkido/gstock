@@ -1,0 +1,5 @@
+offset = 2
+rssFlag = true
+logLevel = 5
+xbrlPath = /home/jenkins/xbrl
+#xbrlPath = C:\\OLS\\xbrl

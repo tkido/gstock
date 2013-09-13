@@ -1,6 +1,7 @@
 package com.tkido.stock.xbrl
 
 object XbrlFinder {
+  import com.tkido.stock.Config
   import java.io.File
   
   def find(code:String) :List[String] = {
@@ -11,7 +12,7 @@ object XbrlFinder {
         List(file).filter(filter)
     def isXbrl(file:File) :Boolean =
       file.getName.endsWith(".xbrl")
-    val root = new File(Config.rootPath, code)
+    val root = new File(Config.xbrlPath, code)
     val files = listFiles(isXbrl)(root)
     files.map(_.toString)
   }

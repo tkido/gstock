@@ -1,10 +1,11 @@
 package com.tkido.stock.rss
 
 object main extends App {
+  import com.tkido.stock.Config
   import com.tkido.stock.ufo.XbrlDownloader
   import com.tkido.tools.Text
   
-  Logger.level = Config.loglevel
+  Logger.level = Config.logLevel
   
   val codes = Text.readLines("data/rss/table.txt")
   
