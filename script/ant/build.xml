@@ -51,10 +51,6 @@
         <exclude name=".gitignore"/>
       </fileset>
     </copy>
-    
-    <copy file="${deploy.dir}/data/conf.properties.sample"
-          tofile="${deploy.dir}/data/conf.properties"
-          overwrite="true" />
   </target>
 
 </project>
