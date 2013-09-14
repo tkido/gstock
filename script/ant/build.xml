@@ -43,6 +43,9 @@
   </target>
   
   <target name="deploy" depends="build">
+    <delete dir="${deploy.dir}"/>
+    <mkdir dir="${deploy.dir}"/>
+    
     <copy todir="${deploy.dir}" overwrite="true">
       <fileset dir="${base.dir}">
         <exclude name="src/**/*" />
