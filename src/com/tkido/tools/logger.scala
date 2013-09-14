@@ -33,19 +33,19 @@ object Logger{
     writer.close()
   }
   
-  private def write(arg: Any) {
-    writer.write(arg.toString()+"\n")
+  def log(arg: Any) {
+    writer.write(arg.toString + '\n')
   }
-  def debug(arg: => Any) { if (level <= DEBUG) write(arg) }
-  def info (arg: => Any) { if (level <= INFO ) write(arg) }
-  def warn (arg: => Any) { if (level <= WARN ) write(arg) }
-  def error(arg: => Any) { if (level <= ERROR) write(arg) }
-  def fatal(arg: => Any) { if (level <= FATAL) write(arg) }
+  def debug(arg: => Any) { if (level <= DEBUG) log(arg) }
+  def info (arg: => Any) { if (level <= INFO ) log(arg) }
+  def warn (arg: => Any) { if (level <= WARN ) log(arg) }
+  def error(arg: => Any) { if (level <= ERROR) log(arg) }
+  def fatal(arg: => Any) { if (level <= FATAL) log(arg) }
   
-  def isDebug = level <= DEBUG
-  def isInfo  = level <= INFO
-  def isWarn  = level <= WARN
-  def isError = level <= ERROR
-  def isFatal = level <= FATAL
-
+  def isDebug = (level <= DEBUG)
+  def isInfo  = (level <= INFO)
+  def isWarn  = (level <= WARN)
+  def isError = (level <= ERROR)
+  def isFatal = (level <= FATAL)
+  
 }

@@ -52,8 +52,9 @@ object XbrlParser {
     }
     val nodes = xml.child.filter(isValid)
     
-    for(node <- nodes)
-      Logger.debug(node.prefix + "\t" + node.label + "\t" + BigInt(node.text))
+    if(Logger.isDebug)
+      for(node <- nodes)
+        Logger.log(node.prefix + "\t" + node.label + "\t" + BigInt(node.text))
     
     nodes.toList.map(x => x.label -> BigInt(x.text) ).toMap
   }
