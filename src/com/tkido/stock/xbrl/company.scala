@@ -42,12 +42,6 @@ class Company(code:String) {
   def fairValue() :BigInt =
     stock + flow * rate
   
-  override def toString = {
-    val header = "\t\t\t\t\t\t%s\t%s\t%s".format(code, growthRate, fairValue)
-    val list = header :: reports.map(_.toString)
-    list.mkString("\n")
-  }
-  
   def toTable :String = {
     val header = List("年度", "解散価値", "NetCash", "accruals", "純利益", "FCF").mkString("<tr><th>", "</th><th>", "</th></tr>")
     val list = header :: reports.map(_.toTr).reverse

@@ -5,7 +5,7 @@ abstract class Company(code:String, row:Int) {
   
   val data :Map[String, String]
   
-  def toStringForExcel :String =
+  override def toString =
     Company.replaceColumn(data, row.toString).mkString("\t")
   
   def makeOtherData :Map[String, String] = {

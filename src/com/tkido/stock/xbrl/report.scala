@@ -21,11 +21,6 @@ class Report(path:String) {
     nums.sum / 100
   }
   
-  override def toString = {
-    val list = List(BigInt(year), breakupValue, netCash, accruals, netIncome, freeCashFlow)
-    list.map(_.toString).mkString("\t")
-  }
-  
   def toTr :String = {
     val list = List(BigInt(year), breakupValue, netCash, accruals, netIncome, freeCashFlow)
     list.map(Html.round(_)).mkString("<tr><td>", "</td><td>", "</td></tr>")
