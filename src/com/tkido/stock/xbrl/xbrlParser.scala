@@ -1,27 +1,11 @@
 package com.tkido.stock.xbrl
 
 object XbrlParser {
-  import scala.xml._
   import com.tkido.tools.Logger
-  import com.tkido.tools.Text
-  
-  val breakupData      = parseItems("data/xbrl/breakup_items.txt")
-  val netCashData      = parseItems("data/xbrl/netcash_items.txt")
-  val accrualsData     = parseItems("data/xbrl/accruals_items.txt")
-  val freeCashFlowData = parseItems("data/xbrl/freecashflow_items.txt")
-  
-  def parseItems(path:String): Map[String, Int] = {
-    def lineToPair(line:String) :Pair[String, Int] = {
-      val arr = line.split("\t")
-      arr(0) -> arr(1).toInt
-    }
-    def isValid(line:String) :Boolean =
-      line.nonEmpty && line.head != '#'
-    val lines = Text.readLines(path)
-    lines.filter(isValid).map(lineToPair).toMap
-  }
+  import scala.xml._
   
   def parse(path :String) :Map[String, BigInt] = {
+    Logger.debug(path)
     val xml = XML.loadFile(path)
     val isConsolidated = (xml \\ "@id").exists(_.toString == "CurrentYearConsolidatedDuration")
 
