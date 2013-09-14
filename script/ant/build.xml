@@ -36,19 +36,20 @@
   <target name="build" depends="init">
     <scalac srcdir="${sources.dir}"
             destdir="${base.dir}"
-            classpathref="build.classpath">
-      <include name="**/*.scala"   />
+            classpathref="build.classpath"
+            deprecation="true">
+      <include name="**/*.scala" />
     </scalac>
   </target>
   
   <target name="deploy" depends="build">
     <copy todir="${deploy.dir}" overwrite="true">
       <fileset dir="${base.dir}">
-        <exclude name="src/**/*"/>
-        <exclude name="src"/>
-        <exclude name=".git/**/*"/>
-        <exclude name=".git"/>
-        <exclude name=".gitignore"/>
+        <exclude name="src/**/*" />
+        <exclude name="src" />
+        <exclude name=".git/**/*" />
+        <exclude name=".git" />
+        <exclude name=".gitignore" />
       </fileset>
     </copy>
   </target>
