@@ -3,3 +3,4 @@ rssFlag = true
 logLevel = 5
 xbrlPath = /home/jenkins/xbrl
 #xbrlPath = C:\\OLS\\xbrl
+#xbrlPath = D:\\OLS\\xbrl

@@ -2,8 +2,9 @@ package com.tkido.stock
 
 object Config {
   import java.io.FileInputStream
+  import java.util.Properties
   
-  private val prop = new java.util.Properties()
+  private val prop = new Properties
   prop.load(new FileInputStream("data/conf.properties"))
   
   private def get(key:String) :String = prop.getProperty(key)
