@@ -1,7 +1,7 @@
 package com.tkido.stock.xbrl
 
 class Company(code:String) {
-  import Math.pow
+  import scala.math.pow
   
   val files = XbrlFinder.find(code)
   val reports = files.map(Report(_))
