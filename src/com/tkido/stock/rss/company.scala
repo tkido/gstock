@@ -24,7 +24,7 @@ abstract class Company(code:String, row:Int) {
     try{
       val xCompany = xbrl.Company(code)
       Map("企価" -> xCompany.fairValue.toString,
-          "表"   -> xCompany.toTable)
+          "表"   -> xCompany.toString)
     }catch{
       case _ => Map()
     }

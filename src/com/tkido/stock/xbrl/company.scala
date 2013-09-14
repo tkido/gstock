@@ -1,6 +1,7 @@
 package com.tkido.stock.xbrl
 
 class Company(code:String) {
+  import com.tkido.tools.Html
   import scala.math.pow
   
   val files = XbrlFinder.find(code)
@@ -42,10 +43,9 @@ class Company(code:String) {
   def fairValue() :BigInt =
     stock + flow * rate
   
-  def toTable :String = {
-    val header = List("年度", "解散価値", "NetCash", "accruals", "純利益", "FCF").mkString("<tr><th>", "</th><th>", "</th></tr>")
-    val list = header :: reports.map(_.toTr).reverse
-    list.mkString("""<table border="2" class="numbers"><tbody>""", "", "</tbody></table>")
+  override def toString = {
+    val header = Html.toTrTh("年度", "解散価値", "NetCash", "accruals", "純利益", "FCF")
+    Html.toTable(header :: reports.reverse)
   }
 }
 

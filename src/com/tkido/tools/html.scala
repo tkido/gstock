@@ -44,13 +44,29 @@ class Html(url:String, charset:String) {
 }
 
 object Html{
-  def apply(url:String) = new Html(url, "UTF-8")
+  def apply(url:String) = new Html(url, "utf-8")
   def apply(url:String, charset:String) = new Html(url, charset)
   
   def removeTags(string:String) :String =
     string.replaceAll("""<.*?>""", "").trim
   
-  def round(source:BigInt) :String = {
+  //for publishing
+  def toTable(rows:List[Any]) :String =
+    rows.map(toHtml).mkString("""<table border="2" class="numbers"><tbody>""", "", "</tbody></table>")
+  def toTrTh(args: Any*) :String =
+    args.toList.map(toHtml).mkString("<tr><th>", "</th><th>", "</th></tr>")
+  def toTrTd(args: Any*) :String =
+    args.toList.map(toHtml).mkString("<tr><td>", "</td><td>", "</td></tr>")
+  
+  def toHtml(arg:Any) :String = {
+    arg match {
+      case x:String => x
+      case x:BigInt => round(x)
+      case _        => arg.toString
+    }
+  }
+  
+  private def round(source:BigInt) :String = {
     def sub(str:String, col:Int) :String = {
       if(str.size > 4) sub(str.dropRight(3), col+3)
       else str + (col match {
@@ -68,6 +84,5 @@ object Html{
     val sign =  if(source < 0) "-" else ""
     "<span%s>%s%s</span>".format(klass, sign, number)
   }
-  
 
 }
