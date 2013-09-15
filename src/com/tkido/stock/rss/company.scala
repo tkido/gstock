@@ -21,13 +21,15 @@ abstract class Company(code:String, row:Int) {
   }
   
   def makeXbrlData :Map[String, String] = {
-    try{
       val xCompany = xbrl.Company(code)
       Map("企価" -> xCompany.fairValue.toString,
           "表"   -> xCompany.toString)
+    /*
+    try{
     }catch{
       case _ => Map()
     }
+    */
   }
   
 }

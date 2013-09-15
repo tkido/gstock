@@ -61,12 +61,20 @@ object Html{
   def toHtml(arg:Any) :String = {
     arg match {
       case x:String => x
-      case x:BigInt => round(x)
+      case x:BigInt => toHtml(x)
+      case x:Double => toHtml(x)
       case _        => arg.toString
     }
   }
   
-  private def round(source:BigInt) :String = {
+  private def toHtml(arg:Double) :String = {
+    val number = (arg.abs * 100).round.toString + '%'
+    val klass = if(arg < 0) """ class="minus"""" else ""
+    val sign =  if(arg < 0) "-" else ""
+    "<span%s>%s%s</span>".format(klass, sign, number)
+  }
+  
+  private def toHtml(arg:BigInt) :String = {
     def sub(str:String, col:Int) :String = {
       if(str.size > 4) sub(str.dropRight(3), col+3)
       else str + (col match {
@@ -79,9 +87,9 @@ object Html{
         case _  => "MUST_NOT_HAPPEN!!"
       })
     }
-    val number = sub(source.abs.toString, 0)
-    val klass = if(source < 0) """ class="minus"""" else ""
-    val sign =  if(source < 0) "-" else ""
+    val number = sub(arg.abs.toString, 0)
+    val klass = if(arg < 0) """ class="minus"""" else ""
+    val sign =  if(arg < 0) "-" else ""
     "<span%s>%s%s</span>".format(klass, sign, number)
   }
 

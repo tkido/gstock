@@ -14,6 +14,10 @@ class Report(path:String) {
   
   def netIncome = data("NetIncome")
   
+  def ordinaryIncomeRatio :Double = {
+    data("OrdinaryIncome").toDouble / data("NetSales").toDouble
+  }
+  
   def sumItems(items:Map[String, Int]) :BigInt = {
     val nums =
       for((key, value) <- items if data.contains(key))
@@ -22,7 +26,7 @@ class Report(path:String) {
   }
   
   override def toString =
-    Html.toTrTd(year, breakupValue, netCash, accruals, netIncome, freeCashFlow)
+    Html.toTrTd(year, breakupValue, netCash, accruals, netIncome, freeCashFlow, ordinaryIncomeRatio)
 }
 
 object Report{
