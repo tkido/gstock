@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="xbrl" default="deploy">
   
-  <property environment="env"/>
   <property name="base.dir" value="../.." />
   
   <target name="build">
