@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="xbrl" default="publish">
+<project name="xbrl" default="deploy">
   
+  <property environment="env"/>
   <property name="base.dir" value="../.." />
   
-  <target name="publish">
+  <target name="init">
+    <echo message="${env.TABLE}"  file="${base.dir}/data/table.txt"/>
+    <echo message="${env.CONFIG}" file="${base.dir}/data/conf.properties"/>
+  </target>
+  
+  <target name="build" depends="init">
+    <exec executable="/usr/local/share/scala-2.9.2/bin/scala" dir="${base.dir}">
+      <arg value="com.tkido.stock.main" />
+    </exec>    
+  </target>
+  
+  <target name="deploy" depends="build">
     <property name="html_dir" location="${base.dir}/data/rss"/>
-    <property name="publish_dir" location="/var/www/html/stock"/>
+    <property name="deploy_dir" location="/var/www/html/stock"/>
     
-    <move todir="${publish_dir}">
+    <move todir="${deploy_dir}">
       <fileset dir="${html_dir}">
         <include name="*.html"/>
         <exclude name="template.html"/>
