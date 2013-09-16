@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="xbrl" default="publish">
+  
+  <property name="base.dir" value="../.." />
+  
+  <target name="publish">
+    <property name="html_dir" location="{$base.dir}/data/rss"/>
+    <property name="publish_dir" location="/var/www/html/stock"/>
+    
+    <move todir="${publish_dir}">
+      <fileset dir="${html_dir}">
+        <include name="*.html"/>
+        <exclude name="template.html"/>
+      </fileset>
+    </move>
+  </target>
+
+</project>
