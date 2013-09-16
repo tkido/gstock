@@ -44,7 +44,7 @@ class Company(code:String) {
     stock + flow * rate
   
   override def toString = {
-    val header = Html.toTrTh("年度", "解散価値", "NetCash", "accruals", "純利益", "FCF", "経率")
+    val header = Html.toTrTh("年度", "解価", "NetC", "アク", "純利", "FCF", "粗率", "営率", "経率", "純率")
     Html.toTable(header :: reports.reverse)
   }
 }

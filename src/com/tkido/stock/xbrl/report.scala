@@ -7,16 +7,7 @@ class Report(path:String) {
   val year = new File(path).getName.slice(20, 24).toInt
   val data = XbrlParser.parse(path)
   
-  def breakupValue = sumItems(Report.breakupData)
-  def netCash      = sumItems(Report.netCashData)
-  def accruals     = sumItems(Report.accrualsData)
-  def freeCashFlow = sumItems(Report.freeCashFlowData)
-  
   def netIncome = data("NetIncome")
-  
-  def ordinaryIncomeRatio :Double = {
-    data("OrdinaryIncome").toDouble / data("NetSales").toDouble
-  }
   
   def sumItems(items:Map[String, Int]) :BigInt = {
     val nums =
@@ -24,9 +15,27 @@ class Report(path:String) {
         yield data(key) * value
     nums.sum / 100
   }
+  def breakupValue = sumItems(Report.breakupData)
+  def netCash      = sumItems(Report.netCashData)
+  def accruals     = sumItems(Report.accrualsData)
+  def freeCashFlow = sumItems(Report.freeCashFlowData)
+  
+  def ratioItems(numerator:String, denominator:String) :Option[Double] = {
+    if(data.contains(numerator) && data.contains(denominator))
+      Some(data(numerator).toDouble / data(denominator).toDouble)
+    else None
+  }
+  def grossProfitRatio     = ratioItems("GrossProfit", "NetSales")
+  def operatingProfitRatio = ratioItems("OperatingIncome", "NetSales")
+  def ordinaryProfitRatio  = ratioItems("OrdinaryIncome", "NetSales")
+  def netProfitRatio       = ratioItems("NetIncome", "NetSales")
   
   override def toString =
-    Html.toTrTd(year, breakupValue, netCash, accruals, netIncome, freeCashFlow, ordinaryIncomeRatio)
+    Html.toTrTd(year, breakupValue, netCash, accruals, netIncome, freeCashFlow,
+                grossProfitRatio,
+                operatingProfitRatio,
+                ordinaryProfitRatio,
+                netProfitRatio )
 }
 
 object Report{

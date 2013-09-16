@@ -13,6 +13,7 @@ org.eclipse.jdt.core.prefs
 .picasa.ini
 log/*.log
 data/rss/*.html
+data/rss/css
 table.txt
 result.txt
 build.properties

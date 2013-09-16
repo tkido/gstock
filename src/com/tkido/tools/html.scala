@@ -63,12 +63,14 @@ object Html{
       case x:String => x
       case x:BigInt => toHtml(x)
       case x:Double => toHtml(x)
+      case Some(x)  => toHtml(x)
+      case None     => "-"
       case _        => arg.toString
     }
   }
   
   private def toHtml(arg:Double) :String = {
-    val number = (arg.abs * 100).round.toString + '%'
+    val number = (arg.abs * 100).round.toString + "%"
     val klass = if(arg < 0) """ class="minus"""" else ""
     val sign =  if(arg < 0) "-" else ""
     "<span%s>%s%s</span>".format(klass, sign, number)
