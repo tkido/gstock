@@ -36,10 +36,8 @@ class Html(url:String, charset:String) {
     ""
   }
   
-  def getGroupOf(rgex:Regex) :String = {
-    val opt = lines.collectFirst{ case rgex(m) => m }
-    opt.getOrElse("")
-  }
+  def getGroupOf(rgex:Regex) :String =
+    lines.collectFirst{ case rgex(s) => s }.getOrElse("")
   
 }
 

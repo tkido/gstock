@@ -88,14 +88,9 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
   def parseStockholder :Map[String, String] = {
     val html = Html("http://info.finance.yahoo.co.jp/stockholder/detail/?code=%s".format(code))
     
-    def getMonth() :String = {
-      val rgex = """<tr><th>権利確定月</th><td>(.*?)</td></tr>""".r
-      val opt = html.lines.collectFirst{ case rgex(m) => m }
-      if(opt.isDefined)
-        Html.removeTags(opt.get.replaceFirst("権利確定月", "").replaceAll("末日", ""))
-      else
-        ""
-    }
+    def getMonth() :String =
+      html.getGroupOf("""<tr><th>権利確定月</th><td>(.*?)</td></tr>""".r).replaceAll("末日", "")
+    
     Map("優待" -> getMonth)
   }
   
