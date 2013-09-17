@@ -15,12 +15,11 @@ object XbrlFinder {
     val root = new File(Config.xbrlPath, code)
     val files = listFiles(isXbrl)(root)
     
-    def distinct(list:List[File]) :List[File] = {
-      def toYear(file:File) :Int =
-        file.getName.slice(20, 24).toInt
-      list.groupBy(toYear).mapValues(_.last).toList.map(_._2) //同年度で提出回数最大（最新）のものを抽出
-      .sortBy(toYear)
-    }
-    distinct(files).map(_.toString)
+    def toYear(file:File) :Int =
+      file.getName.slice(20, 24).toInt
+    //同年度で提出回数最大（最新）のものを抽出
+    def distinct(list:List[File]) :List[File] =
+      list.groupBy(toYear).mapValues(_.last).toList.map(_._2)
+    distinct(files).sortBy(toYear).map(_.toString)
   }
 }

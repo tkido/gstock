@@ -7,13 +7,14 @@ class Company(code:String) {
   val files = XbrlFinder.find(code)
   val reports = files.map(Report(_))
   
-  def growthRate :Double = {
+  def getGrowthRate :Double = {
     if(reports.size == 1) return 1.0
     if(reports.head.netIncome < 0) return 1.0
     val size = reports.size-1
     val rate = reports.last.netIncome.toDouble / reports.head.netIncome.toDouble
     pow(rate, (1.0 / size))
   }
+  val growthRate = getGrowthRate
   
   def stock :BigInt =
     List(reports.last.breakupValue, reports.last.netCash).min
