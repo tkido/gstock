@@ -16,11 +16,6 @@ class Company(code:String) {
   }
   val growthRate = getGrowthRate
   
-  def stock :BigInt =
-    List(reports.last.breakupValue, reports.last.netCash).min
-  def flow :BigInt =
-    reports.last.netIncome
-  
   def rate :Int = {
     if(flow < 0) return 15
     val forecastedGrowthRate = if(growthRate < 1.0) growthRate else growthRate / 2 + 0.5
@@ -30,6 +25,11 @@ class Company(code:String) {
     val intRate = doubleRate.toInt
     List(intRate, 15).min
   }
+  
+  def stock :BigInt =
+    List(reports.last.breakupValue, reports.last.netCash).min
+  def flow :BigInt =
+    reports.last.netIncome
   def fairValue :BigInt =
     stock + flow * rate
   
