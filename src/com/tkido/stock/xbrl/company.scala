@@ -6,16 +6,6 @@ class Company(code:String) {
   
   val files = XbrlFinder.find(code)
   val reports = files.map(Report(_))
-    .groupBy(_.year).mapValues(_.last).toList.map(_._2) //同年度で提出回数最大（最新）のものを抽出
-    .sortBy(_.year)
-  
-  def slope(list:List[BigInt]) :BigInt = {
-    val range = Range(0, list.size)
-    val m1 = range.map(x => x * list(x)).sum
-    val m2 = range.sum * list(0)
-    val m3 = range.map(x => x * x).sum
-    (m1 - m2) / m3
-  }
   
   def growthRate :Double = {
     if(reports.size == 1) return 1.0
@@ -28,7 +18,6 @@ class Company(code:String) {
   def stock :BigInt =
     List(reports.last.breakupValue, reports.last.netCash).min
   def flow :BigInt =
-    //List(reports.last.freeCashFlow, reports.last.netIncome).max
     reports.last.netIncome
   
   def rate :Int = {
@@ -40,7 +29,7 @@ class Company(code:String) {
     val intRate = doubleRate.toInt
     List(intRate, 15).min
   }
-  def fairValue() :BigInt =
+  def fairValue :BigInt =
     stock + flow * rate
   
   override def toString = {
