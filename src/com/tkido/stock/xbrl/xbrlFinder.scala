@@ -17,7 +17,6 @@ object XbrlFinder {
     
     def toYear(file:File) :Int =
       file.getName.slice(20, 24).toInt
-    //同年度で提出回数最大（最新）のものを抽出
     def distinct(list:List[File]) :List[File] =
       list.groupBy(toYear).mapValues(_.last).toList.map(_._2)
     distinct(files).sortBy(toYear).map(_.toString)

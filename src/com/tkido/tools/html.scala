@@ -48,7 +48,6 @@ object Html{
   def removeTags(string:String) :String =
     string.replaceAll("""<.*?>""", "").trim
   
-  //for publishing
   def toTable(rows:List[Any]) :String =
     rows.map(toHtml).mkString("""<table border="2" class="numbers"><tbody>""", "", "</tbody></table>")
   def toTrTh(args: Any*) :String =

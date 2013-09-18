@@ -22,7 +22,7 @@ object Text {
   def write(path:String, data:String, charset:String) {
     val fos = new FileOutputStream(path)
     val osw = new OutputStreamWriter(fos, charset)
-    val pw = new PrintWriter(osw)
+    val pw  = new PrintWriter(osw)
     pw.println(data)
     pw.close
   }  
