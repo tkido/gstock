@@ -1,6 +1,4 @@
-Attribute VB_Name = "Module1"
 Sub CopyLog()
-Attribute CopyLog.VB_ProcData.VB_Invoke_Func = "E\n14"
     Dim name As String
     name = Format(Date, "mmdd")
     
@@ -16,7 +14,6 @@ Attribute CopyLog.VB_ProcData.VB_Invoke_Func = "E\n14"
 End Sub
 
 Sub OpenHtml()
-Attribute OpenHtml.VB_ProcData.VB_Invoke_Func = "e\n14"
     Dim code As String
     Dim url As String
     
@@ -33,6 +30,8 @@ Attribute OpenHtml.VB_ProcData.VB_Invoke_Func = "e\n14"
         url = "http://www.traders.co.jp/index.asp"
         WSH.Run url, 3
         url = "http://www.bloomberg.co.jp/markets/rates.html"
+        WSH.Run url, 3
+        url = "https://www.sbisec.co.jp/ETGate"
         WSH.Run url, 3
     Else
         code = Cells(ActiveCell.row, 1)
