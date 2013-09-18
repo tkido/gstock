@@ -14,16 +14,15 @@ class Company(code:String) {
     val rate = reports.last.netIncome.toDouble / reports.head.netIncome.toDouble
     pow(rate, (1.0 / size))
   }
-  val growthRate = getGrowthRate
+  val gr = getGrowthRate
   
-  def rate :Int = {
+  def getRate :Int = {
     if(flow < 0) return 15
-    val forecastedGrowthRate = if(growthRate < 1.0) growthRate else growthRate / 2 + 0.5
-    def presentValue(later:Int) :Double =
-      pow(forecastedGrowthRate, later)/pow(1.1, later)
-    val doubleRate = Range(1, 5).map(presentValue).sum + presentValue(5) * 10
-    val intRate = doubleRate.toInt
-    List(intRate, 15).min
+    val fgr = if(gr < 1.0) gr else gr / 2 + 0.5 //forcastedGrowthRate
+    def pv(later:Int) :Double =
+      pow(fgr, later)/pow(1.1, later)
+    val rate = Range(1, 5).map(pv).sum + pv(5) * 10
+    List(rate.toInt, 15).min
   }
   
   def stock :BigInt =
@@ -31,7 +30,7 @@ class Company(code:String) {
   def flow :BigInt =
     reports.last.netIncome
   def fairValue :BigInt =
-    stock + flow * rate
+    stock + flow * getRate
   
   override def toString = {
     val header = Html.toTrTh("年度", "解価", "NetC", "アク", "純利", "FCF", "粗率", "営率", "経率", "純率")
