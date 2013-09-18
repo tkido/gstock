@@ -21,6 +21,8 @@
   </target>
   
   <target name="build" depends="init">
+    <delete dir="${base.dir}/com"/>
+    
     <scalac srcdir="${sources.dir}"
             destdir="${base.dir}"
             classpathref="build.classpath"
