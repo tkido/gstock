@@ -5,7 +5,7 @@ class Report(path:String) {
   import java.io.File
   
   val year = new File(path).getName.slice(20, 24).toInt
-  val data = XbrlParser.parse(path)
+  val data = XbrlParser(path)
   
   def netIncome = data("NetIncome")
   
@@ -31,7 +31,12 @@ class Report(path:String) {
   def netProfitRatio       = ratioItems("NetIncome", "NetSales")
   
   override def toString =
-    Html.toTrTd(year, breakupValue, netCash, accruals, netIncome, freeCashFlow,
+    Html.toTrTd(year,
+                breakupValue,
+                netCash,
+                accruals,
+                netIncome,
+                freeCashFlow,
                 grossProfitRatio,
                 operatingProfitRatio,
                 ordinaryProfitRatio,

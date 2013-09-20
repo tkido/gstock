@@ -4,7 +4,7 @@ object XbrlFinder {
   import com.tkido.stock.Config
   import java.io.File
   
-  def find(code:String) :List[String] = {
+  def apply(code:String) :List[String] = {
     def listFiles(filter:File => Boolean)(file:File): List[File] =
       if (file.isDirectory)
         file.listFiles.toList.flatMap(listFiles(filter))

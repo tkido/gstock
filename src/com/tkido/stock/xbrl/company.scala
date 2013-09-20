@@ -4,7 +4,7 @@ class Company(code:String) {
   import com.tkido.tools.Html
   import scala.math.pow
   
-  val files = XbrlFinder.find(code)
+  val files = XbrlFinder(code)
   val reports = files.map(Report(_))
   
   def getGrowthRate :Double = {

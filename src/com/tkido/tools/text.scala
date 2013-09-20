@@ -25,7 +25,7 @@ object Text {
     val pw  = new PrintWriter(osw)
     pw.println(data)
     pw.close
-  }  
+  }
   def write(path:String, data:String) {
     write(path, data, "UTF-8")
   }
