@@ -16,8 +16,7 @@ object main extends App {
   val range = Range(Config.offset, Config.offset + codes.size)
   val companies = (codes zip range).par.map(p => Company(p._1, p._2))
   
-  val strings = companies.map(_.toString)
-  Text.write("data/result.txt", strings.mkString("\n"))
+  Text.write("data/result.txt", companies.mkString("\n"))
   
   for(company <- companies) ChartMaker(company)
   
