@@ -46,7 +46,6 @@ object Company{
   
   val today = "%tY/%<tm/%<td".format(new Date)
   
-  /* column treatment */
   val order = List("ID", "名称", "R", "値", 
                    "最売", "最売数", "最買", "最買数",
                    "現値", "前終", "前比", "出来",

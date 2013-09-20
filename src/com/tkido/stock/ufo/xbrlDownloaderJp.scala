@@ -8,7 +8,7 @@ object XbrlDownloaderJp {
   import scala.io.Source
   import scala.xml._
   
-  def download(code:String) {
+  def apply(code:String) {
     val root = new File(Config.xbrlPath, code)
     if(!root.exists) root.mkdir
     

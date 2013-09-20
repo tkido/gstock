@@ -29,7 +29,7 @@ class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
         case "名証2部"  => "名２"
         case "札証"     => "札"
         case "福証"     => "福"
-        case _ => raw
+        case _          => raw
       }
     }
     

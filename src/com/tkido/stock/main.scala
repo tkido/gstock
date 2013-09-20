@@ -11,7 +11,7 @@ object main extends App {
   
   val codes = Text.readLines("data/table.txt")
   
-  for(code <- codes) XbrlDownloader.download(code)
+  for(code <- codes) XbrlDownloader(code)
   
   val range = Range(Config.offset, Config.offset + codes.size)
   val companies = (codes zip range).par.map(p => Company(p._1, p._2))
