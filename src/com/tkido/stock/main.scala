@@ -11,14 +11,14 @@ object main extends App {
   
   val codes = Text.readLines("data/table.txt")
   
-  for(code <- codes) XbrlDownloader(code)
+  codes.map(XbrlDownloader(_))
   
   val range = Range(Config.offset, Config.offset + codes.size)
   val companies = (codes zip range).par.map(p => Company(p._1, p._2))
   
   Text.write("data/result.txt", companies.mkString("\n"))
   
-  for(company <- companies) ChartMaker(company)
+  companies.map(ChartMaker(_))
   
   Logger.close()
 }

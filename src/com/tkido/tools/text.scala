@@ -12,12 +12,12 @@ object Text {
     lines.map(_.stripLineEnd)
   }
   def readLines(path:String) :List[String] =
-    readLines(path, "UTF-8")
+    readLines(path, "utf-8")
 
   def read(path:String, charset:String) :String =
     readLines(path, charset).mkString("\n")
   def read(path:String) :String =
-    read(path, "UTF-8")
+    read(path, "utf-8")
 
   def write(path:String, data:String, charset:String) {
     val fos = new FileOutputStream(path)
@@ -27,6 +27,6 @@ object Text {
     pw.close
   }
   def write(path:String, data:String) {
-    write(path, data, "UTF-8")
+    write(path, data, "utf-8")
   }
 }

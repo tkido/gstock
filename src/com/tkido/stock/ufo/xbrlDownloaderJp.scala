@@ -33,7 +33,7 @@ object XbrlDownloaderJp {
       val fileName = xbrl.split("/").last
       val file = new File(root, fileName)
       if(!file.exists){
-        val data = Source.fromURL(xbrl, "UTF-8").getLines.mkString("\n")
+        val data = Source.fromURL(xbrl, "utf-8").getLines.mkString("\n")
         Text.write(file.getPath, data)
       }
     }
