@@ -5,9 +5,8 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
   import com.tkido.tools.Html
   
   def makeData :Map[String, String] = {
-    val parsedData = 
+    val parsedData = try{
       parseProfile ++ parseConsolidate ++ parseDetail ++ parseStockholder ++ parseHistory
-    try{
     }catch{
       case _ => Map()
     }
