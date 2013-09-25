@@ -114,12 +114,12 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
             List(last - open, open - low, low - high, high - close)
           else
             List(last - open, open - high, high - low, low - close)
-        val buy  = list.filter(_ < 0).sum * volume
-        val sell = list.filter(_ > 0).sum * volume
-        buy -> sell
+        val buy  = list.filter(_ < 0).sum * -1
+        val sell = list.filter(_ > 0).sum
+        volume * buy / (buy+sell) -> volume * sell / (buy+sell)
       }
       val pairs = data.map(arrToBuySellPair)
-      val buy = -pairs.map(_._1).sum
+      val buy  = pairs.map(_._1).sum
       val sell = pairs.map(_._2).sum
       val ratio = sell * 100 / buy
       ratio.toString + "%"
