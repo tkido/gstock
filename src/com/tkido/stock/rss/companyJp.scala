@@ -98,19 +98,31 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
     val html = Html("http://info.finance.yahoo.co.jp/history/?code=%s".format(code))
     
     def getSellingPressureRatio() :String = {
-      val re = """^<td>.*?</td><td>(.*)</td><td>.*?</td>$""".r
-      val arr = html.getGroupOf("""^</tr><tr>(.*?)</tr></table>$""".r).split("""</tr><tr>""")
-                  .map(re.replaceAllIn(_, m => m.group(1)).split("""</td><td>""").map(_.replaceAll(",", "").toInt))
-      //for(a <- arr) for(c <- a) println(c)
-      (arr zip arr.clone.tail).map(p => {
-        println(p._2(3))
-        p._1(5) = p._2(3)
-      })
-      println(arr)
-      for(a <- arr) for(c <- a) println(c)
-      //for(a <- arr1) for(c <- a) println(c)
+      val reTr = """^</tr><tr.*?>(.*?)</tr></table>$""".r
+      val reTd = """^<td>.*?</td><td>(.*)</td><td>.*?</td>$""".r
+      val arr = html.getGroupOf(reTr).replaceAll(""" class=".*?"""", "").split("""</tr><tr>""")
+                  .take(21)  //about one month
+                  .map(reTd.replaceAllIn(_, m => m.group(1))
+                    .split("""</td><td>""")
+                    .map(_.replaceAll(",", "").toLong) )
+      val data = (arr zip arr.tail).map(p => p._1 :+ p._2(3) )  //add last day's closing price.
       
-      ""
+      def arrToBuySellPair(arr:Array[Long]) :Pair[Long, Long] = {
+        val (open, high, low, close, volume, last) = (arr(0), arr(1), arr(2), arr(3), arr(4), arr(5))
+        val list =
+          if(close - open > 0)
+            List(last - open, open - low, low - high, high - close)
+          else
+            List(last - open, open - high, high - low, low - close)
+        val buy  = list.filter(_ < 0).sum * volume
+        val sell = list.filter(_ > 0).sum * volume
+        buy -> sell
+      }
+      val pairs = data.map(arrToBuySellPair)
+      val buy = -pairs.map(_._1).sum
+      val sell = pairs.map(_._2).sum
+      val ratio = sell * 100 / buy
+      ratio.toString + "%"
     }
     Map("SPR" -> getSellingPressureRatio)
   }
