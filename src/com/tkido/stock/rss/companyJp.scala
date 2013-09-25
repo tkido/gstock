@@ -5,8 +5,9 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
   import com.tkido.tools.Html
   
   def makeData :Map[String, String] = {
-    val parsedData = try{
+    val parsedData = 
       parseProfile ++ parseConsolidate ++ parseDetail ++ parseStockholder ++ parseHistory
+    try{
     }catch{
       case _ => Map()
     }
@@ -116,7 +117,10 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
             List(last - open, open - high, high - low, low - close)
         val buy  = list.filter(_ < 0).sum * -1
         val sell = list.filter(_ > 0).sum
-        volume * buy / (buy+sell) -> volume * sell / (buy+sell)
+        if(buy+sell == 0)
+          0L -> 0L
+        else
+          volume * buy / (buy+sell) -> volume * sell / (buy+sell)
       }
       val pairs = data.map(arrToBuySellPair)
       val buy  = pairs.map(_._1).sum
