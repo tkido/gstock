@@ -6,7 +6,7 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
   
   def makeData :Map[String, String] = {
     val parsedData = try{
-      parseProfile ++ parseConsolidate ++ parseDetail ++ parseStockholder
+      parseProfile ++ parseConsolidate ++ parseDetail ++ parseStockholder ++ parseHistory
     }catch{
       case _ => Map()
     }
@@ -92,6 +92,27 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
       html.getGroupOf("""<tr><th>権利確定月</th><td>(.*?)</td></tr>""".r).replaceAll("末日", "")
     
     Map("優待" -> getMonth)
+  }
+  
+  def parseHistory :Map[String, String] = {
+    val html = Html("http://info.finance.yahoo.co.jp/history/?code=%s".format(code))
+    
+    def getSellingPressureRatio() :String = {
+      val re = """^<td>.*?</td><td>(.*)</td><td>.*?</td>$""".r
+      val arr = html.getGroupOf("""^</tr><tr>(.*?)</tr></table>$""".r).split("""</tr><tr>""")
+                  .map(re.replaceAllIn(_, m => m.group(1)).split("""</td><td>""").map(_.replaceAll(",", "").toInt))
+      //for(a <- arr) for(c <- a) println(c)
+      (arr zip arr.clone.tail).map(p => {
+        println(p._2(3))
+        p._1(5) = p._2(3)
+      })
+      println(arr)
+      for(a <- arr) for(c <- a) println(c)
+      //for(a <- arr1) for(c <- a) println(c)
+      
+      ""
+    }
+    Map("SPR" -> getSellingPressureRatio)
   }
   
 }
