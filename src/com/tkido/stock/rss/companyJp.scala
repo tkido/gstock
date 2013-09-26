@@ -99,8 +99,10 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
     
     val reTr = """^</tr><tr.*?>(.*?)</tr></table>$""".r
     val reTd = """^<td>.*?</td><td>(.*)</td><td>.*?</td>$""".r
-    val arr = html.getGroupOf(reTr).replaceAll(""" class=".*?"""", "").split("""</tr><tr>""")
-                .take(21)  //about one month
+    val arr = html.getGroupOf(reTr)
+                .replaceAll("""<tr><td>.*?</td><td colspan="6" class="through">.*?</td></tr>""", "")  //exclude stock split
+                .replaceAll(""" class=".*?"""", "")                                                   //exclude color
+                .split("""</tr><tr>""").take(21)                                                      //about one month
                 .map(reTd.replaceAllIn(_, m => m.group(1))
                   .split("""</td><td>""")
                   .map(_.replaceAll(",", "").toLong) )
