@@ -97,16 +97,35 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
   def parseHistory :Map[String, String] = {
     val html = Html("http://info.finance.yahoo.co.jp/history/?code=%s".format(code))
     
+    val reTr = """^</tr><tr.*?>(.*?)</tr></table>$""".r
+    val reTd = """^<td>.*?</td><td>(.*)</td><td>.*?</td>$""".r
+    val arr = html.getGroupOf(reTr).replaceAll(""" class=".*?"""", "").split("""</tr><tr>""")
+                .take(21)  //about one month
+                .map(reTd.replaceAllIn(_, m => m.group(1))
+                  .split("""</td><td>""")
+                  .map(_.replaceAll(",", "").toLong) )
+    val data = (arr zip arr.tail).map(p => p._1 :+ p._2(3) )  //add last day's closing price.
+    
+    def getVolatility() :String = {
+      def arrToPair(arr:Array[Long]) :Pair[Long, Long] = {
+        val (open, high, low, close, volume, last) = (arr(0), arr(1), arr(2), arr(3), arr(4), arr(5))
+        val list =
+          if(close - open > 0)
+            List(last - open, open - low, low - high, high - close)
+          else
+            List(last - open, open - high, high - low, low - close)
+        val buy  = list.filter(_ < 0).sum * -1
+        val sell = list.filter(_ > 0).sum
+        buy+sell -> close
+      }
+      val pairs = data.map(arrToPair)
+      val move  = pairs.map(_._1).sum
+      val close = pairs.map(_._2).sum
+      val ratio = move.toDouble / close.toDouble
+      ratio.toString
+    }
+    
     def getSellingPressureRatio() :String = {
-      val reTr = """^</tr><tr.*?>(.*?)</tr></table>$""".r
-      val reTd = """^<td>.*?</td><td>(.*)</td><td>.*?</td>$""".r
-      val arr = html.getGroupOf(reTr).replaceAll(""" class=".*?"""", "").split("""</tr><tr>""")
-                  .take(21)  //about one month
-                  .map(reTd.replaceAllIn(_, m => m.group(1))
-                    .split("""</td><td>""")
-                    .map(_.replaceAll(",", "").toLong) )
-      val data = (arr zip arr.tail).map(p => p._1 :+ p._2(3) )  //add last day's closing price.
-      
       def arrToBuySellPair(arr:Array[Long]) :Pair[Long, Long] = {
         val (open, high, low, close, volume, last) = (arr(0), arr(1), arr(2), arr(3), arr(4), arr(5))
         val list =
@@ -127,7 +146,8 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
       val ratio = sell * 100 / buy
       ratio.toString + "%"
     }
-    Map("SPR" -> getSellingPressureRatio)
+    Map("SPR" -> getSellingPressureRatio,
+        "Vol" -> getVolatility )
   }
   
 }

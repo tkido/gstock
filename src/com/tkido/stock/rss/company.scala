@@ -58,7 +58,7 @@ object Company{
                    "代表", "設立", "上場", "決期",
                    "従連", "従単", "齢", "収",
                    "率", "株価", "企価", "更新",
-                   "SPR" )
+                   "SPR", "Vol")
   
   val abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".map(_.toString).toList
   val columns = abc ::: abc.map("A"+_) ::: abc.map("B"+_)
