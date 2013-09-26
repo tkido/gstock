@@ -38,15 +38,16 @@ object ChartMakerJp {
     def getRows() :String = {
       def stringToPairs(raw: String): Pair[String, String] =
         reData.findFirstMatchIn(raw) match {
-          case None    => "" -> ""
-          case Some(m) => {
-            val g3 = if(m.group(3) == null) "" else m.group(3)
-            Pair(m.group(1)+g3, m.group(2))
-          }
+          case None =>
+            "" -> ""
+          case Some(m) if m.group(3) == null =>
+            m.group(1) -> m.group(2)
+          case Some(m) =>
+            m.group(1)+m.group(3) -> m.group(2)
         }
-      val str = business.replaceFirst(reDate, "").replaceFirst(reHeader, "").replaceFirst(reOther, "")
-      val pairs = str.split('、').map(stringToPairs)
-      pairs.map(p => """['%s', %s]""".format(p._1, p._2) ).mkString(",\n")
+      business.replaceFirst(reDate, "").replaceFirst(reHeader, "").replaceFirst(reOther, "")
+        .split('、').map(stringToPairs)
+        .map(p => """['%s', %s]""".format(p._1, p._2) ).mkString(",\n")
     }
     
     val title = code + " " + name + getHeader + getDate
