@@ -12,5 +12,6 @@ object Config {
   val offset   = get("offset").toInt
   val logLevel = get("logLevel").toInt
   val rssFlag  = get("rssFlag").toBoolean
+  val parFlag  = get("parFlag").toBoolean
   val xbrlPath = get("xbrlPath")
 }

@@ -14,7 +14,11 @@ object main extends App {
   codes.map(XbrlDownloader(_))
   
   val range = Range(Config.offset, Config.offset + codes.size)
-  val companies = (codes zip range).par.map(p => Company(p._1, p._2))
+  val companies =
+    if(Config.parFlag)
+      (codes zip range).par.map(p => Company(p._1, p._2))
+    else
+      (codes zip range).map(p => Company(p._1, p._2))
   
   Text.write("data/result.txt", companies.mkString("\n"))
   
