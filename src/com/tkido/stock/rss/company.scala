@@ -2,6 +2,7 @@ package com.tkido.stock.rss
 
 abstract class Company(code:String, row:Int) {
   import com.tkido.stock.xbrl
+  import com.tkido.tools.tryOrElse
   
   val data :Map[String, String]
   
@@ -9,7 +10,7 @@ abstract class Company(code:String, row:Int) {
     Company.replaceColumn(data, row.toString).mkString("\t")
   
   def makeOtherData :Map[String, String] = {
-    makeXbrlData ++
+    tryOrElse(makeXbrlData _, Map()) ++
     Map("ID"   -> code,
         "値"   -> """=IF(【現値】=" ", 【前終】, 【現値】)""",
         "時価" -> """=【値】*【発行】/100000""",
@@ -21,23 +22,21 @@ abstract class Company(code:String, row:Int) {
   }
   
   def makeXbrlData :Map[String, String] = {
-    try{
-      val xCompany = xbrl.Company(code)
-      Map("企価" -> xCompany.fairValue.toString,
-          "表"   -> xCompany.toString)
-    }catch{
-      case _ => Map()
-    }
+    val xCompany = xbrl.Company(code)
+    Map("企価" -> xCompany.fairValue.toString,
+        "表"   -> xCompany.toString)
   }
   
 }
 object Company{
   import java.util.Date
+  import com.tkido.tools.Logger
   
   val reJp = """[0-9]{4}""".r
   val reUs = """[A-Z]{1,5}""".r
   
   def apply(code:String, row:Int) :Company = {
+    Logger.info(code)
     code match {
       case reJp() => CompanyJp(code, row)
       case reUs() => CompanyUs(code, row)

@@ -4,8 +4,8 @@ object main extends App {
   import com.tkido.stock.rss.ChartMaker
   import com.tkido.stock.rss.Company
   import com.tkido.stock.ufo.XbrlDownloader
-  import com.tkido.tools.Text
   import com.tkido.tools.Logger
+  import com.tkido.tools.Text
   
   Logger.level = Config.logLevel
   

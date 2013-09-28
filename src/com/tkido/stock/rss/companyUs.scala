@@ -2,16 +2,15 @@ package com.tkido.stock.rss
 
 class CompanyUs(code:String, row:Int) extends Company(code:String, row:Int) {
   import com.tkido.tools.Html
+  import com.tkido.tools.tryOrElse
   
   val data = makeData
   
   def makeData :Map[String, String] = {
-    val parsedData = try{
-      parseKeyStatistics ++ parseSummary ++ parseProfile
-    }catch{
-      case _ => Map()
-    }
-    parsedData ++ makeOtherData
+    tryOrElse(parseKeyStatistics _, Map()) ++
+    tryOrElse(parseSummary _      , Map()) ++
+    tryOrElse(parseProfile _      , Map()) ++
+    makeOtherData
   }
   
   def parseSummary :Map[String, String] = {

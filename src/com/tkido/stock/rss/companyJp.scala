@@ -3,14 +3,15 @@ package com.tkido.stock.rss
 abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
   import com.tkido.stock.Config
   import com.tkido.tools.Html
+  import com.tkido.tools.tryOrElse
   
   def makeData :Map[String, String] = {
-    val parsedData = try{
-      parseProfile ++ parseConsolidate ++ parseDetail ++ parseStockholder ++ parseHistory
-    }catch{
-      case _ => Map()
-    }
-    parsedData ++ makeOtherData
+    tryOrElse(parseProfile _    , Map()) ++
+    tryOrElse(parseConsolidate _, Map()) ++
+    tryOrElse(parseDetail _     , Map()) ++
+    tryOrElse(parseStockholder _, Map()) ++
+    tryOrElse(parseHistory _    , Map()) ++
+    makeOtherData
   }
   
   def parseDetail :Map[String, String] = {

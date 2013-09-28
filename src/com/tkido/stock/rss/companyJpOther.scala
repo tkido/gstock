@@ -2,16 +2,13 @@ package com.tkido.stock.rss
 
 class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
   import com.tkido.tools.Html
+  import com.tkido.tools.tryOrElse
   
   val data = makeData
   
   override def makeData :Map[String, String] = {
-    val parsedData = try{
-      parseNonRssData
-    }catch{
-      case _ => Map()
-    }
-    super.makeData ++ parsedData
+    super.makeData ++
+    tryOrElse(parseNonRssData _, Map())
   }
   
   def parseNonRssData :Map[String, String] = {
