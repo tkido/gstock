@@ -3,7 +3,7 @@ package com.tkido.stock.rss
 object ChartMakerJp {
   import com.tkido.tools.Text
   
-  private val templete = Text.read("data/rss/template.html")
+  private val templete = Text.read("data/rss/templateJP.html")
   
   def apply(company:Company){
     val data = company.data
