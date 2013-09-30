@@ -149,8 +149,20 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
       val ratio = sell * 100 / buy
       ratio.toString + "%"
     }
+    
+    def getRankCorrelationIndex() :String = {
+      val s = data.size
+      val range = Range(0, s)
+      val closes = data.map(_(3))
+      val pairs = closes.zip(range).sortBy(_._1).map(_._2).zip(range)
+      val d = pairs.map(p => (p._1-p._2)*(p._1-p._2)).sum
+      val rci = (1.0 - (6.0 * d / (s * (s * s -1)))) * -100
+      rci.toString + "%"
+    }
+    
     Map("SPR" -> getSellingPressureRatio,
-        "Vol" -> getVolatility )
+        "Vol" -> getVolatility,
+        "RCI" -> getRankCorrelationIndex )
   }
   
 }
