@@ -142,17 +142,13 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
     
     def getSellingPressureRatio() :String = {
       val buy = data.map(d =>
-        if(d.buy+d.sell == 0)
-          0L
-        else
-          d.volume * d.buy / (d.buy+d.sell)
-        ).sum
+        if(d.buy+d.sell == 0) 0L
+        else d.volume * d.buy / (d.buy+d.sell)
+      ).sum
       val sell = data.map(d =>
-        if(d.buy+d.sell == 0)
-          0L
-        else
-          d.volume * d.sell / (d.buy+d.sell)
-        ).sum
+        if(d.buy+d.sell == 0) 0L
+        else d.volume * d.sell / (d.buy+d.sell)
+      ).sum
       val ratio = sell * 100 / buy
       ratio.toString + "%"
     }
