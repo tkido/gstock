@@ -101,9 +101,9 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
     val reTr = """^</tr><tr.*?>(.*?)</tr></table>$""".r
     val reTd = """^<td>.*?</td><td>(.*)</td><td>.*?</td>$""".r
     val arr = html.getGroupOf(reTr)
-                .replaceAll("""<tr><td>.*?</td><td colspan="6" class="through">.*?</td></tr>""", "")  //exclude stock split
+                .replaceAll("""<tr><td>.*?</td><td colspan="6" class="through">.*?</td></tr>""", "")  //exclude stock split information row
                 .replaceAll(""" class=".*?"""", "")                                                   //exclude color
-                .split("""</tr><tr>""").take(21)                                                      //about one month
+                .split("""</tr><tr>""").take(21)                                                      //about one month 20days + 1day for last close
                 .map(reTd.replaceAllIn(_, m => m.group(1))
                   .split("""</td><td>""")
                   .map(_.replaceAll(",", "").toLong) )
