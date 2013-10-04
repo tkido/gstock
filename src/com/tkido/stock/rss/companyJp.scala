@@ -166,9 +166,17 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
       rci.toString + "%"
     }
     
-    Map("SPR" -> getSellingPressureRatio,
-        "Vol" -> getVolatility,
-        "RCI" -> getRankCorrelationIndex )
+    def getVolumePerDay(span:Int) :String = {
+      val volume = data.take(span).map(_.volume).sum / span
+      "=%s/%s".format(volume, "【発行】")
+    }
+    
+    Map("SPR"  -> getSellingPressureRatio,
+        "Vol"  -> getVolatility,
+        "RCI"  -> getRankCorrelationIndex,
+        "日出" -> getVolumePerDay(1),
+        "週出" -> getVolumePerDay(5),
+        "月出" -> getVolumePerDay(20) )
   }
   
 }
