@@ -16,7 +16,7 @@
     <move todir="${deploy_dir}">
       <fileset dir="${html_dir}">
         <include name="*.html"/>
-        <exclude name="template.html"/>
+        <exclude name="template*.html"/>
       </fileset>
     </move>
   </target>
