@@ -102,13 +102,13 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
     val reTd = """^<td>.*?</td><td>(.*)</td>$""".r
     val reSplit = """<tr><td>\d{4}年\d{1,2}月\d{1,2}日</td><td colspan="6" class="through">.*?</td></tr>"""
     val reColor = """ class=".*?""""
-    val arr = html.getGroupOf(reTr)
-                .replaceAll(reSplit, "")  //exclude stock split information row
-                .replaceAll(reColor, "")  //exclude color
-                .split("""</tr><tr>""").take(21) //about one month 20days + 1day for last close
-                .map(reTd.replaceAllIn(_, m => m.group(1))
-                  .split("""</td><td>""")
-                  .map(_.replaceAll(",", "").toLong) )
+    val list = html.getGroupOf(reTr)
+                 .replaceAll(reSplit, "")  //exclude stock split information row
+                 .replaceAll(reColor, "")  //exclude color
+                 .split("""</tr><tr>""").toList.take(21) //about one month 20days + 1day for last close
+                 .map(reTd.replaceAllIn(_, m => m.group(1))
+                   .split("""</td><td>""")
+                   .map(_.replaceAll(",", "").toLong) )
     
     case class Data(buy:Long, sell:Long, volume:Long, close:Long)
     def toData(arr:Array[Long]) :Data = {
@@ -130,7 +130,7 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
       
       Data(buy, sell, volume, close)
     }
-    val data = (arr zip arr.tail).map(p => p._1 :+ p._2(5) ) //add last day's fixed close.
+    val data = (list zip list.tail).map(p => p._1 :+ p._2(5) ) //add last day's fixed close.
                  .map(toData)
     
     def getVolatility() :String = {
@@ -156,11 +156,12 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
     }
     
     def getRankCorrelationIndex() :String = {
+      def square(x:Int) = x * x
       val closes = data.map(_.close)
       val s = closes.size
       val range = Range(0, s)
       val pairs = closes.zip(range).sortBy(_._1).map(_._2).zip(range)
-      val d = pairs.map(p => (p._1-p._2)*(p._1-p._2)).sum
+      val d = pairs.map(p => square(p._1 - p._2)).sum
       val rci = (1.0 - (6.0 * d / (s * (s * s -1)))) * -100
       rci.toString + "%"
     }
