@@ -1,4 +1,4 @@
-package com.tkido.stock.xbrl
+package com.tkido.stock.edinet
 
 object XbrlFinder {
   import com.tkido.stock.Config
@@ -12,7 +12,7 @@ object XbrlFinder {
         List(file).filter(filter)
     def isXbrl(file:File) :Boolean =
       file.getName.endsWith(".xbrl")
-    val root = new File(Config.xbrlPath, code)
+    val root = new File(Config.xbrlPath, "/edinet/"+code)
     val files = listFiles(isXbrl)(root)
     
     def toYear(file:File) :Int =

@@ -1,4 +1,4 @@
-package com.tkido.stock.ufo
+package com.tkido.stock.edinet
 
 object XbrlDownloader {
   val reJp = """[0-9]{4}""".r

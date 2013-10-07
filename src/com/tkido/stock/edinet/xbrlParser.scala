@@ -1,4 +1,4 @@
-package com.tkido.stock.xbrl
+package com.tkido.stock.edinet
 
 object XbrlParser {
   import com.tkido.tools.Logger

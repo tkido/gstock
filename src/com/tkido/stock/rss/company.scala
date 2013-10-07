@@ -1,7 +1,7 @@
 package com.tkido.stock.rss
 
 abstract class Company(code:String, row:Int) {
-  import com.tkido.stock.xbrl
+  import com.tkido.stock.edinet
   import com.tkido.tools.tryOrElse
   
   val data :Map[String, String]
@@ -22,9 +22,9 @@ abstract class Company(code:String, row:Int) {
   }
   
   def makeXbrlData :Map[String, String] = {
-    val xCompany = xbrl.Company(code)
-    Map("企価" -> xCompany.fairValue.toString,
-        "表"   -> xCompany.toString)
+    val eCompany = edinet.Company(code)
+    Map("企価" -> eCompany.fairValue.toString,
+        "表"   -> eCompany.toString)
   }
   
 }

@@ -1,4 +1,4 @@
-package com.tkido.stock.xbrl
+package com.tkido.stock.edinet
 
 class Company(code:String) {
   import com.tkido.tools.Html

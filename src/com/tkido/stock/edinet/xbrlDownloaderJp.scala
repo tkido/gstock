@@ -1,4 +1,4 @@
-package com.tkido.stock.ufo
+package com.tkido.stock.edinet
 
 object XbrlDownloaderJp {
   import com.tkido.stock.Config
@@ -9,7 +9,7 @@ object XbrlDownloaderJp {
   import scala.xml._
   
   def apply(code:String) {
-    val root = new File(Config.xbrlPath, code)
+    val root = new File(Config.xbrlPath, "/edinet/"+code)
     if(!root.exists) root.mkdir
     
     val url = "http://resource.ufocatch.com/atom/edinetx/query/%s".format(code)
