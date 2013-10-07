@@ -39,10 +39,10 @@ object XbrlParser {
       }
     Logger.debug("context = %s" format context)
     
-    val startDateNode = xml.child.find(n =>
-      n.label == "context" && n.attribute("id").get.text == context
-    ).get \ "period" \ "startDate"
-    val year = startDateNode.text.take(4).toInt
+    val year =
+      xml.child.find(n =>
+        n.label == "context" && n.attribute("id").get.text == context
+      ).get.\("period").\("startDate").text.take(4).toInt
     Logger.debug("year = %s" format year)
 
     def isValid(node:Node) :Boolean = {
