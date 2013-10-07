@@ -1,9 +1,10 @@
 package com.tkido.stock
 
 object main extends App {
+  import com.tkido.stock.edinet
   import com.tkido.stock.rss.ChartMaker
   import com.tkido.stock.rss.Company
-  import com.tkido.stock.edinet.XbrlDownloader
+  import com.tkido.stock.tdnet
   import com.tkido.tools.Logger
   import com.tkido.tools.Text
   
@@ -11,7 +12,11 @@ object main extends App {
   
   val codes = Text.readLines("data/table.txt")
   
-  codes.map(XbrlDownloader(_))
+  codes.map(edinet.XbrlDownloader(_))
+  codes.map(tdnet.XbrlDownloader(_))
+  
+  //test
+  codes.map(c => tdnet.Company(c))
   
   val range = Range(Config.offset, Config.offset + codes.size)
   val pairs = codes zip range
