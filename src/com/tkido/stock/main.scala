@@ -17,7 +17,7 @@ object main extends App {
   
   //test
   codes.map(c => tdnet.Company(c))
-  
+  /*
   val range = Range(Config.offset, Config.offset + codes.size)
   val pairs = codes zip range
   
@@ -30,6 +30,6 @@ object main extends App {
   Text.write("data/result.txt", companies.mkString("\n"))
   
   companies.map(ChartMaker(_))
-  
+  */
   Logger.close()
 }

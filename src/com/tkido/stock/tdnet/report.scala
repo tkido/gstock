@@ -1,17 +1,17 @@
 package com.tkido.stock.tdnet
 
-class Report(path:String) {
-  import com.tkido.tools.Html
-  import com.tkido.tools.Logger
+case class Report[T](year:Int, quarter:Int, data:List[T]) extends Ordered[Report[T]]{
+  private def identify(year:Int, quarter:Int) :Int = year * 10 + quarter
   
+  def id = identify(year, quarter)
   
-  val data = XbrlParser(path)
+  def lastQuarterId:Option[Int] =
+    if(quarter == 1) None
+    else Some(identify(year, quarter-1))
   
-  def netIncome = data("NetIncome")
-
-
-}
-
-object Report{
-  def apply(path:String) = new Report(path)
+  def lastYearId:Int = identify(year-1, quarter)
+  
+  def compare(that:Report[T]) =
+    if(year != that.year) year - that.year
+    else quarter - that.quarter
 }

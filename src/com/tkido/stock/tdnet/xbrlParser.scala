@@ -5,7 +5,7 @@ object XbrlParser {
   import java.io.File
   import scala.xml._
   
-  def apply(path :String) :Map[String, BigInt] = {
+  def apply(path :String) :Report[Long] = {
     Logger.debug(path)
     
     val fileName = new File(path).getName
@@ -18,10 +18,10 @@ object XbrlParser {
     
     val xml = XML.loadFile(path)
     
-    val quater =
+    val quarter =
       if(!isQuarter) 4
       else (xml \ "QuarterlyPeriod")(0).text.toInt
-    Logger.debug("quater = %s" format quater)
+    Logger.debug("quarter = %s" format quarter)
     
     val isOldType =
       if(!isQuarter) false
@@ -29,7 +29,7 @@ object XbrlParser {
       else (xml \\ "@id").exists(_.toString == "CurrentQuarterNonConsolidatedDuration")
     Logger.debug("isOldType = %s" format isOldType)
     
-    val context = (quater, isConsolidated, isOldType) match {
+    val context = (quarter, isConsolidated, isOldType) match {
         case (4, true , _)      => "CurrentYearConsolidatedDuration"
         case (4, false, _)      => "CurrentYearNonConsolidatedDuration"
         case (_, true , true)   => "CurrentQuarterConsolidatedDuration"
@@ -44,20 +44,12 @@ object XbrlParser {
         n.label == "context" && n.attribute("id").get.text == context
       ).get.\("period").\("startDate").text.take(4).toInt
     Logger.debug("year = %s" format year)
-
+    
+    val order = List("NetSales", "OperatingIncome", "OrdinaryIncome", "NetIncome")
     def isValid(node:Node) :Boolean = {
-      def isValidLabel =
-        node.label match {
-          case "NetSales" => true
-          case "OperatingIncome" => true
-          case "OrdinaryIncome" => true
-          case "NetIncome" => true
-          case _ => false
-        }
-      def isValidPrefix =
-        node.prefix == "tse-t-ed"
-      def isValidContext =
-        context == node.attribute("contextRef").get.text
+      def isValidLabel   = order.contains(node.label)
+      def isValidPrefix  = node.prefix == "tse-t-ed"
+      def isValidContext = context == node.attribute("contextRef").get.text
       isValidLabel && isValidPrefix && isValidContext
     }
     val nodes = xml.child.filter(isValid)
@@ -66,6 +58,8 @@ object XbrlParser {
       for(node <- nodes)
         Logger.log(node.prefix + "\t" + node.label + "\t" + node.text)
     
-    nodes.toList.map(n => n.label -> BigInt(n.text) ).toMap
+    val map = nodes.toList.map(n => n.label -> n.text.toLong ).toMap
+    val data = order.map(map(_))
+    Report(year, quarter, data)
   }
 }

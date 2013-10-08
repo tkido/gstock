@@ -23,7 +23,7 @@ object XbrlDownloaderJp {
     val tanshins = (xml \ "entry").filter(isTanshin)
     
     def getXbrl(node:Node) :String = {
-      val reXbrl = """\.xbrl$""".r
+      val reXbrl = """tdnet-..edjpsm.*?\.xbrl$""".r
       val hrefs = (node \\ "@href").map(_.text)
       hrefs.find(reXbrl.findFirstIn(_).isDefined).get
     }
