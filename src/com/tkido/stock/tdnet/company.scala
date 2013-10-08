@@ -2,10 +2,11 @@ package com.tkido.stock.tdnet
 
 class Company(code:String) {
   import com.tkido.tools.Html
+  import com.tkido.tools.Logger
   
   val files = XbrlFinder(code)
   val rawReports = files.map(XbrlParser(_)).sorted
-  for(r <- rawReports) println(r)
+  if(Logger.isDebug) for(r <- rawReports) Logger.log(r)
   
   val rmap = rawReports.groupBy(_.id).mapValues(_.last)
   def toDeltaReport(report:Report[Long]) :Option[Report[Long]] = {
@@ -17,7 +18,7 @@ class Company(code:String) {
     Some(report.copy(data = delta))
   }
   val deltaReports = rawReports.map(toDeltaReport).collect{case Some(r) => r}
-  for(r <- deltaReports) println(r)
+  if(Logger.isDebug) for(r <- deltaReports) Logger.log(r)
   
   val dmap = deltaReports.groupBy(_.id).mapValues(_.last)
   def toDoubleReport(report:Report[Long]) :Option[Report[Double]] = {
@@ -28,8 +29,12 @@ class Company(code:String) {
     Some(report.copy(data = ratio))
   }
   val doubleReports = deltaReports.map(toDoubleReport).collect{case Some(r) => r}
-  for(r <- doubleReports) println(r)
+  if(Logger.isDebug) for(r <- doubleReports) Logger.log(r)
   
+  override def toString = {
+    val header = Html.toTrTh("年度", "Q", "売上", "営利", "経利", "純利")
+    Html.toTable(header :: doubleReports.reverse)
+  }
 }
 
 object Company{

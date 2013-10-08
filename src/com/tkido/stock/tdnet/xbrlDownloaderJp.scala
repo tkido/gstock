@@ -22,12 +22,12 @@ object XbrlDownloaderJp {
     }
     val tanshins = (xml \ "entry").filter(isTanshin)
     
-    def getXbrl(node:Node) :String = {
+    def getXbrl(node:Node) :Option[String] = {
       val reXbrl = """tdnet-..edjpsm.*?\.xbrl$""".r
       val hrefs = (node \\ "@href").map(_.text)
-      hrefs.find(reXbrl.findFirstIn(_).isDefined).get
+      hrefs.find(reXbrl.findFirstIn(_).isDefined)
     }
-    val xbrls = tanshins.map(getXbrl)
+    val xbrls = tanshins.map(getXbrl).collect{case Some(x) => x}
     
     for(xbrl <- xbrls){
       val fileName = xbrl.split("/").last

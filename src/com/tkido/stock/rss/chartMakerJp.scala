@@ -12,7 +12,8 @@ object ChartMakerJp {
     val business = data.getOrElse("事業", "")
     val name     = data.getOrElse("名称", "")
     val feature  = data.getOrElse("特色", "")
-    val table    = data.getOrElse("表", "")
+    val edinet   = data.getOrElse("edinet", "")
+    val tdnet    = data.getOrElse("tdnet", "")
     
     val reDate = """\(\d{4}\.\d{1,2}\)"""
     val reHeader = "【.*?】"
@@ -52,7 +53,7 @@ object ChartMakerJp {
     
     val title = code + " " + name + getHeader + getDate
     
-    val html = templete.format(title, getRows, title, feature, getOther, table)
+    val html = templete.format(title, getRows, title, feature, getOther, edinet, tdnet)
     Text.write("data/rss/%s.html".format(code), html)
   }
 }
