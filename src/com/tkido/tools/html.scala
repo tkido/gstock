@@ -57,10 +57,11 @@ object Html{
   
   def toHtml(arg:Any) :String = {
     arg match {
-      case x:String => x
-      case x:BigInt => toHtml(x)
-      case x:Double => toHtml(x)
-      case Some(x)  => toHtml(x)
+      case s:String => s
+      case d:Long   => toHtml(BigInt(d))
+      case d:BigInt => toHtml(d)
+      case f:Double => toHtml(f)
+      case Some(t)  => toHtml(t)
       case None     => "-"
       case _        => arg.toString
     }

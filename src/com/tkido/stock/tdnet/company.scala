@@ -33,7 +33,8 @@ class Company(code:String) {
   
   override def toString = {
     val header = Html.toTrTh("年度", "Q", "売上", "営利", "経利", "純利")
-    Html.toTable(header :: doubleReports.reverse)
+    Html.toTable(header :: doubleReports.reverse) +
+    Html.toTable(header :: deltaReports.reverse)
   }
 }
 
