@@ -75,19 +75,23 @@ object Html{
   }
   
   private def toHtml(arg:BigInt) :String = {
-    def sub(str:String, col:Int) :String = {
-      if(str.size > 4) sub(str.dropRight(3), col+3)
-      else str + (col match {
-        case  0 => ""
-        case  3 => "K"
-        case  6 => "M"
-        case  9 => "B"
-        case 12 => "T"
-        case 15 => "Q"
-        case _  => "MUST_NOT_HAPPEN!!"
-      })
+    def round(str:String, col:Int) :String = {
+      val size = str.size
+      val (head, tail) = str.take(3).splitAt(size % 3)
+      val unit = (size - 1) / 3 match {
+        case 0 => ""
+        case 1 => "K"
+        case 2 => "M"
+        case 3 => "B"
+        case 4 => "T"
+        case 5 => "Q"
+        case 6 => "q"
+        case 7 => "X" //too large. maybe BUG.
+      }
+      val separator = if(head.isEmpty || tail.isEmpty) "" else "."
+      head + separator + tail + unit
     }
-    val number = sub(arg.abs.toString, 0)
+    val number = round(arg.abs.toString, 0)
     val klass = if(arg < 0) """ class="minus"""" else ""
     val sign =  if(arg < 0) "-" else ""
     "<span%s>%s%s</span>".format(klass, sign, number)
