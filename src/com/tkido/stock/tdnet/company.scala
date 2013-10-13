@@ -5,7 +5,10 @@ class Company(code:String) {
   import com.tkido.tools.Logger
   
   val files = XbrlFinder(code)
-  val rawReports = files.map(XbrlParser(_)).sorted
+  val rawReports =
+    files.map(XbrlParser(_))
+      .groupBy(_.id).mapValues(_.last).toList.map(_._2) //distinct
+      .sorted
   if(Logger.isDebug) for(r <- rawReports) Logger.log(r)
   
   val rmap = rawReports.groupBy(_.id).mapValues(_.last)
