@@ -29,4 +29,11 @@ object Text {
   def write(path:String, data:String) {
     write(path, data, "utf-8")
   }
+  
+  def fromURL(path:String, charset:String) :String =
+    Source.fromURL(path, charset).getLines.mkString("\n")
+  def fromURL(path:String) :String =
+    fromURL(path, "utf-8")
+    
+  
 }

@@ -4,8 +4,6 @@ object XbrlDownloaderJp {
   import com.tkido.stock.Config
   import com.tkido.tools.Text
   import java.io.File
-  import java.net.URL
-  import scala.io.Source
   import scala.xml._
   
   def apply(code:String) {
@@ -32,10 +30,7 @@ object XbrlDownloaderJp {
     for(xbrl <- xbrls){
       val fileName = xbrl.split("/").last
       val file = new File(root, fileName)
-      if(!file.exists){
-        val data = Source.fromURL(xbrl, "utf-8").getLines.mkString("\n")
-        Text.write(file.getPath, data)
-      }
+      if(!file.exists) Text.write(file.getPath, Text.fromURL(xbrl))
     }
   }
 }
