@@ -4,7 +4,7 @@ object XbrlParser {
   import com.tkido.tools.Logger
   import scala.xml._
   
-  def apply(path :String) :Map[String, BigInt] = {
+  def apply(path :String) :Map[String, Long] = {
     Logger.debug(path)
     val xml = XML.loadFile(path)
     val isConsolidated = (xml \\ "@id").exists(_.toString == "CurrentYearConsolidatedDuration")
@@ -38,8 +38,8 @@ object XbrlParser {
     
     if(Logger.isDebug)
       for(node <- nodes)
-        Logger.log(node.prefix + "\t" + node.label + "\t" + BigInt(node.text))
+        Logger.log(node.prefix + "\t" + node.label + "\t" + node.text.toLong)
     
-    nodes.toList.map(x => x.label -> BigInt(x.text) ).toMap
+    nodes.toList.map(x => x.label -> x.text.toLong ).toMap
   }
 }

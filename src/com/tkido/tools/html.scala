@@ -58,8 +58,7 @@ object Html{
   def toHtml(arg:Any) :String = {
     arg match {
       case s:String => s
-      case d:Long   => toHtml(BigInt(d))
-      case d:BigInt => toHtml(d)
+      case d:Long   => toHtml(d)
       case f:Double => toHtml(f)
       case Some(t)  => toHtml(t)
       case None     => "-"
@@ -74,7 +73,7 @@ object Html{
     "<span%s>%s%s</span>".format(klass, sign, number)
   }
   
-  private def toHtml(arg:BigInt) :String = {
+  private def toHtml(arg:Long) :String = {
     def round(str:String, col:Int) :String = {
       val size = str.size
       val (head, tail) = str.take(3).splitAt(size % 3)

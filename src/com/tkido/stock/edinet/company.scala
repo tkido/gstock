@@ -25,11 +25,11 @@ class Company(code:String) {
     List(rate.toInt, 15).min
   }
   
-  def stock :BigInt =
+  def stock :Long =
     List(reports.last.breakupValue, reports.last.netCash).min
-  def flow :BigInt =
+  def flow :Long =
     reports.last.netIncome
-  def fairValue :BigInt =
+  def fairValue :Long =
     stock + flow * getRate
   
   override def toString = {

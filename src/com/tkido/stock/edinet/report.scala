@@ -9,7 +9,7 @@ class Report(path:String) {
   
   def netIncome = data("NetIncome")
   
-  def sumItems(items:Map[String, Int]) :BigInt = {
+  def sumItems(items:Map[String, Int]) :Long = {
     val nums =
       for((key, value) <- items if data.contains(key))
         yield data(key) * value
