@@ -4,14 +4,13 @@ class Company(code:String) {
   import com.tkido.tools.Html
   import com.tkido.tools.Logger
   
-  val files = XbrlFinder(code)
   val rawReports =
-    files.map(XbrlParser(_))
+    XbrlFinder(code).map(XbrlParser(_))
       .groupBy(_.id).mapValues(_.last).toList.map(_._2) //distinct
       .sorted
   if(Logger.isDebug) for(r <- rawReports) Logger.log(r)
   
-  val rmap = rawReports.groupBy(_.id).mapValues(_.last)
+  val rmap = rawReports.groupBy(_.id).mapValues(_.head)
   def toDeltaReport(report:Report[Long]) :Option[Report[Long]] = {
     if(report.lastQuarterId.isEmpty) return Some(report)  //Q1
     val lastId = report.lastQuarterId.get
@@ -23,7 +22,7 @@ class Company(code:String) {
   val deltaReports = rawReports.map(toDeltaReport).collect{case Some(r) => r}
   if(Logger.isDebug) for(r <- deltaReports) Logger.log(r)
   
-  val dmap = deltaReports.groupBy(_.id).mapValues(_.last)
+  val dmap = deltaReports.groupBy(_.id).mapValues(_.head)
   def toDoubleReport(report:Report[Long]) :Option[Report[Double]] = {
     val lastId = report.lastYearId
     if(!dmap.contains(lastId)) return None
