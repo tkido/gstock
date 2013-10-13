@@ -25,7 +25,7 @@ object XbrlDownloaderJp {
       val hrefs = (node \\ "@href").map(_.text)
       hrefs.find(reXbrl.findFirstIn(_).isDefined)
     }
-    val xbrls = tanshins.map(getXbrl).collect{case Some(x) => x}
+    val xbrls = tanshins.map(getXbrl).collect{case Some(s) => s}
     
     for(xbrl <- xbrls){
       val fileName = xbrl.split("/").last

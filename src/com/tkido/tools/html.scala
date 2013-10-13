@@ -28,14 +28,6 @@ class Html(url:String, charset:String) {
     ""
   }
   
-  def getLineOf(rgex:Regex) :String = {
-    for(line <- lines){
-      if(rgex.findFirstIn(line).isDefined)
-        return line
-    }
-    ""
-  }
-  
   def getGroupOf(rgex:Regex) :String =
     lines.collectFirst{ case rgex(s) => s }.getOrElse("")
   
