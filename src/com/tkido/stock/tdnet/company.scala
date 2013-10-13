@@ -23,11 +23,19 @@ class Company(code:String) {
   if(Logger.isDebug) for(r <- deltaReports) Logger.log(r)
   
   val dmap = deltaReports.groupBy(_.id).mapValues(_.head)
-  def toDoubleReport(report:Report[Long]) :Option[Report[Double]] = {
+  def toDoubleReport(report:Report[Long]) :Option[Report[Any]] = {
     val lastId = report.lastYearId
     if(!dmap.contains(lastId)) return None
     val last = dmap(lastId)
-    val ratio = (report.data zip last.data).map(p => 1.0 * p._1 / p._2 - 1.0)
+    def toDisplay(pair:Pair[Long, Long]) :Any = {
+      pair match {
+        case (p1, p2) if p1 > 0 && p2 > 0 => 1.0 * p1 / p2 - 1.0
+        case (p1, p2) if p1 < 0 && p2 < 0 => """<span class="minus">赤字</span>"""
+        case (p1, p2) if p1 > 0 && p2 < 0 => "黒転"
+        case (p1, p2) if p1 < 0 && p2 > 0 => """<span class="minus">赤転</span>"""
+      }
+    }
+    val ratio = (report.data zip last.data).map(toDisplay)
     Some(report.copy(data = ratio))
   }
   val doubleReports = deltaReports.map(toDoubleReport).collect{case Some(r) => r}
