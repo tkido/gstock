@@ -1,17 +1,13 @@
 package com.tkido.stock
 
 object Config {
-  import java.io.FileInputStream
-  import java.util.Properties
+  import com.tkido.tools.Properties
   
-  private val prop = new Properties
-  prop.load(new FileInputStream("data/conf.properties"))
+  private val prop = Properties("data/conf.properties")
   
-  private def get(key:String) :String = prop.getProperty(key)
-  
-  val offset   = get("offset").toInt
-  val logLevel = get("logLevel").toInt
-  val rssFlag  = get("rssFlag").toBoolean
-  val parFlag  = get("parFlag").toBoolean
-  val xbrlPath = get("xbrlPath")
+  val offset   = prop("offset").toInt
+  val logLevel = prop("logLevel").toInt
+  val rssFlag  = prop("rssFlag").toBoolean
+  val parFlag  = prop("parFlag").toBoolean
+  val xbrlPath = prop("xbrlPath")
 }

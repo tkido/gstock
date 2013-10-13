@@ -9,26 +9,23 @@ class Report(path:String) {
   
   def netIncome = data("NetIncome")
   
-  def sumItems(items:Map[String, Int]) :Long = {
-    val nums =
-      for((key, value) <- items if data.contains(key))
-        yield data(key) * value
-    nums.sum / 100
-  }
-  def breakupValue = sumItems(Report.breakupData)
-  def netCash      = sumItems(Report.netCashData)
-  def accruals     = sumItems(Report.accrualsData)
-  def freeCashFlow = sumItems(Report.freeCashFlowData)
+  def sumItems(items:Map[String, Int]) :Long =
+    items.map(p => data.getOrElse(p._1, 0L) * p._2).sum / 100
+  
+  def breakupValue = sumItems(Report.breakupItems)
+  def netCash      = sumItems(Report.netCashItems)
+  def accruals     = sumItems(Report.accrualsItems)
+  def freeCashFlow = sumItems(Report.freeCashFlowItems)
   
   def ratioItems(numerator:String, denominator:String) :Option[Double] = {
     if(data.contains(numerator) && data.contains(denominator))
       Some(data(numerator).toDouble / data(denominator).toDouble)
     else None
   }
-  def grossProfitRatio     = ratioItems("GrossProfit", "NetSales")
+  def grossProfitRatio     = ratioItems("GrossProfit",     "NetSales")
   def operatingProfitRatio = ratioItems("OperatingIncome", "NetSales")
-  def ordinaryProfitRatio  = ratioItems("OrdinaryIncome", "NetSales")
-  def netProfitRatio       = ratioItems("NetIncome", "NetSales")
+  def ordinaryProfitRatio  = ratioItems("OrdinaryIncome",  "NetSales")
+  def netProfitRatio       = ratioItems("NetIncome",       "NetSales")
   
   override def toString =
     Html.toTrTd(year,
@@ -44,23 +41,12 @@ class Report(path:String) {
 }
 
 object Report{
-  import com.tkido.tools.Text
+  import com.tkido.tools.Properties
   
   def apply(path:String) = new Report(path)
   
-  val breakupData      = parseItems("data/xbrl/breakup_items.txt")
-  val netCashData      = parseItems("data/xbrl/netcash_items.txt")
-  val accrualsData     = parseItems("data/xbrl/accruals_items.txt")
-  val freeCashFlowData = parseItems("data/xbrl/freecashflow_items.txt")
-  
-  def parseItems(path:String): Map[String, Int] = {
-    def lineToPair(line:String) :Pair[String, Int] = {
-      val arr = line.split("\t")
-      arr(0) -> arr(1).toInt
-    }
-    def isValid(line:String) :Boolean =
-      line.nonEmpty && line.head != '#'
-    val lines = Text.readLines(path)
-    lines.filter(isValid).map(lineToPair).toMap
-  }
+  val breakupItems      = Properties("data/edinet/breakup.properties",      _.toInt)
+  val netCashItems      = Properties("data/edinet/netcash.properties",      _.toInt)
+  val accrualsItems     = Properties("data/edinet/accruals.properties",     _.toInt)
+  val freeCashFlowItems = Properties("data/edinet/freecashflow.properties", _.toInt)
 }
