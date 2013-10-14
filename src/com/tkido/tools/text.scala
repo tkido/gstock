@@ -1,39 +1,36 @@
 package com.tkido.tools
 
 object Text {
-  import scala.io.Source
   import java.io.FileOutputStream
   import java.io.OutputStreamWriter
   import java.io.PrintWriter
-
-  def readLines(path:String, charset:String) :List[String] = {
+  import scala.io.Source
+  
+  val reUrl = """https?://.*""".r
+  
+  def readLines(source:String, charset:String = "utf-8") :List[String] = {
+    source match {
+      case reUrl() => readLinesFromUrl(source, charset)
+      case _       => readLinesFromFile(source, charset)
+    }
+  }
+  def read(source:String, charset:String = "utf-8") :String =
+    readLines(source, charset).mkString("\n")
+  
+  private def readLinesFromUrl(url:String, charset:String) :List[String] =
+    Source.fromURL(url, charset).getLines.toList.map(_.stripLineEnd)
+  private def readLinesFromFile(path:String, charset:String) :List[String] = {
     val s = Source.fromFile(path, charset)
     val lines = try s.getLines.toList finally s.close
     lines.map(_.stripLineEnd)
   }
-  def readLines(path:String) :List[String] =
-    readLines(path, "utf-8")
-
-  def read(path:String, charset:String) :String =
-    readLines(path, charset).mkString("\n")
-  def read(path:String) :String =
-    read(path, "utf-8")
-
-  def write(path:String, data:String, charset:String) {
+  
+  def write(path:String, data:String, charset:String = "utf-8") {
     val fos = new FileOutputStream(path)
     val osw = new OutputStreamWriter(fos, charset)
     val pw  = new PrintWriter(osw)
     pw.println(data)
     pw.close
   }
-  def write(path:String, data:String) {
-    write(path, data, "utf-8")
-  }
-  
-  def fromURL(path:String, charset:String) :String =
-    Source.fromURL(path, charset).getLines.mkString("\n")
-  def fromURL(path:String) :String =
-    fromURL(path, "utf-8")
-    
   
 }
