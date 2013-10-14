@@ -6,7 +6,7 @@ object Text {
   import java.io.PrintWriter
   import scala.io.Source
   
-  val reUrl = """https?://.*""".r
+  val reUrl = """^https?://.*""".r
   
   def readLines(source:String, charset:String = "utf-8") :List[String] = {
     source match {
