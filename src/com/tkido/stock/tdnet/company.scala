@@ -29,10 +29,10 @@ class Company(code:String) {
     val last = dmap(lastId)
     def toDisplay(pair:Pair[Long, Long]) :Any = {
       pair match {
-        case (p1, p2) if p1 > 0 && p2 > 0 => 1.0 * p1 / p2 - 1.0
-        case (p1, p2) if p1 < 0 && p2 < 0 => """<span class="minus">赤字</span>"""
-        case (p1, p2) if p1 > 0 && p2 < 0 => "黒転"
-        case (p1, p2) if p1 < 0 && p2 > 0 => """<span class="minus">赤転</span>"""
+        case (p1, p2) if p1 >  0 && p2 >  0 => 1.0 * p1 / p2 - 1.0
+        case (p1, p2) if p1 <= 0 && p2 <= 0 => """<span class="minus">赤字</span>"""
+        case (p1, p2) if p1 >  0 && p2 <= 0 => "黒転"
+        case (p1, p2) if p1 <= 0 && p2 >  0 => """<span class="minus">赤転</span>"""
       }
     }
     val ratio = (report.data zip last.data).map(toDisplay)
