@@ -12,9 +12,8 @@ object Logger{
   
   var level = FATAL
   
-  private val template = "%tY_%<tm%<td_%<tH%<tM_%<tS"
-  
-  private val started = template format new Date
+  val template = "%tY_%<tm%<td_%<tH%<tM_%<tS"
+  val started = template format new Date
   
   val logger = 
     if(new File("log/").exists) new FileLogger
@@ -56,9 +55,7 @@ class FileLogger extends Logger{
   import java.io.OutputStreamWriter
   import java.util.Date
   
-  private val template = "%tY_%<tm%<td_%<tH%<tM_%<tS"
-  private val started = template format new Date
-  private val fileName = "log/%s.log" format started
+  private val fileName = "log/%s.log" format Logger.started
   
   private val encode = "utf-8"
   private val append = true
