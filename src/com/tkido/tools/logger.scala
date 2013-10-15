@@ -14,22 +14,22 @@ object Logger{
   
   private val template = "%tY_%<tm%<td_%<tH%<tM_%<tS"
   
-  private val started = template.format(new Date)
+  private val started = template format new Date
   
-  val logger =
+  val logger = 
     if(new File("log/").exists) new FileLogger
     else                        new PrintLogger
   
-  fatal("STARTED at %s".format(started))
-  
-  def close() {
-    val ended = template.format(new Date)
-    fatal("ENDED at %s".format(ended))
-    logger.close()
-  }
+  fatal("STARTED at %s" format started)
   
   def log(arg: Any) {
     logger.log(arg)
+  }
+  
+  def close() {
+    val ended = template format new Date
+    fatal("ENDED at %s" format ended)
+    logger.close()
   }
   
   def debug(arg: => Any) { if (level <= DEBUG) log(arg) }
@@ -57,8 +57,8 @@ class FileLogger extends Logger{
   import java.util.Date
   
   private val template = "%tY_%<tm%<td_%<tH%<tM_%<tS"
-  private val started = template.format(new Date)
-  private val fileName = "log/%s.log".format(started)
+  private val started = template format new Date
+  private val fileName = "log/%s.log" format started
   
   private val encode = "utf-8"
   private val append = true
