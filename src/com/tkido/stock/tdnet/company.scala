@@ -42,7 +42,7 @@ class Company(code:String) {
   if(Logger.isDebug) for(r <- doubleReports) Logger.log(r)
   
   override def toString = {
-    val header = Html.toTrTh("開示", "Q", "売上", "営利", "経利", "純利")
+    val header = Html.toTrTh("終了月", "Q", "売上", "営利", "経利", "純利", "開示日")
     Html.toTable(header :: doubleReports.reverse) +
     Html.toTable(header :: deltaReports.reverse)
   }
