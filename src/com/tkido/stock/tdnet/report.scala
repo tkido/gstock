@@ -1,6 +1,6 @@
 package com.tkido.stock.tdnet
 
-case class Report[T](year:Int, quarter:Int, data:List[T]) extends Ordered[Report[T]]{
+case class Report[T](year:Int, quarter:Int, date:String, data:List[T]) extends Ordered[Report[T]]{
   import com.tkido.tools.Html
   
   private def identify(year:Int, quarter:Int) :Int = year * 10 + quarter
@@ -18,7 +18,7 @@ case class Report[T](year:Int, quarter:Int, data:List[T]) extends Ordered[Report
     else quarter - that.quarter
     
   override def toString =
-    Html.toTrTd(year,
+    Html.toTrTd(date,
                 quarter,
                 data(0),
                 data(1),

@@ -18,6 +18,8 @@ object XbrlParser {
     
     val xml = XML.loadFile(path)
     
+    val date = (xml \ "FilingDate")(0).text
+    
     val quarter =
       if(!isQuarter) 4
       else (xml \ "QuarterlyPeriod")(0).text.toInt
@@ -60,6 +62,6 @@ object XbrlParser {
     
     val map = nodes.toList.map(n => n.label -> n.text.toLong ).toMap
     val data = order.map(map(_))
-    Report(year, quarter, data)
+    Report(year, quarter, date, data)
   }
 }
