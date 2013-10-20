@@ -11,10 +11,10 @@ object main extends App {
   val pairs = codes zip range
   
   val data =
-    if(Config.parFlag)
-      pairs.par.map(p => Processor(p))
+    if(Logger.level == Logger.DEBUG)
+      pairs.map(Processor(_))
     else
-      pairs.map(p => Processor(p))
+      pairs.par.map(Processor(_))
   
   Text.write("data/result.txt", data.mkString("\n"))
   

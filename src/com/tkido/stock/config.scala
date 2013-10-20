@@ -8,6 +8,5 @@ object Config {
   val offset   = prop("offset").toInt
   val logLevel = prop("logLevel").toInt
   val rssFlag  = prop("rssFlag").toBoolean
-  val parFlag  = prop("parFlag").toBoolean
   val xbrlPath = prop("xbrlPath")
 }
