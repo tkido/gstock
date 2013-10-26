@@ -64,6 +64,7 @@ class FileLogger extends Logger{
   
   def log(arg: Any) {
     writer.write(arg.toString + '\n')
+    println(arg)
   }
   
   def close() {
