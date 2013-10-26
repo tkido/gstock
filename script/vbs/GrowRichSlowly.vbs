@@ -4,6 +4,18 @@
 'マーケットスピードでログインIDはデフォルトで入力済みにしておく
 'マーケットスピードでショートカットF1キーに総合サマリーを割り当てておく
 
+'設定ファイルのインクルード
+Const ForReading = 1
+    
+Dim FileShell
+Set FileShell = WScript.CreateObject("Scripting.FileSystemObject")
+
+Function ReadFile(ByVal FileName)
+    ReadFile = FileShell.OpenTextFile(FileName, ForReading, False).ReadAll()
+End Function
+
+Execute ReadFile("setting.vbs")
+
 'Dvorakerの停止
 'WMIにて使用する各種オブジェクトを定義・生成する。
 Dim oClassSet
@@ -30,24 +42,19 @@ Set oLocator = Nothing
 
 'マーケットスピードの起動
 Set WshShell = CreateObject("WScript.Shell")
-WshShell.CurrentDirectory = "D:\Program Files (x86)\MarketSpeed\MarketSpeed"
-WshShell.Exec("D:\Program Files (x86)\MarketSpeed\MarketSpeed\MarketSpeed.exe")
+WshShell.CurrentDirectory = MS_DIR
+WshShell.Exec(MS_EXE)
 
 'マーケットスピードの最大化
-WshShell.CurrentDirectory = "D:\Program Files (x86)\MarketSpeed\MarketSpeed"
-Set objMS = WshShell.Exec("D:\Program Files (x86)\MarketSpeed\MarketSpeed\MarketSpeed.exe")
+WshShell.CurrentDirectory = MS_DIR
+Set objMS = WshShell.Exec(MS_EXE)
 WshShell.AppActivate(objMS.ProcessID)
 WScript.Sleep(1000)
-'WshShell.SendKeys("% X")
-'WScript.Sleep(1000)
 
 'マーケットスピードのアクティブ化
-WshShell.AppActivate("Market Speed Ver11.21")
+WshShell.AppActivate(MS_WINDOW_TITLE)
 
 'マーケットスピードの自動ログイン
-MS_WINDOW_TITLE = "Market Speed Ver11.21"
-MS_WINDOW_LOGIN_TITLE = "Market Speed - ﾛｸﾞｲﾝ"
-
 ret = WshShell.AppActivate(MS_WINDOW_TITLE)
 WScript.Sleep(1000)
 
@@ -58,23 +65,23 @@ WshShell.SendKeys("{ENTER}")
 WScript.Sleep(1000)
 
 'マーケットスピードのパスワード入力
-WshShell.SendKeys("CZPW7960")
+WshShell.SendKeys(MS_PASSWORD)
 WScript.Sleep(1000)
 WshShell.SendKeys("{ENTER}")
 WScript.Sleep(1000)
 
 'RSSの起動
 Set WshShell = CreateObject("WScript.Shell")
-WshShell.CurrentDirectory = "D:\Program Files (x86)\MarketSpeed\MLauncher"
-WshShell.Exec("D:\Program Files (x86)\MarketSpeed\MLauncher\MLauncher.exe RSS")
+WshShell.CurrentDirectory = MS_LAUNCHER_DIR
+WshShell.Exec(MS_LAUNCHER_EXE)
 
 'Dvorakerの再起動
 Set WshShell = CreateObject("WScript.Shell")
-WshShell.Exec("D:\OLS\Dvoraker\dvoraker.exe -p -k -2")
+WshShell.Exec(DVORAKER_EXE)
 
 'エクセルを開く
 Dim objExcel
 Set objExcel = CreateObject("Excel.Application")
 objExcel.Visible = True
-objExcel.Workbooks.Open "D:\Users\tkido\Documents\Dropbox\xls\rss.xlsm"
+objExcel.Workbooks.Open RSS_FILE
 Set objExcel = Nothing

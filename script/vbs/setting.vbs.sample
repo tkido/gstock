@@ -1,0 +1,20 @@
+'■設定ファイル
+'GrowRichSlowly.vbs で使用される設定
+
+'■共通設定
+MS_PASSWORD = "foobar"
+
+'■マシンごとに違う設定
+'●バージョン設定
+MS_WINDOW_TITLE = "Market Speed Ver11.21"
+MS_WINDOW_LOGIN_TITLE = "Market Speed - ﾛｸﾞｲﾝ"
+
+'●パス設定
+MS_DIR = "D:\Program Files (x86)\MarketSpeed\MarketSpeed"
+MS_EXE = "D:\Program Files (x86)\MarketSpeed\MarketSpeed\MarketSpeed.exe"
+
+MS_LAUNCHER_DIR = "D:\Program Files (x86)\MarketSpeed\MLauncher"
+MS_LAUNCHER_EXE = "D:\Program Files (x86)\MarketSpeed\MLauncher\MLauncher.exe RSS"
+
+DVORAKER_EXE = "D:\OLS\Dvoraker\dvoraker.exe -p -k -2"
+RSS_FILE = "D:\Users\tkido\Documents\Dropbox\xls\rss.xlsm"
