@@ -1,3 +1,7 @@
+Sub CopyCodes()
+    Range("A1").EntireColumn.Copy
+End Sub
+
 Sub CopyLog()
     Dim name As String
     name = Format(Date, "mmdd")
