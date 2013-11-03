@@ -25,13 +25,17 @@ Sub OpenHtml()
     re.Pattern = "[0-9]{4}"
     
     If ActiveCell.row = 1 Then
+        url = "https://www.sbisec.co.jp/ETGate"
+        WSH.Run url, 3
         url = "https://kabu.click-sec.com/sec1-9/mypage/top.do"
         WSH.Run url, 3
         url = "http://www.traders.co.jp/index.asp"
         WSH.Run url, 3
+        url = "http://stocks.finance.yahoo.co.jp/"
+        WSH.Run url, 3
         url = "http://www.bloomberg.co.jp/markets/rates.html"
         WSH.Run url, 3
-        url = "https://www.sbisec.co.jp/ETGate"
+        url = "http://biz.yahoo.co.jp/ipo/"
         WSH.Run url, 3
     Else
         code = Cells(ActiveCell.row, 1)
@@ -40,7 +44,7 @@ Sub OpenHtml()
         If re.Test(code) Then
             url = "http://kabu-sokuhou.com/brand/item/code___" & code & "/"
             WSH.Run url, 3
-            url = "https://www.google.co.jp/search?q=" & Cells(ActiveCell.row, 35)
+            url = "https://www.google.co.jp/search?q=" & Cells(ActiveCell.row, 42)
             WSH.Run url, 3
             url = "https://www.google.co.jp/search?q=" & Cells(ActiveCell.row, 2)
             WSH.Run url, 3
