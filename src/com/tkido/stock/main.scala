@@ -6,7 +6,7 @@ object main extends App {
   
   Logger.level = Config.logLevel
   
-  val codes = Text.readLines("data/table.txt")
+  val codes = Parser("data/table.txt")
   val range = Range(Config.offset, Config.offset + codes.size)
   val pairs = codes zip range
   
