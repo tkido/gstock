@@ -1,5 +1,12 @@
 Sub CopyCodes()
     Range("A1").EntireColumn.Copy
+    
+    Dim WSH
+    Set WSH = CreateObject("Wscript.Shell")
+    
+    Dim url As String
+    url = "http://tkido.com/jenkins/job/RSS/configure"
+    WSH.Run url, 3
 End Sub
 
 Sub CopyLog()
