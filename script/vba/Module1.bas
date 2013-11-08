@@ -50,6 +50,7 @@ Sub OpenHtml()
         WSH.Run url, 3
     Else
         code = Cells(ActiveCell.row, 1)
+        Cells(ActiveCell.row, 1).Copy
         gmosec = Cells(1, 1)
         
         If re.Test(code) Then
