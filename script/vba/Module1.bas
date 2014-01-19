@@ -1,4 +1,29 @@
 Sub CopyCodes()
+    Columns("BE:BE").Select
+    ActiveWorkbook.Worksheets("RSS").Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("RSS").Sort.SortFields.Add Key:=Range("BE1"), _
+        SortOn:=xlSortOnValues, Order:=xlDescending, DataOption:=xlSortNormal
+    With ActiveWorkbook.Worksheets("RSS").Sort
+        .SetRange Range("A2:BM380")
+        .Header = xlNo
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+    Columns("BB:BB").Select
+    ActiveWorkbook.Worksheets("RSS").Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("RSS").Sort.SortFields.Add Key:=Range("BB1"), _
+        SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:=xlSortNormal
+    With ActiveWorkbook.Worksheets("RSS").Sort
+        .SetRange Range("A2:BM380")
+        .Header = xlNo
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+
     Range("A1").EntireColumn.Copy
     
     Dim WSH
@@ -50,6 +75,7 @@ Sub OpenHtml()
         WSH.Run url, 3
     Else
         code = Cells(ActiveCell.row, 1)
+        Cells(ActiveCell.row, 1).Copy
         gmosec = Cells(1, 1)
         
         If re.Test(code) Then
