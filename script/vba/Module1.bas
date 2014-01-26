@@ -4,7 +4,7 @@ Sub CopyCodes()
     ActiveWorkbook.Worksheets("RSS").Sort.SortFields.Add Key:=Range("BE1"), _
         SortOn:=xlSortOnValues, Order:=xlDescending, DataOption:=xlSortNormal
     With ActiveWorkbook.Worksheets("RSS").Sort
-        .SetRange Range("A2:BM380")
+        .SetRange Range("A2:BM500")
         .Header = xlNo
         .MatchCase = False
         .Orientation = xlTopToBottom
@@ -16,7 +16,7 @@ Sub CopyCodes()
     ActiveWorkbook.Worksheets("RSS").Sort.SortFields.Add Key:=Range("BB1"), _
         SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:=xlSortNormal
     With ActiveWorkbook.Worksheets("RSS").Sort
-        .SetRange Range("A2:BM380")
+        .SetRange Range("A2:BM500")
         .Header = xlNo
         .MatchCase = False
         .Orientation = xlTopToBottom
@@ -25,6 +25,7 @@ Sub CopyCodes()
     End With
 
     Range("A1").EntireColumn.Copy
+    Range("A1").Select
     
     Dim WSH
     Set WSH = CreateObject("Wscript.Shell")
@@ -80,6 +81,8 @@ Sub OpenHtml()
         
         If re.Test(code) Then
             url = "http://kabu-sokuhou.com/brand/item/code___" & code & "/"
+            WSH.Run url, 3
+            url = "http://karauri.net/" & code & "/"
             WSH.Run url, 3
             url = "https://www.google.co.jp/search?q=" & Cells(ActiveCell.row, 42)
             WSH.Run url, 3
