@@ -7,14 +7,12 @@ object main extends App {
   Logger.level = Config.logLevel
   
   val codes = Parser("data/patrol/table.txt")
-  val range = Range(Config.offset, Config.offset + codes.size)
-  val pairs = codes zip range
   
   val data =
     if(Logger.level == Logger.DEBUG)
-      pairs.map(Processor(_))
+      codes.map(Processor(_))
     else
-      pairs.par.map(Processor(_))
+      codes.par.map(Processor(_))
   
   Text.write("data/patrol/result.txt", data.mkString("\n"))
   
