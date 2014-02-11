@@ -20,7 +20,7 @@ class Company(code:String) {
     val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
     
     def getCurrentPrice() :String =
-      html.getGroupOf("""<td class="stoksPrice">(.*?)</td>""".r).replaceFirst("---", " ")
+      html.getGroupOf("""<td class="stoksPrice">(.*?)</td>""".r).replaceAll(",", "").replaceFirst("---", " ")
     def getHighest() :String =
       html.getPreviousLineOf("""<dt class="title">年初来高値""".r).dropRight(10).replaceAll(",", "").replaceFirst("更新", "")
     def getPer() :String =
@@ -28,7 +28,7 @@ class Company(code:String) {
     def getPbr() :String =
       html.getPreviousLineOf("""<dt class="title">PBR""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "-")
     def getOutstanding() :String =
-      html.getPreviousLineOf("""<dt class="title">発行済株式数""".r).dropRight(12)
+      html.getPreviousLineOf("""<dt class="title">発行済株式数""".r).dropRight(12).replaceAll(",", "")
     
     Map("現値" -> getCurrentPrice,
         "年高" -> getHighest,
@@ -36,6 +36,10 @@ class Company(code:String) {
         "PBR"  -> getPbr,
         "発行" -> getOutstanding )
   }
+  
+  override def toString =
+    data.toString
+  
 }
 
 object Company{
