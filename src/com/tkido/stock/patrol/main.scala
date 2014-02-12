@@ -14,7 +14,7 @@ object main extends App {
     else
       codes.par.map(Processor(_))
   
-  Text.write("data/patrol/result.txt", data.mkString("\n"))
+  Text.write("data/patrol/result.txt", data.collect{case Some(s) => s}.mkString("\n"))
   
   Logger.close()
 }

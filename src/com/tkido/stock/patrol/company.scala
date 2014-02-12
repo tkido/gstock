@@ -40,6 +40,47 @@ class Company(code:String) {
   override def toString =
     data.toString
   
+  def tdnetScore() :Int = {
+    if(tdnet.Checker(code))
+      50
+    else
+      0
+  }
+  
+  def edinetScore() :Int = {
+    val price = data("現値").toDouble
+    val outstanding = data("発行").toDouble
+    val fairvalue = data("企価").toDouble
+    val ratio = price * outstanding * 1000 / fairvalue
+    
+    if(ratio < 0.3)
+      0
+    else if(ratio > 1.0)
+      0
+    else
+      ((1.0 - ratio) * 100).toInt
+  }
+  
+   def highScore() :Int = {
+    val price = data("現値").toInt
+    val high = data("年高").toInt
+    
+    if(price >= high)
+      50
+    else if(price < high/2)
+      50
+    else
+      0
+  }
+ 
+  def score :Int = {
+    tdnetScore + edinetScore + highScore
+  }
+  
+  def isGood() :Boolean = {
+    score > 100
+  }
+  
 }
 
 object Company{
