@@ -62,10 +62,10 @@ class Company(code:String) {
   }
   
    def highScore() :Int = {
-    val price = data("現値").toInt
-    val high = data("年高").toInt
+    val price = data("現値").toDouble
+    val high = data("年高").toDouble
     
-    if(price >= high)
+    if(price >= high * 0.99)
       50
     else if(price < high/2)
       50
@@ -78,7 +78,7 @@ class Company(code:String) {
   }
   
   def isGood() :Boolean = {
-    score > 100
+    score >= 80
   }
   
 }
