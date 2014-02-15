@@ -65,7 +65,7 @@ class Company(code:String) {
   }
  
   def score :Int = {
-    tdnetScore + edinetScore + highScore
+    tryOrElse(tdnetScore, 0) + edinetScore + highScore
   }
   
   def isGood() :Boolean = {
