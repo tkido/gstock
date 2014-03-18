@@ -6,39 +6,36 @@ class Company(code:String) {
   import com.tkido.tools.Html
   import com.tkido.tools.tryOrElse
   
-  val data = makeData
+  val fairValue = tryOrElse(makeFairValue _, 0.0)
+  def makeFairValue = edinet.Company(code).fairValue.toDouble
   
-  def makeData :Map[String, String] = {
-    tryOrElse(makeEdinetData _, Map()) ++
-    tryOrElse(parseData _, Map())
-  }
+  val (currentPrice, highest, outStanding, per, pbr) = parseData
   
-  def makeEdinetData :Map[String, String] =
-    Map("企価"   -> edinet.Company(code).fairValue.toString )
-  
-  def parseData :Map[String, String] = {
+  def parseData :(Double, Double, Double, Double, Double) = {
     val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
     
-    def getCurrentPrice() :String =
-      html.getGroupOf("""<td class="stoksPrice">(.*?)</td>""".r).replaceAll(",", "").replaceFirst("---", " ")
-    def getHighest() :String =
-      html.getPreviousLineOf("""<dt class="title">年初来高値""".r).dropRight(10).replaceAll(",", "").replaceFirst("更新", "")
-    def getPer() :String =
-      html.getPreviousLineOf("""<dt class="title">PER""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "0")
-    def getPbr() :String =
-      html.getPreviousLineOf("""<dt class="title">PBR""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "-")
-    def getOutstanding() :String =
-      html.getPreviousLineOf("""<dt class="title">発行済株式数""".r).dropRight(12).replaceAll(",", "")
+    def getCurrentPrice() :Double =
+      html.getGroupOf("""<td class="stoksPrice">(.*?)</td>""".r).replaceAll(",", "").toDouble
+    val currentPrice = tryOrElse(getCurrentPrice, 0.0)
+      
+    def getHighest() :Double =
+      html.getPreviousLineOf("""<dt class="title">年初来高値""".r).dropRight(10).replaceAll(",", "").replaceFirst("更新", "").toDouble
+    val highest = tryOrElse(getHighest, 0.0)
+      
+    def getOutstanding() :Double =
+      html.getPreviousLineOf("""<dt class="title">発行済株式数""".r).dropRight(12).replaceAll(",", "").toDouble * 1000
+    val outStanding = tryOrElse(getOutstanding, 0.0)
     
-    Map("現値" -> getCurrentPrice,
-        "年高" -> getHighest,
-        "PER"  -> getPer,
-        "PBR"  -> getPbr,
-        "発行" -> getOutstanding )
+    def getPer() :Double =
+      html.getPreviousLineOf("""<dt class="title">PER""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").toDouble
+    val per = tryOrElse(getPer, 0.0)
+    
+    def getPbr() :Double =
+      html.getPreviousLineOf("""<dt class="title">PBR""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").toDouble
+    val pbr = tryOrElse(getPbr, 0.0)
+    
+    (currentPrice, highest, outStanding, per, pbr)
   }
-  
-  override def toString =
-    data.toString
   
   def tdnetScore() :Int = {
     if(tdnet.Checker(code))
@@ -48,10 +45,7 @@ class Company(code:String) {
   }
   
   def edinetScore() :Int = {
-    val price = data("現値").toDouble
-    val outstanding = data("発行").toDouble
-    val fairvalue = data("企価").toDouble
-    val ratio = price * outstanding * 1000 / fairvalue
+    val ratio = (currentPrice * outStanding) / fairValue
     
     if(ratio < 0.3)
       0
@@ -62,19 +56,16 @@ class Company(code:String) {
   }
   
    def highScore() :Int = {
-    val price = data("現値").toDouble
-    val high = data("年高").toDouble
-    
-    if(price >= high * 0.99)
+    if(currentPrice >= highest * 0.99)
       50
-    else if(price < high/2)
+    else if(currentPrice < highest / 2)
       50
     else
       0
   }
  
   def score :Int = {
-    tdnetScore + edinetScore + highScore
+    tryOrElse(tdnetScore, 0) + edinetScore + highScore
   }
   
   def isGood() :Boolean = {

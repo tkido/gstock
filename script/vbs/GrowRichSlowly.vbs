@@ -84,4 +84,5 @@ Dim objExcel
 Set objExcel = CreateObject("Excel.Application")
 objExcel.Visible = True
 objExcel.Workbooks.Open RSS_FILE
+objExcel.Workbooks.Open KAKEIBO_FILE
 Set objExcel = Nothing
