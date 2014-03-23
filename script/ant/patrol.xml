@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="xbrl" default="deploy">
+  
+  <property name="base.dir" value="../.." />
+  
+  <target name="build">
+    <exec executable="/usr/local/share/scala-2.9.2/bin/scala" dir="${base.dir}">
+      <arg value="com.tkido.stock.patrol.main" />
+    </exec>
+  </target>
+
+</project>
