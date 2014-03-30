@@ -34,6 +34,7 @@ class Company(code:String) {
   
   override def toString = {
     val header = Html.toTrTh("年度", "解価", "NetC", "アク", "純利", "FCF", "粗率", "営率", "経率", "純率")
+    """<h3>EDINET 有価証券報告書</h3>""" +
     Html.toTable(header :: reports.reverse)
   }
 }
