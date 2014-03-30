@@ -2,6 +2,7 @@ package com.tkido.stock.rss
 
 object ChartMakerJp {
   import com.tkido.tools.Text
+  import java.util.Date
   
   private val templete = Text.read("data/rss/templateJP.html")
   
@@ -53,7 +54,10 @@ object ChartMakerJp {
     
     val title = code + " " + name + getHeader + getDate
     
-    val html = templete.format(title, getRows, title, feature, getOther, edinet, tdnet)
+    val today = "%tY_%<tm%<td".format(new Date)
+    val tag = "%s_%s".format(today, code)
+    
+    val html = templete.format(title, title, feature, getOther, tag, edinet, tdnet, getRows, tag)
     Text.write("data/rss/%s.html".format(code), html)
   }
 }
