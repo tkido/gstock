@@ -4,7 +4,17 @@ class Report(path:String) {
   import com.tkido.tools.Html
   import java.io.File
   
-  val year = new File(path).getName.slice(20, 24).toInt
+  def toYear(file:File) :Int = {
+    val name = file.getName
+    if(name.take(4) == "jpfr"){
+      name.slice(20, 24).toInt
+    }else{
+      name.slice(31, 35).toInt
+    }
+  }
+  
+  val file = new File(path)
+  val year = toYear(file)
   val data = XbrlParser(path)
   
   def netIncome = data("NetIncome")
