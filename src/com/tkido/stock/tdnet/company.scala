@@ -43,7 +43,9 @@ class Company(code:String) {
   
   override def toString = {
     val header = Html.toTrTh("終了月", "Q", "売上", "営利", "経利", "純利", "開示日")
+    """<h3>TDnet 四半期報告書（割合）</h3>""" +
     Html.toTable(header :: doubleReports.reverse) +
+    """<h3>TDnet 四半期報告書（実数）</h3>""" +
     Html.toTable(header :: deltaReports.reverse)
   }
 }
