@@ -21,7 +21,7 @@ object XbrlDownloaderJp {
     val ufos = (xml \ "entry").filter(isUfo)
     
     def getXbrl(node:Node) :String = {
-      val reXbrl = """\.xbrl$""".r
+      val reXbrl = """(jpcrp|jpfr).*?\.xbrl$""".r
       val hrefs = (node \\ "@href").map(_.text)
       hrefs.find(reXbrl.findFirstIn(_).isDefined).get
     }
