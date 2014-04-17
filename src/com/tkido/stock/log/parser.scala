@@ -10,13 +10,11 @@ object Parser {
     
     def convert(src:List[Array[String]]) :List[List[String]] = {
       def subconvert(arr:Array[String]) :List[String] = {
-        val (date, trade, volume, price, amount) = (arr(0), arr(4).replaceFirst("株式", ""), arr(5), arr(6), arr(10))
-        List(date, trade, volume, price, amount)
+        val (date, trade, volume, price, amount) = (arr(0), arr(4), arr(5), arr(6), arr(10))
+        List(date, trade.replaceFirst("株式", ""), volume, price, amount)
       }
-      var rst = src.map(subconvert(_))
-      rst
+      src.map(subconvert(_))
     }
-    val data = rawData.mapValues(convert(_))
-    data
+    rawData.mapValues(convert(_))
   }
 }

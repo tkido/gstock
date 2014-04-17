@@ -6,7 +6,6 @@ object main extends App {
   
   Logger.level = Logger.DEBUG
   
-  //val data = Parser("data/log/rireki.txt")
   Logger.debug(Reporter("9795"))
   
   Logger.close()
