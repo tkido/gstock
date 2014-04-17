@@ -15,6 +15,7 @@ object ChartMakerJp {
     val feature  = data.getOrElse("特色", "")
     val edinet   = data.getOrElse("edinet", "")
     val tdnet    = data.getOrElse("tdnet", "")
+    val log      = data.getOrElse("log", "")
     
     val reDate = """\(\d{4}\.\d{1,2}\)"""
     val reHeader = "【.*?】"
@@ -57,7 +58,7 @@ object ChartMakerJp {
     val today = "%tY_%<tm%<td".format(new Date)
     val tag = "%s_%s".format(today, code)
     
-    val html = templete.format(title, title, feature, getOther, tag, edinet, tdnet, getRows, tag)
+    val html = templete.format(title, title, feature, getOther, tag, edinet, tdnet, log, getRows, tag)
     Text.write("data/rss/%s.html".format(code), html)
   }
 }

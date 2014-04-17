@@ -2,6 +2,7 @@ package com.tkido.stock.rss
 
 abstract class Company(code:String, row:Int) {
   import com.tkido.stock.edinet
+  import com.tkido.stock.log
   import com.tkido.stock.tdnet
   import com.tkido.tools.tryOrElse
   
@@ -11,6 +12,7 @@ abstract class Company(code:String, row:Int) {
     Company.replaceColumn(data, row.toString).mkString("\t")
   
   def makeOtherData :Map[String, String] = {
+    tryOrElse(makeLogData _, Map()) ++
     tryOrElse(makeEdinetData _, Map()) ++
     tryOrElse(makeTdnetData _, Map()) ++
     Map("ID"   -> code,
@@ -22,6 +24,10 @@ abstract class Company(code:String, row:Int) {
         "株価" -> """=IF(【企価】="", 0, 【企価】/1000/【発行】)""",
         "Vf"   -> """=(【年高】-1)/【Vol】""",
         "更新" -> Company.today)
+  }
+  
+  def makeLogData :Map[String, String] = {
+    Map("log" -> log.Reporter(code))
   }
   
   def makeEdinetData :Map[String, String] = {
