@@ -47,7 +47,8 @@ object XbrlParserInline {
     def nodeToNumber(node:Node) :Long = {
       val literal = node.text.replaceAll(",", "")
       val scale = node.attribute("scale").get.text.toInt
-      (literal + "0" * scale).toLong
+      val sign = if(node.attribute("sign").nonEmpty) -1 else 1
+      sign * (literal + "0" * scale).toLong
     }
     val map = nodes.toList.map(n =>
       n.attribute("name").get.text.replaceFirst("tse-ed-t:", "") -> nodeToNumber(n)
