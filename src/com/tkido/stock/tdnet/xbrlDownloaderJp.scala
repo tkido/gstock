@@ -2,6 +2,7 @@ package com.tkido.stock.tdnet
 
 object XbrlDownloaderJp {
   import com.tkido.stock.Config
+  import com.tkido.tools.Logger
   import com.tkido.tools.Text
   import java.io.File
   import scala.xml._
@@ -21,7 +22,7 @@ object XbrlDownloaderJp {
     val tanshins = (xml \ "entry").filter(isTanshin)
     
     def getXbrl(node:Node) :Option[String] = {
-      val reXbrl = """tdnet-..edjpsm.*?\.xbrl$""".r
+      val reXbrl = """(tdnet|tse)-..edjpsm.*?(\.xbrl|-ixbrl\.htm)$""".r
       val hrefs = (node \\ "@href").map(_.text)
       hrefs.find(reXbrl.findFirstIn(_).isDefined)
     }
