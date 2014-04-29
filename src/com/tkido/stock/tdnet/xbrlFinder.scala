@@ -10,8 +10,10 @@ object XbrlFinder {
         file.listFiles.toList.flatMap(listFiles(filter))
       else
         List(file).filter(filter)
-    def isXbrl(file:File) :Boolean =
-      file.getName.endsWith(".xbrl")
+    def isXbrl(file:File) :Boolean = {
+      val name = file.getName
+      name.endsWith(".xbrl") || name.endsWith("-ixbrl.htm")
+    }
     val root = new File(Config.xbrlPath, "/tdnet/"+code)
     val files = listFiles(isXbrl)(root)
     files.map(_.toString)
