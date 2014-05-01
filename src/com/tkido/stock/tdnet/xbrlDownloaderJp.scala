@@ -31,7 +31,10 @@ object XbrlDownloaderJp {
     for(xbrl <- xbrls){
       val fileName = xbrl.split("/").last
       val file = new File(root, fileName)
-      if(!file.exists) Text.write(file.getPath, Text.read(xbrl))
+      if(!file.exists){
+        Text.write(file.getPath, Text.read(xbrl))
+        XbrlDownloader.add(xbrl)
+      }
     }
   }
 }

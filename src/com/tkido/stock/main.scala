@@ -1,6 +1,7 @@
 package com.tkido.stock
 
 object main extends App {
+  import com.tkido.stock.tdnet.XbrlDownloader
   import com.tkido.tools.Logger
   import com.tkido.tools.Text
   
@@ -17,6 +18,7 @@ object main extends App {
       pairs.par.map(Processor(_))
   
   Text.write("data/result.txt", data.mkString("\n"))
+  Text.write("data/downloaded.txt", XbrlDownloader.getResult)
   
   Logger.close()
 }
