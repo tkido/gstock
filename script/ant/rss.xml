@@ -5,7 +5,10 @@
   
   <target name="build">
     <exec executable="/usr/local/share/scala-2.9.2/bin/scala" dir="${base.dir}">
-      <arg value="com.tkido.stock.main" />
+        <arg value="-classpath" />
+        <arg value="lib/icu4j-53_1.jar" />
+        
+        <arg value="com.tkido.stock.main" />
     </exec>
   </target>
   
