@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="xbrl" default="deploy">
+<project name="xbrl" default="build">
   
   <property name="base.dir" value="../.." />
   
