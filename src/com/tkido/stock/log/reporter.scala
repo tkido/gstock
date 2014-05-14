@@ -11,6 +11,6 @@ object Reporter {
     val list = data(code).map(Html.toTrTd(_: _*))
     
     """<h3>売買ログ</h3>""" +
-    Html.toTable(header :: list)
+    Html.toTable(header :: list.reverse)
   }
 }
