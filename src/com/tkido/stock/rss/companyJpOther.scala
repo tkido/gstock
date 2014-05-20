@@ -15,7 +15,7 @@ class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
     val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
     
     def getMarketName() :String = {
-      val raw = html.getNextLineOf("""<dt>%s</dt>""".format(code).r)
+      val raw = html.getNextLineOf("""<div class="stockMainTab clearFix">""".r)
       raw match {
         case "東証1部"  => "東１"
         case "東証2部"  => "東２"
@@ -31,7 +31,7 @@ class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
     }
     
     def getCurrentPrice() :String =
-      html.getGroupOf("""<td class="stoksPrice">(.*?)</td>""".r).replaceFirst("---", " ")
+      html.getGroupOf("""^.*?<td class="stoksPrice">(.*?)</td>""".r).replaceFirst("---", " ")
     def getLastClose() :String =
       html.getPreviousLineOf("""<dt class="title">前日終値""".r).dropRight(7)
     def getRatioLast() :String =
