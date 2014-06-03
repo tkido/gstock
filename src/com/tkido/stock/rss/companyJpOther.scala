@@ -15,7 +15,7 @@ class CompanyJpOther(code:String, row:Int) extends CompanyJp(code, row) {
     val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
     
     def getMarketName() :String = {
-      val raw = html.getNextLineOf("""<div class="stockMainTab clearFix">""".r)
+      val raw = html.getNextLineOf("""<div class="stockMainTab clearFix">""".r).replaceFirst("""PTS.*""", "")
       raw match {
         case "東証1部"  => "東１"
         case "東証2部"  => "東２"
