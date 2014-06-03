@@ -190,7 +190,7 @@ object CompanyJp{
     if(!Config.rssFlag || row > 300) return CompanyJpOther(code, row)
     try{
       val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
-      html.getNextLineOf("""<div class="stockMainTab clearFix">""".r) match {
+      html.getNextLineOf("""<div class="stockMainTab clearFix">""".r).replaceFirst("""PTS.*""", "") match {
         case reJpT()    => CompanyJpRss(code, row)
         case "マザーズ" => CompanyJpRss(code, row)
         case _          => CompanyJpOther(code, row)
