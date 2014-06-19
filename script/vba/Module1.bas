@@ -74,6 +74,14 @@ Sub OpenHtml()
         WSH.Run url, 3
         url = "http://biz.yahoo.co.jp/ipo/"
         WSH.Run url, 3
+        url = "https://twitter.com/monst_mixi"
+        WSH.Run url, 3
+        url = "http://www.google.co.jp/trends/explore#q=%E3%83%A2%E3%83%B3%E3%82%B9%E3%83%88%2C%20%E3%83%91%E3%82%BA%E3%83%89%E3%83%A9&date=today%2012-m&cmpt=q"
+        WSH.Run url, 3
+        url = "http://www.appannie.com/apps/google-play/top/taiwan/game/"
+        WSH.Run url, 3
+        url = "http://www.appannie.com/indexes/all-stores/rank/games/?month=2014-05-01&country=WW"
+        WSH.Run url, 3
     Else
         code = Cells(ActiveCell.row, 1)
         Cells(ActiveCell.row, 1).Copy
