@@ -4,7 +4,7 @@ Sub CopyCodes()
     ActiveWorkbook.Worksheets("RSS").Sort.SortFields.Add Key:=Range("BE1"), _
         SortOn:=xlSortOnValues, Order:=xlDescending, DataOption:=xlSortNormal
     With ActiveWorkbook.Worksheets("RSS").Sort
-        .SetRange Range("A2:BM500")
+        .SetRange Range("A2:BM1000")
         .Header = xlNo
         .MatchCase = False
         .Orientation = xlTopToBottom
@@ -16,7 +16,7 @@ Sub CopyCodes()
     ActiveWorkbook.Worksheets("RSS").Sort.SortFields.Add Key:=Range("BB1"), _
         SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:=xlSortNormal
     With ActiveWorkbook.Worksheets("RSS").Sort
-        .SetRange Range("A2:BM500")
+        .SetRange Range("A2:BM1000")
         .Header = xlNo
         .MatchCase = False
         .Orientation = xlTopToBottom
