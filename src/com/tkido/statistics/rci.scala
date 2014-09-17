@@ -1,7 +1,8 @@
 package com.tkido.statistics
 
 object RankCorrelationIndex {
-  def apply(data:List[Long]) :Double = {
+  def apply[T](data:Seq[T])
+        (implicit orderer: T => Ordered[T]) :Double = {
     def square(x:Int) = x * x
     val s = data.size
     val range = Range(0, s)
