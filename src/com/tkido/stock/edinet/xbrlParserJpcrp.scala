@@ -7,8 +7,8 @@ object XbrlParserJpcrp {
   def apply(path :String) :Map[String, Long] = {
     Logger.debug(path)
     val xml = XML.loadFile(path)
-
-    def isValid(node:Node) :Boolean = {
+    
+    def isNetIncome(node:Node) :Boolean = {
       def isValidPrefix :Boolean = {
         val rgex = """jppfs_cor""".r
         node.prefix match {
@@ -19,9 +19,39 @@ object XbrlParserJpcrp {
       def isValidContext:Boolean = {
         val contextRef = node.attribute("contextRef").get.text
         contextRef match {
-          case "CurrentYearInstant"  => true
           case "CurrentYearDuration" => true
           case _                     => false
+        }
+      }
+      node.text.nonEmpty && isValidPrefix && isValidContext && node.label == "NetIncome"
+    }
+    val isConsolidated = xml.child.exists(isNetIncome)
+    if(Logger.isDebug)
+      Logger.log("isConsolidated = %s".format(isConsolidated))
+    
+    
+    def isValid(node:Node) :Boolean = {
+      def isValidPrefix :Boolean = {
+        val rgex = """jppfs_cor""".r
+        node.prefix match {
+          case rgex() => true
+          case _      => false
+        }
+      }
+      def isValidContext:Boolean = {
+        val contextRef = node.attribute("contextRef").get.text
+        if(isConsolidated){
+          contextRef match {
+            case "CurrentYearInstant"  => true
+            case "CurrentYearDuration" => true
+            case _                     => false
+          }
+        }else{
+          contextRef match {
+            case "CurrentYearInstant_NonConsolidatedMember"  => true
+            case "CurrentYearDuration_NonConsolidatedMember" => true
+            case _                                           => false
+          }
         }
       }
       node.text.nonEmpty && isValidPrefix && isValidContext
