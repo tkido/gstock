@@ -64,6 +64,22 @@ Sub jk()
     End With
     Selection.FormatConditions(1).StopIfTrue = False
 
+    ' SPR 117%-10000% ê¬
+    Columns("Z:Z").Select
+    Selection.FormatConditions.Add Type:=xlCellValue, Operator:=xlBetween, _
+        Formula1:="=1.17", Formula2:="=100"
+    Selection.FormatConditions(Selection.FormatConditions.Count).SetFirstPriority
+    With Selection.FormatConditions(1).Font
+        .Color = -4165632
+        .TintAndShade = 0
+    End With
+    With Selection.FormatConditions(1).Interior
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorLight2
+        .TintAndShade = 0.799981688894314
+    End With
+    Selection.FormatConditions(1).StopIfTrue = False
+
     ' RCI -75%-100% ê¬
     Columns("AA:AA").Select
     Selection.FormatConditions.Add Type:=xlCellValue, Operator:=xlBetween, _
@@ -80,11 +96,61 @@ Sub jk()
     End With
     Selection.FormatConditions(1).StopIfTrue = False
 
-
+    ' óò 5%-100% ê‘
+    Columns("AB:AB").Select
+    Selection.FormatConditions.Add Type:=xlCellValue, Operator:=xlBetween, _
+        Formula1:="=0.045", Formula2:="=1"
+    Selection.FormatConditions(Selection.FormatConditions.Count).SetFirstPriority
+    With Selection.FormatConditions(1).Font
+        .Color = -16383844
+        .TintAndShade = 0
+    End With
+    With Selection.FormatConditions(1).Interior
+        .PatternColorIndex = xlAutomatic
+        .Color = 13551615
+        .TintAndShade = 0
+    End With
+    Selection.FormatConditions(1).StopIfTrue = False
+    
+    
+    ' âv 15%-100% ê‘
+    Columns("AC:AC").Select
+    Selection.FormatConditions.Add Type:=xlCellValue, Operator:=xlBetween, _
+        Formula1:="=0.15", Formula2:="=1"
+    Selection.FormatConditions(Selection.FormatConditions.Count).SetFirstPriority
+    With Selection.FormatConditions(1).Font
+        .Color = -16383844
+        .TintAndShade = 0
+    End With
+    With Selection.FormatConditions(1).Interior
+        .PatternColorIndex = xlAutomatic
+        .Color = 13551615
+        .TintAndShade = 0
+    End With
+    Selection.FormatConditions(1).StopIfTrue = False
+    
+    
     ' ê´ 80%-1000% ê¬
     Columns("AD:AD").Select
     Selection.FormatConditions.Add Type:=xlCellValue, Operator:=xlBetween, _
         Formula1:="=0.8", Formula2:="=10"
+    Selection.FormatConditions(Selection.FormatConditions.Count).SetFirstPriority
+    With Selection.FormatConditions(1).Font
+        .Color = -4165632
+        .TintAndShade = 0
+    End With
+    With Selection.FormatConditions(1).Interior
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorLight2
+        .TintAndShade = 0.799981688894314
+    End With
+    Selection.FormatConditions(1).StopIfTrue = False
+
+
+    ' PER 60-10000 ê¬
+    Columns("AG:AG").Select
+    Selection.FormatConditions.Add Type:=xlCellValue, Operator:=xlBetween, _
+        Formula1:="=60", Formula2:="=10000"
     Selection.FormatConditions(Selection.FormatConditions.Count).SetFirstPriority
     With Selection.FormatConditions(1).Font
         .Color = -4165632
