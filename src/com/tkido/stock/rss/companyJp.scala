@@ -73,7 +73,7 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
   }
   
   def parseConsolidate :Map[String, String] = {
-    val html = Html("http://profile.yahoo.co.jp/consolidate/%s".format(code), "EUC-JP")
+    val html = Html("http://profile.yahoo.co.jp/consolidate/%s".format(code))
     
     def getSettlement() :String =
       html.getNextLineOf("""<td bgcolor="#ebf4ff">決算発表日</td>""".r).replaceFirst("---", "-")
