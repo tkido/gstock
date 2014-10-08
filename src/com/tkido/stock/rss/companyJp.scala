@@ -2,6 +2,7 @@ package com.tkido.stock.rss
 
 abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
   import com.tkido.stock.Config
+  import com.tkido.statistics.RankCorrelationIndex
   import com.tkido.tools.Html
   import com.tkido.tools.tryOrElse
   
@@ -72,7 +73,7 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
   }
   
   def parseConsolidate :Map[String, String] = {
-    val html = Html("http://profile.yahoo.co.jp/consolidate/%s".format(code), "EUC-JP")
+    val html = Html("http://profile.yahoo.co.jp/consolidate/%s".format(code))
     
     def getSettlement() :String =
       html.getNextLineOf("""<td bgcolor="#ebf4ff">決算発表日</td>""".r).replaceFirst("---", "-")
@@ -155,16 +156,8 @@ abstract class CompanyJp(code:String, row:Int) extends Company(code, row) {
       ratio.toString + "%"
     }
     
-    def getRankCorrelationIndex() :String = {
-      def square(x:Int) = x * x
-      val closes = data.map(_.close)
-      val s = closes.size
-      val range = Range(0, s)
-      val pairs = closes.zip(range).sortBy(_._1).map(_._2).zip(range)
-      val d = pairs.map(p => square(p._1 - p._2)).sum
-      val rci = (1.0 - (6.0 * d / (s * (s * s -1)))) * -100
-      rci.toString + "%"
-    }
+    def getRankCorrelationIndex() :String =
+      RankCorrelationIndex(data.map(_.close)).toString + "%"
     
     def getVolumePerDay(span:Int) :String = {
       val volume = data.take(span).map(_.volume).sum / span

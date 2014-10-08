@@ -1,3 +1,4 @@
+Attribute VB_Name = "Module1"
 Sub CopyCodes()
     Columns("BE:BE").Select
     ActiveWorkbook.Worksheets("RSS").Sort.SortFields.Clear
@@ -51,6 +52,7 @@ Sub CopyLog()
 End Sub
 
 Sub OpenHtml()
+Attribute OpenHtml.VB_ProcData.VB_Invoke_Func = "e\n14"
     Dim code As String
     Dim url As String
     
@@ -78,9 +80,11 @@ Sub OpenHtml()
         WSH.Run url, 3
         url = "http://www.google.co.jp/trends/explore#q=%E3%83%A2%E3%83%B3%E3%82%B9%E3%83%88%2C%20%E3%83%91%E3%82%BA%E3%83%89%E3%83%A9&date=today%2012-m&cmpt=q"
         WSH.Run url, 3
+        url = "https://play.google.com/store/apps?hl=ja"
+        WSH.Run url, 3
         url = "http://www.appannie.com/apps/google-play/top/taiwan/game/"
         WSH.Run url, 3
-        url = "http://www.appannie.com/indexes/all-stores/rank/games/?month=2014-05-01&country=WW"
+        url = "http://www.appannie.com/indexes/all-stores/rank/games/"
         WSH.Run url, 3
     Else
         code = Cells(ActiveCell.row, 1)
@@ -88,8 +92,6 @@ Sub OpenHtml()
         gmosec = Cells(1, 1)
         
         If re.Test(code) Then
-            url = "http://kabu-sokuhou.com/brand/item/code___" & code & "/"
-            WSH.Run url, 3
             url = "http://karauri.net/" & code & "/"
             WSH.Run url, 3
             url = "https://www.google.co.jp/search?q=" & Cells(ActiveCell.row, 42)
@@ -124,3 +126,5 @@ Public Function URLEncode(value As String) As String
     Set js = sc.CodeObject
     URLEncode = js.encodeURIComponent(value)
 End Function
+
+
