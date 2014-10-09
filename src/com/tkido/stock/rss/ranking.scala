@@ -5,7 +5,7 @@ object Ranking {
   import com.tkido.tools.Logger
   
   val html = Html("http://info.finance.yahoo.co.jp/ranking/?kd=31&tm=d&vl=a&mk=1&p=1")
-  val reTable = """^<tbody>(.*)""".r
+  val reTable = """^<tbody>(.*)</tbody>$""".r
   
   val reData = """^<tr class="rankingTabledata yjM"><td class="txtcenter">(\d{1,4})</td><td class="txtcenter"><a href="http://stocks\.finance\.yahoo\.co\.jp/stocks/detail/\?code=(\d{4}).*""".r
   
@@ -14,7 +14,6 @@ object Ranking {
     code -> rank
   }
   val map = html.getGroupOf(reTable)
-                 .replaceAll("""</tbody>""", "")
                  .split("""</tr>""")
                  .map(lineToPair)
                  .toMap
@@ -22,9 +21,6 @@ object Ranking {
   Logger.debug(map)
   
   def apply(code:String): String = {
-    if(map.contains(code))
-      map(code)
-    else
-      "-"
+    map.getOrElse(code, "-")
   }
 }
