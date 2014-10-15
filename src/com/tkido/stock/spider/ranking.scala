@@ -1,4 +1,4 @@
-package com.tkido.stock.rss
+package com.tkido.stock.spider
 
 object Ranking {
   import com.tkido.tools.Html
