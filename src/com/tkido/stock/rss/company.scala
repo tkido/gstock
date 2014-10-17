@@ -51,7 +51,7 @@ class Company(code:String, row:Int) {
         "PBR"      -> rssCode("ＰＢＲ"),
         "R"        -> "R" )
   }
-    
+  
   def toRssString:String = {
     val rssData = data ++ (
         if(Config.rssFlag && row <= 300 && data("市").startsWith("東"))
