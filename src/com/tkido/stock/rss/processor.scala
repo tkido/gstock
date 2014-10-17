@@ -3,7 +3,6 @@ package com.tkido.stock.rss
 object Processor {
   import com.tkido.stock.edinet
   import com.tkido.stock.page.PageMaker
-  import com.tkido.stock.spider.Company
   import com.tkido.stock.tdnet
   
   def apply(pair:Pair[String, Int]) :String = {
@@ -13,7 +12,7 @@ object Processor {
     tdnet.XbrlDownloader(code)
     
     val company = Company(code, row)
-    PageMaker(company)
+    //PageMaker(company)
     company.toString
   }
   

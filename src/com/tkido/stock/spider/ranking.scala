@@ -4,6 +4,8 @@ object Ranking {
   import com.tkido.tools.Html
   import com.tkido.tools.Logger
   
+  Logger.debug("Ranking spidering")
+  
   val html = Html("http://info.finance.yahoo.co.jp/ranking/?kd=31&tm=d&vl=a&mk=1&p=1")
   val reTable = """^<tbody>(.*)</tbody>$""".r
   
