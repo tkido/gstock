@@ -7,6 +7,7 @@ object SpiderJp {
     Logger.debug("SpiderJp Spidering ", code)
     
     SpiderJpStockholder(code) ++
+    SpiderJpConsolidate(code) ++
     Map()
   }
 }
