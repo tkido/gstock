@@ -10,7 +10,7 @@ object SpiderJpStockholder {
     
     def get():Map[String, String] = {
       val html = Html("http://info.finance.yahoo.co.jp/stockholder/detail/?code=%s".format(code))
-      val month :String =
+      val month =
         html.getGroupOf("""<tr><th>権利確定月</th><td>(.*?)</td></tr>""".r).replaceAll("末日", "")
       Map("優待" -> month)
     }

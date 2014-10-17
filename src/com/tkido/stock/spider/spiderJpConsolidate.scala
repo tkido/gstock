@@ -11,11 +11,11 @@ object SpiderJpConsolidate {
     def get():Map[String, String] = {
       val html = Html("http://profile.yahoo.co.jp/consolidate/%s".format(code))
       
-      val settlement :String =
+      val settlement =
         html.getNextLineOf("""<td bgcolor="#ebf4ff">決算発表日</td>""".r).replaceFirst("---", "-")
-      val capitalToAssetRatio :String =
+      val capitalToAssetRatio =
         html.getNextLineOf("""<td bgcolor="#ebf4ff">自己資本比率</td>""".r).replaceFirst("---", "-")
-      val roe :String =
+      val roe =
         html.getNextLineOf("""<td bgcolor="#ebf4ff">ROE（自己資本利益率）</td>""".r).replaceFirst("---", "-")
       
       Map("決算" -> settlement,

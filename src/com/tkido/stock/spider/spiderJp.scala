@@ -8,6 +8,9 @@ object SpiderJp {
     
     SpiderJpStockholder(code) ++
     SpiderJpConsolidate(code) ++
+    SpiderJpProfile(code) ++
+    SpiderJpHistory(code) ++
+    SpiderJpDetail(code) ++
     Map()
   }
 }
