@@ -1,17 +1,16 @@
 package com.tkido.stock.rss
 
-abstract class Company(code:String, row:Int) {
+class Company(code:String, row:Int) {
+  import com.tkido.stock.Config
   import com.tkido.stock.edinet
   import com.tkido.stock.log
+  import com.tkido.stock.spider.Spider
   import com.tkido.stock.tdnet
+  import com.tkido.tools.Logger
   import com.tkido.tools.tryOrElse
   
-  val data :Map[String, String]
-  
-  override def toString =
-    Company.replaceColumn(data, row.toString).mkString("\t")
-  
-  def makeOtherData :Map[String, String] = {
+  val data :Map[String, String] =
+    Spider(code) ++
     tryOrElse(makeLogData _, Map()) ++
     tryOrElse(makeEdinetData _, Map()) ++
     tryOrElse(makeTdnetData _, Map()) ++
@@ -24,6 +23,43 @@ abstract class Company(code:String, row:Int) {
         "株価" -> """=IF(【企価】="", 0, 【企価】/1000/【発行】)""",
         "Vf"   -> """=(【年高】-1)/【Vol】""",
         "更新" -> Company.today)
+  
+  def getRssData() :Map[String, String] = {
+    def rssCode(id:String, div:String = "") :String = {
+      val divStr = if(div == "") "" else "/%s".format(div)
+      "=RSS|'%s.T'!%s%s".format(code, id, divStr)
+    }
+    Map("現値"     -> rssCode("現在値"),
+        "最売"     -> rssCode("最良売気配値"),
+        "最売数"   -> rssCode("最良売気配数量"),
+        "最買"     -> rssCode("最良買気配値"),
+        "最買数"   -> rssCode("最良買気配数量"),
+        "前終"     -> rssCode("前日終値"),
+        "前比"     -> rssCode("前日比率"),
+        "出来"     -> rssCode("出来高", "【発行】"),
+        "落日"     -> rssCode("配当落日"),
+        "買残"     -> rssCode("信用買残", "【発行】"),
+        "買残週差" -> rssCode("信用買残前週比", "【発行】"),
+        "売残"     -> rssCode("信用売残", "【発行】"),
+        "売残週差" -> rssCode("信用売残前週比", "【発行】"),
+        "年高"     -> rssCode("年初来高値", "【値】"),
+        "年高日"   -> rssCode("年初来高値日付"),
+        "年安"     -> rssCode("年初来安値", "【値】"),
+        "年安日"   -> rssCode("年初来安値日付"),
+        "利"       -> rssCode("配当", "【値】"),
+        "PER"      -> rssCode("ＰＥＲ"),
+        "PBR"      -> rssCode("ＰＢＲ"),
+        "R"        -> "R" )
+  }
+  
+  def toRssString:String = {
+    val rssData = data ++ (
+        if(Config.rssFlag && row <= 300 && data("市").startsWith("東"))
+          getRssData()
+        else
+          Map()
+    )
+    Company.replaceColumn(rssData, row.toString).mkString("\t")
   }
   
   def makeLogData :Map[String, String] = {
@@ -46,17 +82,10 @@ object Company{
   import java.util.Date
   import com.tkido.tools.Logger
   
-  val reJp = """[0-9]{4}""".r
-  val reUs = """[A-Z]{1,5}""".r
-  
   def apply(code:String, row:Int) :Company = {
     Logger.info(code)
-    code match {
-      case reJp() => CompanyJp(code, row)
-      case reUs() => CompanyUs(code, row)
-    }
+    new Company(code, row)
   }
-  
   val today = "%tY/%<tm/%<td".format(new Date)
   
   val order = List("ID", "名称", "R", "値", 

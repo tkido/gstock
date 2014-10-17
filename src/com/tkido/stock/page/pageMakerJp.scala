@@ -1,14 +1,13 @@
-package com.tkido.stock.rss
+package com.tkido.stock.page
 
-object ChartMakerJp {
+object PageMakerJp {
+  import com.tkido.stock.spider.Company
   import com.tkido.tools.Text
   import java.util.Date
   
   private val templete = Text.read("data/rss/templateJP.html")
   
-  def apply(company:Company){
-    val data = company.data
-    
+  def apply(data:Map[String, String]){
     val code     = data.getOrElse("ID", "")
     val business = data.getOrElse("事業", "")
     val name     = data.getOrElse("名称", "")
