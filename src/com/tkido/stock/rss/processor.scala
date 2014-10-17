@@ -13,7 +13,7 @@ object Processor {
     
     val company = Company(code, row)
     //PageMaker(company)
-    company.toString
+    company.toRssString
   }
   
 }

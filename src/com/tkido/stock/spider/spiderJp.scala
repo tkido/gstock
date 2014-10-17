@@ -11,6 +11,6 @@ object SpiderJp {
     SpiderJpProfile(code) ++
     SpiderJpHistory(code) ++
     SpiderJpDetail(code) ++
-    Map()
+    Map("国" -> "JP")
   }
 }
