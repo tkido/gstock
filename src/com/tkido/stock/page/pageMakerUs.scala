@@ -1,7 +1,6 @@
 package com.tkido.stock.page
 
 object PageMakerUs {
-  import com.tkido.stock.spider.Company
   import com.tkido.tools.Text
   
   private val templete = Text.read("data/rss/templateUS.html")

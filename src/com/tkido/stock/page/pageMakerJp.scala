@@ -1,7 +1,6 @@
 package com.tkido.stock.page
 
 object PageMakerJp {
-  import com.tkido.stock.spider.Company
   import com.tkido.tools.Text
   import java.util.Date
   
