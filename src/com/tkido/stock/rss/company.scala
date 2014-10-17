@@ -9,8 +9,6 @@ class Company(code:String, row:Int) {
   import com.tkido.tools.Logger
   import com.tkido.tools.tryOrElse
   
-  val reJpT = """東証.*""".r
-  
   val data :Map[String, String] =
     Spider(code) ++
     tryOrElse(makeLogData _, Map()) ++
@@ -48,7 +46,6 @@ class Company(code:String, row:Int) {
         "年高日"   -> rssCode("年初来高値日付"),
         "年安"     -> rssCode("年初来安値", "【値】"),
         "年安日"   -> rssCode("年初来安値日付"),
-        "市"       -> rssCode("市場部略称"),
         "利"       -> rssCode("配当", "【値】"),
         "PER"      -> rssCode("ＰＥＲ"),
         "PBR"      -> rssCode("ＰＢＲ"),
