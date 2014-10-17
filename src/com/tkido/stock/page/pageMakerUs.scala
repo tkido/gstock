@@ -6,9 +6,7 @@ object PageMakerUs {
   
   private val templete = Text.read("data/rss/templateUS.html")
   
-  def apply(company:Company){
-    val data = company.data
-    
+  def apply(data:Map[String, String]){
     val code     = data.getOrElse("ID", "")
     val name     = data.getOrElse("名称", "")
     val feature  = data.getOrElse("特色", "")

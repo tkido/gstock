@@ -13,7 +13,7 @@ object Processor {
     tdnet.XbrlDownloader(code)
     
     val company = Company(code, row)
-    PageMaker(company)
+    //PageMaker(company)
     company.toString
   }
   
