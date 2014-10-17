@@ -8,7 +8,7 @@ object main extends App {
   Logger.level = Config.logLevel
   
   val patrolCodes = Parser("data/patrol/table.txt").toSet
-  val rssCodes = Parser("data/table.txt").toSet
+  val rssCodes = Parser("data/rss/table.txt").toSet
   val codes = (patrolCodes &~ rssCodes).toList
   
   val data =
