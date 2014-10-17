@@ -8,7 +8,7 @@ object main extends App {
   
   Logger.level = com.tkido.stock.Config.logLevel
   
-  val codes = Parser("data/table.txt")
+  val codes = Parser("data/rss/table.txt")
   val range = Range(Config.offset, Config.offset + codes.size)
   val pairs = codes zip range
   
@@ -18,8 +18,8 @@ object main extends App {
     else
       pairs.par.map(Processor(_))
   
-  Text.write("data/result.txt", data.mkString("\n"))
-  Text.write("data/downloaded.txt", XbrlDownloader.getResult)
+  Text.write("data/rss/result.txt", data.mkString("\n"))
+  Text.write("data/rss/downloaded.txt", XbrlDownloader.getResult)
   
   Logger.close()
 }
