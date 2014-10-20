@@ -9,7 +9,7 @@ object test extends App {
   Logger.level = Config.logLevel
   
   val te = Tengine("data/rss/test.html")
-  val text = te.render(Map("title" -> "テストだよ！"))
+  val text = te(Map("title" -> "テストだよ！"))
   Logger.debug(text)
   
   Logger.debug(Ranking("2121"))

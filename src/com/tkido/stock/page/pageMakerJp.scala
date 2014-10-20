@@ -5,7 +5,7 @@ object PageMakerJp {
   import com.tkido.tools.Text
   import java.util.Date
   
-  private val te = Tengine("data/rss/templateJP.html")
+  private val tEngine = Tengine("data/rss/templateJP.html")
   
   def apply(data:Map[String, String]){
     val reDate = """\(\d{4}\.\d{1,2}\)"""
@@ -52,7 +52,7 @@ object PageMakerJp {
                      "rows" -> rows,
                      "today" -> today)
     
-    val html = te.render(data ++ added)
+    val html = tEngine(data ++ added)
     Text.write("data/rss/%s.html".format(data("ID")), html)
   }
 }
