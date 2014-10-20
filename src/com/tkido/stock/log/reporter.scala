@@ -4,6 +4,7 @@ object Reporter {
   import com.tkido.tools.Html
   import com.tkido.tools.Logger
   
+  Logger.debug("log.Reporter parse rireki.txt")
   val data = Parser("data/log/rireki.txt")
   
   def apply(code:String) :String = {

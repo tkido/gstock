@@ -12,8 +12,7 @@ org.eclipse.jdt.core.prefs
 ~$*
 .picasa.ini
 log/*.log
-data/**/result.txt
-data/*.txt
+data/**/*.txt
 build.properties
 conf.properties
 data/rss/*.html
