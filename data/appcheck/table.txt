@@ -1,0 +1,3 @@
+nation_id	type_id	国名	属性	タイトル	URL
+japan	sales	日本	セールス	モンスターストライク	https://itunes.apple.com/jp/rss/topgrossingapplications/limit=100/xml
+japan	free	日本	無料	モンスターストライク	https://itunes.apple.com/jp/rss/topfreeapplications/limit=100/xml
