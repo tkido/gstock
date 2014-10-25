@@ -12,11 +12,20 @@ object Processor {
     val results = ResultParser(target)
     Logger.debug(results)
     
-    if(result.rank != results.head.rank){
-      
-    }
-    
-    ""
+    val results_to_report = (
+	  if(result.rank != results.head.rank){
+	    val new_results = result :: results
+	    ResultWriter(target, new_results)
+	    new_results
+	  }else{
+	    results
+	  }
+	).take(4)
+	
+	"""<h3>%s</h3>""".format(target.name) ++
+	results_to_report
+	  .map(r => """<tr><td>%s</td><td>%s</td></tr>""".format(r.rank, r.updated))
+	  .mkString("""<table border="2"><tbody><tr><th>順位</th><th>時刻</th></tr>""", "\n", "\n</tbody></table>")
   }
   
 }
