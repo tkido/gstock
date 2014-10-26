@@ -16,10 +16,13 @@ object ResultParser {
       val arr = line.split("\t")
       Result(arr(0), arr(1))
     }
-    val path = new File(Config.dataPath, target.id + ".txt").toString
-    Logger.debug(path)
-    val lines = Text.readLines(path)
-    lines.map(lineToResult)
+    val file = new File(Config.dataPath, target.id + ".txt")
+    if(file.exists()){
+      val lines = Text.readLines(file.toString)
+      lines.map(lineToResult)
+    }else{
+      List(Result("S", "check started"))
+    }
   }
 }
 

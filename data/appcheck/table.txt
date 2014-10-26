@@ -1,3 +1,9 @@
 nation_id	type_id	国名	属性	タイトル	URL
-japan	sales	日本	セールス	モンスターストライク	https://itunes.apple.com/jp/rss/topgrossingapplications/limit=100/xml
-japan	free	日本	無料	モンスターストライク	https://itunes.apple.com/jp/rss/topfreeapplications/limit=100/xml
+japan	sales	日本	セールス	モンスターストライク	https://itunes.apple.com/jp/rss/topgrossingapplications/limit=200/xml
+japan	free	日本	無料	モンスターストライク	https://itunes.apple.com/jp/rss/topfreeapplications/limit=200/xml
+japan	ipadsales	日本	iPadセールス	モンスターストライク	https://itunes.apple.com/jp/rss/topgrossingipadapplications/limit=200/xml
+japan	ipadfree	日本	iPad無料	モンスターストライク	https://itunes.apple.com/jp/rss/topfreeipadapplications/limit=200/xml
+taiwan	sales	台湾	セールス	怪物彈珠	https://itunes.apple.com/tw/rss/topgrossingapplications/limit=200/xml
+taiwan	free	台湾	無料	怪物彈珠	https://itunes.apple.com/tw/rss/topfreeapplications/limit=200/xml
+taiwan	ipadsales	台湾	iPadセールス	怪物彈珠	https://itunes.apple.com/tw/rss/topgrossingipadapplications/limit=200/xml
+taiwan	ipadfree	台湾	iPad無料	怪物彈珠	https://itunes.apple.com/tw/rss/topfreeipadapplications/limit=200/xml
