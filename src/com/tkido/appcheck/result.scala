@@ -13,8 +13,8 @@ case class Result(rank:String, updated:String) {
 object ResultParser {
   def apply(target:Target) :List[Result] = {
     def lineToResult(line:String) :Result = {
-      val arr = line.split("\t")
-      Result(arr(0), arr(1))
+      val List(rank, updated) = line.split("\t").toList
+      Result(rank, updated)
     }
     val file = new File(Config.dataPath, target.id + ".txt")
     if(file.exists()){

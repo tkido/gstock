@@ -20,7 +20,7 @@ object Processor {
 	  }else{
 	    results
 	  }
-	).take(4)
+	).take(Config.limit)
 	
 	"""<h3>%s</h3>""".format(target.name) ++
 	results_to_report
