@@ -13,7 +13,7 @@ object Processor {
     Logger.debug(results)
     
     val results_to_report = (
-	  if(result.rank != results.head.rank){
+	  if(results.isEmpty || result.rank != results.head.rank){
 	    val new_results = result :: results
 	    ResultWriter(target, new_results)
 	    new_results

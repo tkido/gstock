@@ -21,7 +21,7 @@ object ResultParser {
       val lines = Text.readLines(file.toString)
       lines.map(lineToResult)
     }else{
-      List(Result("S", "check started"))
+      List()
     }
   }
 }

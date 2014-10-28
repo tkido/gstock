@@ -7,7 +7,7 @@ object main extends App {
   
   Logger.level = Config.logLevel
   
-  val targets = Parser("data/appcheck/table.txt")
+  val targets = TargetParser("data/appcheck/table.txt")
   val reports = targets.map(Processor(_))
   
   Logger.info(reports.mkString("\n"))
