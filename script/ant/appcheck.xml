@@ -5,7 +5,7 @@
   
   <target name="build">
     <exec executable="/usr/local/share/scala-2.9.2/bin/scala" dir="${base.dir}">
-        <arg value="com.tkido.stock.appcheck.main" />
+        <arg value="com.tkido.appcheck.main" />
     </exec>
   </target>
   
@@ -13,11 +13,11 @@
     <property name="html_dir" location="${base.dir}/data/appcheck"/>
     <property name="deploy_dir" location="/var/www/html/stock"/>
     
-    <move todir="${deploy_dir}">
+    <copy todir="${deploy_dir}">
       <fileset dir="${html_dir}">
         <include name="report.html"/>
       </fileset>
-    </move>
+    </copy>
   </target>
 
 </project>
