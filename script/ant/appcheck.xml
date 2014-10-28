@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="xbrl" default="deploy">
+  
+  <property name="base.dir" value="../.." />
+  
+  <target name="build">
+    <exec executable="/usr/local/share/scala-2.9.2/bin/scala" dir="${base.dir}">
+        <arg value="com.tkido.stock.appcheck.main" />
+    </exec>
+  </target>
+  
+  <target name="deploy" depends="build">
+    <property name="html_dir" location="${base.dir}/data/appcheck"/>
+    <property name="deploy_dir" location="/var/www/html/stock"/>
+    
+    <move todir="${deploy_dir}">
+      <fileset dir="${html_dir}">
+        <include name="report.html"/>
+      </fileset>
+    </move>
+  </target>
+
+</project>

@@ -1,44 +1,36 @@
-package com.tkido.stock.rss
+package com.tkido.stock.page
 
-object ChartMakerJp {
+object PageMakerJp {
+  import com.tkido.tools.Tengine
   import com.tkido.tools.Text
   import java.util.Date
   
-  private val templete = Text.read("data/rss/templateJP.html")
+  private val tEngine = Tengine("data/rss/templateJP.html")
   
-  def apply(company:Company){
-    val data = company.data
-    
-    val code     = data.getOrElse("ID", "")
-    val business = data.getOrElse("事業", "")
-    val name     = data.getOrElse("名称", "")
-    val feature  = data.getOrElse("特色", "")
-    val edinet   = data.getOrElse("edinet", "")
-    val tdnet    = data.getOrElse("tdnet", "")
-    val log      = data.getOrElse("log", "")
-    
+  def apply(data:Map[String, String]){
     val reDate = """\(\d{4}\.\d{1,2}\)"""
     val reHeader = "【.*?】"
     val reOther = "【.*"
     val reData = """(.*?)(\d+)(\(\d+\))?""".r
     
-    def getDate() :String =
+    val business = data.getOrElse("事業", "")
+    
+    val date =
       reDate.r.findFirstMatchIn(business) match {
         case Some(m) => m.group(0)
         case None    => ""
       }
-    def getHeader() :String =
+    val header = 
       reHeader.r.findFirstMatchIn(business) match {
         case Some(m) => m.group(0)
         case None    => ""
       }
-    def getOther() :String =
+    val other = 
       reOther.r.findFirstMatchIn(business.replaceFirst(reHeader, "")) match {
         case Some(m) => m.group(0).replaceFirst(reDate, "")
         case None    => ""
       }
-    
-    def getRows() :String = {
+    val rows = {
       def stringToPairs(raw: String): Pair[String, String] =
         reData.findFirstMatchIn(raw) match {
           case Some(m) if m.group(3) == null =>
@@ -52,13 +44,15 @@ object ChartMakerJp {
         .split('、').map(stringToPairs)
         .map(p => """['%s', %s]""".format(p._1, p._2) ).mkString(",\n")
     }
-    
-    val title = code + " " + name + getHeader + getDate
-    
     val today = "%tY_%<tm%<td".format(new Date)
-    val tag = "%s_%s".format(today, code)
     
-    val html = templete.format(title, title, feature, getOther, tag, edinet, tdnet, log, getRows, tag)
-    Text.write("data/rss/%s.html".format(code), html)
+    val added = Map("date" -> date,
+                     "header" -> header,
+                     "other" -> other,
+                     "rows" -> rows,
+                     "today" -> today)
+    
+    val html = tEngine(data ++ added)
+    Text.write("data/rss/%s.html".format(data("ID")), html)
   }
 }

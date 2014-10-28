@@ -4,7 +4,7 @@
     <meta name="robots" content="noindex,nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>%s</title>
+    <title>#{ID} #{名称}#{header}#{date}</title>
     
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -16,16 +16,16 @@
   <body>
     <div class="container"> 
       <div class="starter-template">
-        <h2>%s</h2>
-        <p>%s%s</p>
+        <h2>#{ID} #{名称}#{header}#{date}</h2>
+        <p>#{特色}#{other}</p>
         <!--Div that will hold the pie chart-->
-        <div id="chart_div_%s"></div>
+        <div id="chart_div_#{today}_#{ID}"></div>
         <!--- EDINET --->
-        %s
+        #{edinet}
         <!--- TDNET --->
-        %s
+        #{tdnet}
         <!--- LOG --->
-        %s
+        #{log}
         
         <!--Load the AJAX API-->
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -45,14 +45,14 @@
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Tpic');
             data.addColumn('number', 'Slices');
-            data.addRows([%s]);
+            data.addRows([#{rows}]);
             
             // Set chart options
             var options = {'width':800,
                            'height':400};
             
             // Instantiate and draw our chart, passing in some options.
-            var chart = new google.visualization.PieChart(document.getElementById('chart_div_%s'));
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div_#{today}_#{ID}'));
             chart.draw(data, options);
           }
         </script>

@@ -1,4 +1,4 @@
-package com.tkido.stock
+package com.tkido.stock.rss
 
 object Parser {
   import com.tkido.tools.Text
