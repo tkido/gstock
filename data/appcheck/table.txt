@@ -1,0 +1,33 @@
+app_id	タイトル	nation_id	国名	type_id	属性	ipad	iPad	Genre		URL
+monst	モンスターストライク	jp	日本	grossing	セールス					https://itunes.apple.com/jp/rss/topgrossingapplications/limit=200/xml
+monst	モンスターストライク	jp	日本	free	無料					https://itunes.apple.com/jp/rss/topfreeapplications/limit=200/xml
+monst	モンスターストライク	jp	日本	grossing	セールス	ipad	iPad			https://itunes.apple.com/jp/rss/topgrossingipadapplications/limit=200/xml
+monst	モンスターストライク	jp	日本	free	無料	ipad	iPad			https://itunes.apple.com/jp/rss/topfreeipadapplications/limit=200/xml
+monst	モンスターストライク	jp	日本	grossing	セールス			game	ゲーム	https://itunes.apple.com/jp/rss/topgrossingapplications/limit=200/genre=6014/xml
+monst	モンスターストライク	jp	日本	free	無料			game	ゲーム	https://itunes.apple.com/jp/rss/topfreeapplications/limit=200/genre=6014/xml
+monst	モンスターストライク	jp	日本	grossing	セールス	ipad	iPad	game	ゲーム	https://itunes.apple.com/jp/rss/topgrossingipadapplications/limit=200/genre=6014/xml
+monst	モンスターストライク	jp	日本	free	無料	ipad	iPad	game	ゲーム	https://itunes.apple.com/jp/rss/topfreeipadapplications/limit=200/genre=6014/xml
+monst	怪物彈珠	tw	台湾	grossing	セールス					https://itunes.apple.com/tw/rss/topgrossingapplications/limit=200/xml
+monst	怪物彈珠	tw	台湾	free	無料					https://itunes.apple.com/tw/rss/topfreeapplications/limit=200/xml
+monst	怪物彈珠	tw	台湾	grossing	セールス	ipad	iPad			https://itunes.apple.com/tw/rss/topgrossingipadapplications/limit=200/xml
+monst	怪物彈珠	tw	台湾	free	無料	ipad	iPad			https://itunes.apple.com/tw/rss/topfreeipadapplications/limit=200/xml
+monst	怪物彈珠	tw	台湾	grossing	セールス			game	ゲーム	https://itunes.apple.com/tw/rss/topgrossingapplications/limit=200/genre=6014/xml
+monst	怪物彈珠	tw	台湾	free	無料			game	ゲーム	https://itunes.apple.com/tw/rss/topfreeapplications/limit=200/genre=6014/xml
+monst	怪物彈珠	tw	台湾	grossing	セールス	ipad	iPad	game	ゲーム	https://itunes.apple.com/tw/rss/topgrossingipadapplications/limit=200/genre=6014/xml
+monst	怪物彈珠	tw	台湾	free	無料	ipad	iPad	game	ゲーム	https://itunes.apple.com/tw/rss/topfreeipadapplications/limit=200/genre=6014/xml
+monst	Monster Strike	us	アメリカ	grossing	セールス					https://itunes.apple.com/us/rss/topgrossingapplications/limit=200/xml
+monst	Monster Strike	us	アメリカ	free	無料					https://itunes.apple.com/us/rss/topfreeapplications/limit=200/xml
+monst	Monster Strike	us	アメリカ	grossing	セールス	ipad	iPad			https://itunes.apple.com/us/rss/topgrossingipadapplications/limit=200/xml
+monst	Monster Strike	us	アメリカ	free	無料	ipad	iPad			https://itunes.apple.com/us/rss/topfreeipadapplications/limit=200/xml
+monst	Monster Strike	us	アメリカ	grossing	セールス			game	ゲーム	https://itunes.apple.com/us/rss/topgrossingapplications/limit=200/genre=6014/xml
+monst	Monster Strike	us	アメリカ	free	無料			game	ゲーム	https://itunes.apple.com/us/rss/topfreeapplications/limit=200/genre=6014/xml
+monst	Monster Strike	us	アメリカ	grossing	セールス	ipad	iPad	game	ゲーム	https://itunes.apple.com/us/rss/topgrossingipadapplications/limit=200/genre=6014/xml
+monst	Monster Strike	us	アメリカ	free	無料	ipad	iPad	game	ゲーム	https://itunes.apple.com/us/rss/topfreeipadapplications/limit=200/genre=6014/xml
+monst	Monster Strike	ca	カナダ	grossing	セールス					https://itunes.apple.com/ca/rss/topgrossingapplications/limit=200/xml
+monst	Monster Strike	ca	カナダ	free	無料					https://itunes.apple.com/ca/rss/topfreeapplications/limit=200/xml
+monst	Monster Strike	ca	カナダ	grossing	セールス	ipad	iPad			https://itunes.apple.com/ca/rss/topgrossingipadapplications/limit=200/xml
+monst	Monster Strike	ca	カナダ	free	無料	ipad	iPad			https://itunes.apple.com/ca/rss/topfreeipadapplications/limit=200/xml
+monst	Monster Strike	ca	カナダ	grossing	セールス			game	ゲーム	https://itunes.apple.com/ca/rss/topgrossingapplications/limit=200/genre=6014/xml
+monst	Monster Strike	ca	カナダ	free	無料			game	ゲーム	https://itunes.apple.com/ca/rss/topfreeapplications/limit=200/genre=6014/xml
+monst	Monster Strike	ca	カナダ	grossing	セールス	ipad	iPad	game	ゲーム	https://itunes.apple.com/ca/rss/topgrossingipadapplications/limit=200/genre=6014/xml
+monst	Monster Strike	ca	カナダ	free	無料	ipad	iPad	game	ゲーム	https://itunes.apple.com/ca/rss/topfreeipadapplications/limit=200/genre=6014/xml
