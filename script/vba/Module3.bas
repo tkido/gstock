@@ -80,7 +80,6 @@ Sub jk()
     End With
     Selection.FormatConditions(1).StopIfTrue = False
 
-
     ' RCI -75%-100% ê¬
     Columns("AA:AA").Select
     Selection.FormatConditions.Add Type:=xlCellValue, Operator:=xlBetween, _
@@ -96,7 +95,6 @@ Sub jk()
         .TintAndShade = 0.799981688894314
     End With
     Selection.FormatConditions(1).StopIfTrue = False
-
 
     ' óò 5%-100% ê‘
     Columns("AB:AB").Select
