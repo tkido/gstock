@@ -31,3 +31,11 @@ monst	Monster Strike	ca	カナダ	grossing	セールス			game	ゲーム	https:/
 monst	Monster Strike	ca	カナダ	free	無料			game	ゲーム	https://itunes.apple.com/ca/rss/topfreeapplications/limit=200/genre=6014/xml
 monst	Monster Strike	ca	カナダ	grossing	セールス	ipad	iPad	game	ゲーム	https://itunes.apple.com/ca/rss/topgrossingipadapplications/limit=200/genre=6014/xml
 monst	Monster Strike	ca	カナダ	free	無料	ipad	iPad	game	ゲーム	https://itunes.apple.com/ca/rss/topfreeipadapplications/limit=200/genre=6014/xml
+monst	몬스터 스트라이크	kr	韓国	grossing	セールス					https://itunes.apple.com/kr/rss/topgrossingapplications/limit=200/xml
+monst	몬스터 스트라이크	kr	韓国	free	無料					https://itunes.apple.com/kr/rss/topfreeapplications/limit=200/xml
+monst	몬스터 스트라이크	kr	韓国	grossing	セールス	ipad	iPad			https://itunes.apple.com/kr/rss/topgrossingipadapplications/limit=200/xml
+monst	몬스터 스트라이크	kr	韓国	free	無料	ipad	iPad			https://itunes.apple.com/kr/rss/topfreeipadapplications/limit=200/xml
+monst	몬스터 스트라이크	kr	韓国	grossing	セールス			game	ゲーム	https://itunes.apple.com/kr/rss/topgrossingapplications/limit=200/genre=6014/xml
+monst	몬스터 스트라이크	kr	韓国	free	無料			game	ゲーム	https://itunes.apple.com/kr/rss/topfreeapplications/limit=200/genre=6014/xml
+monst	몬스터 스트라이크	kr	韓国	grossing	セールス	ipad	iPad	game	ゲーム	https://itunes.apple.com/kr/rss/topgrossingipadapplications/limit=200/genre=6014/xml
+monst	몬스터 스트라이크	kr	韓国	free	無料	ipad	iPad	game	ゲーム	https://itunes.apple.com/kr/rss/topfreeipadapplications/limit=200/genre=6014/xml
