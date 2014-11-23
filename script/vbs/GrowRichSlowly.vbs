@@ -84,7 +84,7 @@ Dim objExcel
 Set objExcel = CreateObject("Excel.Application")
 objExcel.Visible = True
 objExcel.Workbooks.Open RSS_FILE
-objExcel.Workbooks.Open KAKEIBO_FILE
-objExcel.Workbooks.Open TASKS_FILE
-objExcel.Workbooks.Open MIXI_FILE
+'objExcel.Workbooks.Open KAKEIBO_FILE
+'objExcel.Workbooks.Open TASKS_FILE
+'objExcel.Workbooks.Open MIXI_FILE
 Set objExcel = Nothing
