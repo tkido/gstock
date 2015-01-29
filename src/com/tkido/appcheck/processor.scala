@@ -14,7 +14,7 @@ object Processor {
     
     val results_to_report = (
 	  if(results.isEmpty || result.rank != results.head.rank){
-	    val new_results = result :: results
+	    val new_results = (result :: results).take(100)
 	    ResultWriter(target, new_results)
 	    new_results
 	  }else{
