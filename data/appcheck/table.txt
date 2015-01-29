@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 app_id	タイトル	nation_id	国名	type_id	属性	ipad	iPad	Genre		URL
 monst	モンスターストライク	jp	日本	grossing	セールス					https://itunes.apple.com/jp/rss/topgrossingapplications/limit=200/xml
 monst	怪物彈珠	tw	台湾	grossing	セールス					https://itunes.apple.com/tw/rss/topgrossingapplications/limit=200/xml
@@ -6,3 +7,14 @@ monst	Monster Strike	ca	カナダ	grossing	セールス					https://itunes.apple
 monst	몬스터 스트라이크	kr	韓国	grossing	セールス					https://itunes.apple.com/kr/rss/topgrossingapplications/limit=200/xml
 monst	怪物弹珠	cn	中国	grossing	セールス					https://itunes.apple.com/cn/rss/topgrossingapplications/limit=200/xml
 logres	剣と魔法のログレス いにしえの女神◆人気の本格オンラインRPG	jp	日本	grossing	セールス					https://itunes.apple.com/jp/rss/topgrossingapplications/limit=200/xml
+=======
+app_id	タイトル	nation_id	国名	type_id	属性	ipad	iPad	Genre
+monst	モンスターストライク	jp	日本	grossing	セールス			
+monst	怪物彈珠	tw	台湾	grossing	セールス			
+monst	Monster Strike	us	アメリカ	grossing	セールス			
+monst	Monster Strike	ca	カナダ	grossing	セールス			
+monst	몬스터 스트라이크	kr	韓国	grossing	セールス			
+monst	怪物弹珠	cn	中国	grossing	セールス			
+utapuri	うたプリアイランド。	jp	日本	grossing	セールス			
+logres	剣と魔法のログレス いにしえの女神◆人気の本格オンラインRPG	jp	日本	grossing	セールス			
+>>>>>>> develop
