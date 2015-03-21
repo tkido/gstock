@@ -12,7 +12,7 @@ object SpiderJpDetail {
       val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
       
       val marketName = {
-        val raw = html.getGroupOf("""<div class="stockMainTabParts stockMainTabPartsCurrent"><span class="stockMainTabName">(.*?)</span>.*""".r)
+        val raw = html.getNextLineOf("""<div id="deal">""".r).replaceFirst("""PTS.*""", "")
         raw match {
           case "東証1部"  => "東1"
           case "東証2部"  => "東2"
