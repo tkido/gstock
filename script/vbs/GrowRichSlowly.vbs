@@ -16,30 +16,6 @@ End Function
 
 Execute ReadFile("setting.vbs")
 
-'Dvorakerの停止
-'WMIにて使用する各種オブジェクトを定義・生成する。
-Dim oClassSet
-Dim oClass
-Dim oLocator
-Dim oService
-Dim sMesStr
-
-'ローカルコンピュータに接続する。
-Set oLocator = WScript.CreateObject("WbemScripting.SWbemLocator")
-Set oService = oLocator.ConnectServer
-'クエリー条件をWQLにて指定する。
-Set oClassSet = oService.ExecQuery("Select * From Win32_Process Where Description=""dvoraker.exe""")
-'コレクションを解析する。
-For Each oClass In oClassSet
-oClass.Terminate
-Next
-
-'使用した各種オブジェクトを後片付けする。
-Set oClassSet = Nothing
-Set oClass = Nothing
-Set oService = Nothing
-Set oLocator = Nothing
-
 'マーケットスピードの起動
 Set WshShell = CreateObject("WScript.Shell")
 WshShell.CurrentDirectory = MS_DIR
@@ -75,16 +51,9 @@ Set WshShell = CreateObject("WScript.Shell")
 WshShell.CurrentDirectory = MS_LAUNCHER_DIR
 WshShell.Exec(MS_LAUNCHER_EXE)
 
-'Dvorakerの再起動
-Set WshShell = CreateObject("WScript.Shell")
-WshShell.Exec(DVORAKER_EXE)
-
 'エクセルを開く
 Dim objExcel
 Set objExcel = CreateObject("Excel.Application")
 objExcel.Visible = True
 objExcel.Workbooks.Open RSS_FILE
-'objExcel.Workbooks.Open KAKEIBO_FILE
-'objExcel.Workbooks.Open TASKS_FILE
-'objExcel.Workbooks.Open MIXI_FILE
 Set objExcel = Nothing
