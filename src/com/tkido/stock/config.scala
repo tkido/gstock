@@ -10,4 +10,6 @@ object Config {
   //rss
   val offset   = prop("offset").toInt
   val rssFlag  = prop("rssFlag").toBoolean
+  //patrol
+  val buildNumber = prop("buildNumber")
 }
