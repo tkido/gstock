@@ -22,10 +22,10 @@ object SpiderJpHistory {
                    .split("""</tr><tr>""").toList.take(21) //about one month 20days + 1day for last close
                    .map(reTd.replaceAllIn(_, m => m.group(1))
                      .split("""</td><td>""")
-                     .map(_.replaceAll(",", "").toLong) )
+                     .map(_.replaceAll(",", "").toDouble) )
       
-      case class Data(buy:Long, sell:Long, volume:Long, close:Long)
-      def toData(arr:Array[Long]) :Data = {
+      case class Data(buy:Double, sell:Double, volume:Double, close:Double)
+      def toData(arr:Array[Double]) :Data = {
         val (rawOpen, rawHigh, rawLow, rawClose, rawVolume, close, last) = (arr(0), arr(1), arr(2), arr(3), arr(4), arr(5), arr(6))
         val rate = rawClose / close
         
@@ -50,19 +50,19 @@ object SpiderJpHistory {
       val volatility = {
         val move  = data.map(d => d.buy + d.sell).sum
         val close = data.map(_.close).sum
-        val ratio = move.toDouble / close.toDouble
+        val ratio = move / close
         ratio.toString
       }
       
       val sellingPressureRatio = {
         val buy =
           data.map(d =>
-            if(d.buy+d.sell == 0) 0L
+            if(d.buy+d.sell == 0) 0.0
             else d.volume * d.buy / (d.buy+d.sell)
           ).sum
         val sell =
           data.map(d =>
-            if(d.buy+d.sell == 0) 0L
+            if(d.buy+d.sell == 0) 0.0
             else d.volume * d.sell / (d.buy+d.sell)
           ).sum
         val ratio = sell * 100 / buy
