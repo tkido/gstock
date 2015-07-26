@@ -10,8 +10,9 @@ object main extends App {
   val number = Config.buildNumber.last.toString
   
   val patrolCodes = Parser("data/patrol/table.txt").toSet
+  val excludeCodes = Parser("data/patrol/exclude.txt").toSet
   val rssCodes = Parser("data/rss/table.txt").toSet
-  val codes = (patrolCodes &~ rssCodes).toList.filter(c => c.endsWith(number))
+  val codes = (patrolCodes &~ rssCodes &~ excludeCodes).toList.filter(c => c.endsWith(number))
   
   val data =
     if(Logger.level == Logger.DEBUG)
