@@ -1,16 +1,16 @@
 package com.tkido.appcheck
 
 object Processor {
-  import com.tkido.tools.Logger
+  import com.tkido.tools.Log
   
   def apply(target:Target) :String = {
-    Logger.debug(target)
+    Log d target
     
     val result = Checker(target)
-    Logger.debug(result)
+    Log d result
     
     val results = ResultParser(target)
-    Logger.debug(results)
+    Log d results
     
     val results_to_report = (
 	  if(results.isEmpty || result.rank != results.head.rank){

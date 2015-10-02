@@ -1,7 +1,7 @@
 package com.tkido.stock.tdnet
 
 object XbrlParser {
-  import com.tkido.tools.Logger
+  import com.tkido.tools.Log
   import java.io.File
   import scala.xml._
   

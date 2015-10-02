@@ -2,11 +2,11 @@ package com.tkido.stock.spider
 
 object SpiderJpConsolidate {
   import com.tkido.tools.Html
-  import com.tkido.tools.Logger
+  import com.tkido.tools.Log
   import com.tkido.tools.tryOrElse
   
   def apply(code:String) :Map[String, String] = {
-    Logger.debug("SpiderJpConsolidate Spidering ", code)
+    Log d s"SpiderJpConsolidate Spidering ${code}"
     
     def get():Map[String, String] = {
       val html = Html("http://profile.yahoo.co.jp/consolidate/%s".format(code))

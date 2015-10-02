@@ -3,17 +3,17 @@ package com.tkido.stock
 object test extends App {
   import com.tkido.stock.spider.Ranking
   import com.tkido.stock.spider.Spider
-  import com.tkido.tools.Logger
+  import com.tkido.tools.Log
   import com.tkido.tools.Tengine
   
-  Logger.level = Config.logLevel
+  Log.level = Config.logLevel
   
   val te = Tengine("data/rss/test.html")
   val text = te(Map("title" -> "テストだよ！"))
-  Logger.debug(text)
+  Log d text
   
-  Logger.debug(Ranking("2121"))
-  Logger.debug(Spider("3085"))
+  Log d Ranking("2121")
+  Log d Spider("3085")
   
-  Logger.close()
+  Log.close()
 }

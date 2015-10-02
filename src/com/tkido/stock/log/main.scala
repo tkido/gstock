@@ -1,12 +1,12 @@
 package com.tkido.stock.log
 
 object main extends App {
-  import com.tkido.tools.Logger
+  import com.tkido.tools.Log
   import com.tkido.tools.Text
   
-  Logger.level = Logger.DEBUG
+  Log.level = Log.DEBUG
   
-  Logger.debug(Reporter("9795"))
+  Log d Reporter("9795")
   
-  Logger.close()
+  Log.close()
 }

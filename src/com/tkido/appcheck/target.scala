@@ -3,7 +3,7 @@ package com.tkido.appcheck
 case class Target(id:String, name:String, appname:String, url:String)
 
 object TargetParser {
-  import com.tkido.tools.Logger
+  import com.tkido.tools.Log
   import com.tkido.tools.Text
   
   def apply(path:String) :List[Target] = {

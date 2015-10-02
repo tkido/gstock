@@ -6,7 +6,7 @@ package object tools {
       function()
     }catch{
       case error => {
-        Logger.fatal(error)
+        Log f error
         default
       }
     }

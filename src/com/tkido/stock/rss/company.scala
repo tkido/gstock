@@ -5,7 +5,7 @@ class Company(code:String, row:Int) {
   import com.tkido.stock.log
   import com.tkido.stock.spider.Spider
   import com.tkido.stock.tdnet
-  import com.tkido.tools.Logger
+  import com.tkido.tools.Log
   import com.tkido.tools.tryOrElse
   
   val data :Map[String, String] =
@@ -79,10 +79,10 @@ class Company(code:String, row:Int) {
 }
 object Company{
   import java.util.Date
-  import com.tkido.tools.Logger
+  import com.tkido.tools.Log
   
   def apply(code:String, row:Int) :Company = {
-    Logger.info(code)
+    Log i code
     new Company(code, row)
   }
   val today = "%tY/%<tm/%<td".format(new Date)

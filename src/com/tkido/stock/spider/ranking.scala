@@ -2,9 +2,9 @@ package com.tkido.stock.spider
 
 object Ranking {
   import com.tkido.tools.Html
-  import com.tkido.tools.Logger
+  import com.tkido.tools.Log
   
-  Logger.debug("Ranking spidering")
+  Log d "Ranking spidering"
   
   val html = Html("http://info.finance.yahoo.co.jp/ranking/?kd=31&tm=d&vl=a&mk=1&p=1")
   val reTable = """^<tbody>(.*)</tbody>$""".r
@@ -20,7 +20,7 @@ object Ranking {
                  .map(lineToPair)
                  .toMap
   
-  Logger.debug(map)
+  Log d map
   
   def apply(code:String): String = {
     map.getOrElse(code, "-")
