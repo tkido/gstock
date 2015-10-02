@@ -27,7 +27,7 @@ class Company(code:String) {
     val lastId = report.lastYearId
     if(!dmap.contains(lastId)) return None
     val last = dmap(lastId)
-    def toDisplay(pair:Pair[Long, Long]) :Any = {
+    def toDisplay(pair:Tuple2[Long, Long]) :Any = {
       pair match {
         case (p1, p2) if p1 >  0 && p2 >  0 => 1.0 * p1 / p2 - 1.0
         case (p1, p2) if p1 <= 0 && p2 <= 0 => """<span class="minus">赤字</span>"""

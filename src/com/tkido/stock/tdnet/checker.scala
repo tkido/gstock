@@ -23,7 +23,7 @@ object Checker{
       val lastId = report.lastYearId
       if(!dmap.contains(lastId)) return None
       val last = dmap(lastId)
-      def toDisplay(pair:Pair[Long, Long]) :Double = {
+      def toDisplay(pair:Tuple2[Long, Long]) :Double = {
         pair match {
           case (p1, p2) if p1 >  0 && p2 >  0 => 1.0 * p1 / p2 - 1.0
           case _ => 0.0

@@ -31,7 +31,7 @@ object PageMakerJp {
         case None    => ""
       }
     val rows = {
-      def stringToPairs(raw: String): Pair[String, String] =
+      def stringToPairs(raw: String): Tuple2[String, String] =
         reData.findFirstMatchIn(raw) match {
           case Some(m) if m.group(3) == null =>
             m.group(1) -> m.group(2)

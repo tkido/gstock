@@ -11,7 +11,7 @@ object Ranking {
   
   val reData = """^<tr class="rankingTabledata yjM"><td class="txtcenter">(\d{1,4})</td><td class="txtcenter"><a href="http://stocks\.finance\.yahoo\.co\.jp/stocks/detail/\?code=(\d{4}).*""".r
   
-  def lineToPair(line:String): Pair[String, String] = {
+  def lineToPair(line:String): Tuple2[String, String] = {
     val reData(rank, code) = line
     code -> rank
   }
