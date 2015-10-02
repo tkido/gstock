@@ -1,7 +1,6 @@
 package com.tkido.stock.rss
 
 class Company(code:String, row:Int) {
-  import com.tkido.stock.Config
   import com.tkido.stock.edinet
   import com.tkido.stock.log
   import com.tkido.stock.spider.Spider
