@@ -9,6 +9,8 @@ import scala.util.matching.Regex
 
 object PageMakerJp {
   private val tEngine = Tengine("data/rss/templateJP.html")
+  private val tData = Tengine("data/rss/templateData.html")
+  private val tDiv = Tengine("data/rss/templateDiv.html")
   
   def matchedAndRest(regp:String, str:String) :(String, String) = {
     val regx = regp.mkString("^.*?(", "", ").*$").r
@@ -37,16 +39,14 @@ object PageMakerJp {
     val (date, str1) = matchedAndRest("""\(\d{4}\.\d{1,2}\)""", business)
     Log f date
     Log f str1
-    val sectors = collectMatched("""【.*?】[^【]*""", str1)
-    Log f sectors
     
-    
-    val reData = """(.*?)(\d+)(\(-?\d+\))?""".r
-    for(sector <- sectors){
-      val (header, str2) = matchedAndRest("""【.*?】""", sector)
+    case class Sector(header:String, rows:String)
+    def toSector(str:String) :Sector = {
+      val (header, str2) = matchedAndRest("""【.*?】""", str)
       Log f header
       Log f str2
 
+      val reData = """(.*?)(\d+)(\(-?\d+\))?""".r
       val rows = {
         def stringToPairs(raw: String): Tuple2[String, String] =
           raw match{
@@ -63,68 +63,31 @@ object PageMakerJp {
           .mkString(",\n")
       }
       Log f rows
+      Sector(header, rows)
     }
     
+    val sectors = collectMatched("""【.*?】[^【]*""", str1).map(toSector(_))
+    Log f sectors
     
+    val secnums = (sectors zip Range(0, sectors.size))
     
-    
-    val reBusiness = """(【.*?】)(.*?)(\(\d{4}\.\d{1,2}\))""".r
-    
-    val reDate = """\(\d{4}\.\d{1,2}\)"""
-    val reHeader = "【.*?】"
-    val reOther = "【.*"
-
-    
-    val reRestDate = """(.*?)(\(\d{4}\.\d{1,2}\))""".r
-    val (rest1, date2) = business match{
-      case reRestDate(rest, date) => (rest, date)
-    }
-    val reHeaderRest = """(【.*?】)(.*)""".r
-    val (header2, rest2) = rest1 match{
-      case reHeaderRest(header, rest) => (header, rest)
-    }
-
-    /*
-    val date =
-      reDate.r.findFirstMatchIn(business) match {
-        case Some(m) => m.group(0)
-        case None    => ""
-      }
-    val header = 
-      reHeader.r.findFirstMatchIn(business) match {
-        case Some(m) => m.group(0)
-        case None    => ""
-      }
-    val other = 
-      reOther.r.findFirstMatchIn(business.replaceFirst(reHeader, "")) match {
-        case Some(m) => m.group(0).replaceFirst(reDate, "")
-        case None    => ""
-      }
-    val rows = {
-      def stringToPairs(raw: String): Tuple2[String, String] =
-        reData.findFirstMatchIn(raw) match {
-          case Some(m) if m.group(3) == null =>
-            m.group(1) -> m.group(2)
-          case Some(m) =>
-            m.group(1)+m.group(3) -> m.group(2)
-          case None =>
-            "" -> ""
-        }
-      business.replaceFirst(reDate, "").replaceFirst(reHeader, "").replaceFirst(reOther, "")
-        .split('、').map(stringToPairs)
-        .map(p => """['%s', %s]""".format(p._1, p._2) ).mkString(",\n")
-    }
     val today = "%tY_%<tm%<td".format(new Date)
     
+    val divs = secnums.map{case (sec, i) =>
+      tDiv(data ++ Map("today" -> today, "num" -> i.toString, "header" -> sec.header))
+    }.mkString("\n")
+    
+    val jss = secnums.map{case (sec, i) =>
+      tData(data ++ Map("today" -> today, "num" -> i.toString, "rows" -> sec.rows))
+    }.mkString("\n")
+   
+    
     val added = Map("date" -> date,
-                     "header" -> header,
-                     "other" -> other,
-                     "rows" -> rows,
+                     "divs" -> divs,
+                     "jss" -> jss,
                      "today" -> today)
     
     val html = tEngine(data ++ added)
     Text.write("data/rss/%s.html".format(data("ID")), html)
-    * 
-    */
   }
 }

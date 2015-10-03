@@ -16,10 +16,10 @@
   <body>
     <div class="container"> 
       <div class="starter-template">
-        <h2>#{ID} #{名称}#{header}#{date}</h2>
-        <p>#{特色}#{other}</p>
+        <h2>#{ID} #{名称}#{date}</h2>
+        <p>#{特色}</p>
         <!--Div that will hold the pie chart-->
-        <div id="chart_div_#{today}_#{ID}"></div>
+        #{divs}
         <!--- EDINET --->
         #{edinet}
         <!--- TDNET --->
@@ -40,20 +40,10 @@
           // instantiates the pie chart, passes in the data and
           // draws it.
           function drawChart() {
-          
-            // Create the data table.
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Tpic');
-            data.addColumn('number', 'Slices');
-            data.addRows([#{rows}]);
-            
             // Set chart options
             var options = {'width':800,
                            'height':400};
-            
-            // Instantiate and draw our chart, passing in some options.
-            var chart = new google.visualization.PieChart(document.getElementById('chart_div_#{today}_#{ID}'));
-            chart.draw(data, options);
+            #{jss}
           }
         </script>
         
