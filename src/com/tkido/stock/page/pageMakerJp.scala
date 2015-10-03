@@ -41,7 +41,7 @@ object PageMakerJp {
     Log f sectors
     
     
-    val reData = """(.*?)(\d+)(\(\d+\))?""".r
+    val reData = """(.*?)(\d+)(\(-?\d+\))?""".r
     for(sector <- sectors){
       val (header, str2) = matchedAndRest("""【.*?】""", sector)
       Log f header
