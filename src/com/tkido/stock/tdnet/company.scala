@@ -1,9 +1,9 @@
 package com.tkido.stock.tdnet
 
+import com.tkido.tools.Html
+import com.tkido.tools.Log
+
 class Company(code:String) {
-  import com.tkido.tools.Html
-  import com.tkido.tools.Log
-  
   val rawReports =
     XbrlFinder(code).map(XbrlParser(_))
       .groupBy(_.id).mapValues(_.last).toList.map(_._2) //distinct

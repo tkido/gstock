@@ -1,9 +1,9 @@
 package com.tkido.stock.edinet
 
+import com.tkido.tools.Log
+import java.io.File
+
 object XbrlParser {
-  import com.tkido.tools.Log
-  import java.io.File
-  
   def apply(path :String) :Map[String, Long] = {
     Log d path
     

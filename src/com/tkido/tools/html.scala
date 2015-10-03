@@ -1,9 +1,9 @@
 package com.tkido.tools
 
+import scala.io.Source
+import scala.util.matching.Regex
+
 class Html(url:String, charset:String) {
-  import scala.io.Source
-  import scala.util.matching.Regex
-  
   val lines = Source.fromURL(url, charset).getLines.toList
   
   def getPreviousLineOf(rgex:Regex) :String = {

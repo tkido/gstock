@@ -1,8 +1,8 @@
 package com.tkido.stock.log
 
+import com.tkido.tools.Text
+
 object Parser {
-  import com.tkido.tools.Text
-  
   def apply(path:String) :Map[String, List[List[String]]] = {
     val lines = Text.readLines(path)
     val arrs = lines.map(_.split("\t"))

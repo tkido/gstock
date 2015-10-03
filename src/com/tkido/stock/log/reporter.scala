@@ -1,9 +1,9 @@
 package com.tkido.stock.log
 
+import com.tkido.tools.Html
+import com.tkido.tools.Log
+
 object Reporter {
-  import com.tkido.tools.Html
-  import com.tkido.tools.Log
-  
   Log d "log.Reporter parse rireki.txt"
   val data = Parser("data/log/rireki.txt")
   

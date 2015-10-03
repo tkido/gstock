@@ -1,10 +1,10 @@
 package com.tkido.stock.page
 
+import com.tkido.tools.Tengine
+import com.tkido.tools.Text
+import java.util.Date
+
 object PageMakerJp {
-  import com.tkido.tools.Tengine
-  import com.tkido.tools.Text
-  import java.util.Date
-  
   private val tEngine = Tengine("data/rss/templateJP.html")
   
   def apply(data:Map[String, String]){

@@ -1,9 +1,10 @@
 package com.tkido.tools
 
+import java.io.File
+
 object Log{
-  import java.io.File
   import java.util.Date
-  
+
   val DEBUG = 1
   val INFO  = 2
   val WARN  = 3
@@ -59,7 +60,6 @@ object Log{
   class FileLogger extends Logger{
     import java.io.FileOutputStream
     import java.io.OutputStreamWriter
-    import java.util.Date
     
     private val fileName = "log/%s.log" format Log.started
     

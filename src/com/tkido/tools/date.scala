@@ -1,8 +1,8 @@
 package com.tkido.tools
 
+import com.ibm.icu.text.Transliterator
+
 object Date {
-  import com.ibm.icu.text.Transliterator
-  
   val transliterator = Transliterator.getInstance("Fullwidth-Halfwidth");
   val reDateJp = """(平成)(\d{1,2})年(\d{1,2})月(\d{1,2})日""".r
   

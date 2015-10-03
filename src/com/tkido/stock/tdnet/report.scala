@@ -1,8 +1,8 @@
 package com.tkido.stock.tdnet
 
+import com.tkido.tools.Html
+
 case class Report[T](year:Int, quarter:Int, date:String, month:String, data:List[T]) extends Ordered[Report[T]]{
-  import com.tkido.tools.Html
-  
   private def identify(year:Int, quarter:Int) :Int = year * 10 + quarter
   
   def id = identify(year, quarter)

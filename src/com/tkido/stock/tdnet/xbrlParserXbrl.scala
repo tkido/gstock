@@ -1,10 +1,10 @@
 package com.tkido.stock.tdnet
 
+import com.tkido.tools.Log
+import java.io.File
+import scala.xml._
+
 object XbrlParserXbrl {
-  import com.tkido.tools.Log
-  import java.io.File
-  import scala.xml._
-  
   def apply(path :String) :Report[Long] = {
     val fileName = new File(path).getName
     val isQuarter = fileName.charAt(6) == 'q'

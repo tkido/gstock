@@ -1,8 +1,8 @@
 package com.tkido.appcheck
 
+import com.tkido.tools.Text
+
 object Parser {
-  import com.tkido.tools.Text
-  
   def apply(path:String) :List[Target] = {
     def lineToTarget(line:String) :Target = {
       val arr = line.split("\t")

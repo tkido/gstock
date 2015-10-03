@@ -1,9 +1,9 @@
 package com.tkido.stock.edinet
 
+import com.tkido.stock.Config
+import java.io.File
+
 object XbrlFinder {
-  import com.tkido.stock.Config
-  import java.io.File
-  
   def apply(code:String) :List[String] = {
     def listFiles(filter:File => Boolean)(file:File): List[File] =
       if (file.isDirectory)
