@@ -11,16 +11,16 @@ object PageMakerJp {
   private val tEngine = Tengine("data/rss/templateJP.html")
   
   def matchedAndRest(regp:String, str:String) :(String, String) = {
-    val regx = regp.r
+    val regx = regp.mkString("^.*?(", "", ").*$").r
     str match{
       case regx(s) => (s, str.replaceFirst(Regex.quote(s), ""))
       case _ => ("", str)
     }
   }
   
-  def allMatched(regp:String, str:String) :List[String] = {
+  def collectMatched(regp:String, str:String) :List[String] = {
     def go(regp:String, str:String, list:List[String]) :List[String] = {
-      val regx = regp.r
+      val regx = regp.mkString("^.*?(", "", ").*$").r
       str match{
         case regx(s) => s :: go(regp, str.replaceFirst(Regex.quote(s), ""), list)
         case _ => list
@@ -34,16 +34,16 @@ object PageMakerJp {
     val business = data.getOrElse("事業", "")
     Log f business
     
-    val (date, str1) = matchedAndRest(""".*?(\(\d{4}\.\d{1,2}\))$""", business)
+    val (date, str1) = matchedAndRest("""\(\d{4}\.\d{1,2}\)""", business)
     Log f date
     Log f str1
-    val sectors = allMatched("""(【.*?】[^【]*).*""", str1)
+    val sectors = collectMatched("""【.*?】[^【]*""", str1)
     Log f sectors
     
     
     val reData = """(.*?)(\d+)(\(\d+\))?""".r
     for(sector <- sectors){
-      val (header, str2) = matchedAndRest("""(【.*?】).*""", sector)
+      val (header, str2) = matchedAndRest("""【.*?】""", sector)
       Log f header
       Log f str2
 
