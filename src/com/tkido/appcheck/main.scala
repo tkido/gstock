@@ -1,10 +1,11 @@
 package com.tkido.appcheck
 
+import com.tkido.stock.Config
+import com.tkido.tools.Log
+import com.tkido.tools.Tengine
+import com.tkido.tools.Text
+
 object main extends App {
-  import com.tkido.tools.Log
-  import com.tkido.tools.Tengine
-  import com.tkido.tools.Text
-  
   Log.level = Config.logLevel
   
   val targets = TargetParser("data/appcheck/table.txt")

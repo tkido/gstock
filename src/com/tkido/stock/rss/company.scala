@@ -1,13 +1,14 @@
 package com.tkido.stock.rss
 
+import com.tkido.stock.Config
+import com.tkido.stock.edinet
+import com.tkido.stock.log
+import com.tkido.stock.spider.Spider
+import com.tkido.stock.tdnet
+import com.tkido.tools.Log
+import com.tkido.tools.tryOrElse
+
 class Company(code:String, row:Int) {
-  import com.tkido.stock.edinet
-  import com.tkido.stock.log
-  import com.tkido.stock.spider.Spider
-  import com.tkido.stock.tdnet
-  import com.tkido.tools.Log
-  import com.tkido.tools.tryOrElse
-  
   val data :Map[String, String] =
     Spider(code) ++
     tryOrElse(makeLogData _, Map()) ++

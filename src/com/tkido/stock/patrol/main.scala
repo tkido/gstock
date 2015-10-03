@@ -1,10 +1,11 @@
 package com.tkido.stock.patrol
 
+import com.tkido.stock.Config
+import com.tkido.tools.Log
+import com.tkido.tools.Text
+
 object main extends App {
-  import com.tkido.tools.Log
-  import com.tkido.tools.Text
-  
-  Log.level = com.tkido.stock.Config.logLevel
+  Log.level = Config.logLevel
   
   val number = Config.buildNumber.last.toString
   
