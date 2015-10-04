@@ -1,8 +1,7 @@
 package com.tkido.tools
 
-import java.io.File
-
 object Log{
+  import java.io.File
   import java.util.Date
 
   val DEBUG = 1

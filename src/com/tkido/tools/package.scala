@@ -5,7 +5,7 @@ package object tools {
     try{
       function()
     }catch{
-      case error => {
+      case error:Throwable => {
         Log f error
         default
       }

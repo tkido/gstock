@@ -5,7 +5,7 @@ import com.tkido.stock.tdnet.XbrlDownloader
 import com.tkido.tools.Log
 import com.tkido.tools.Text
 
-object main extends App {
+object Main extends App {
   Log.level = Config.logLevel
   
   val codes = Parser("data/rss/table.txt")
