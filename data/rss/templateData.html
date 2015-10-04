@@ -1,0 +1,9 @@
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Tpic');
+            data.addColumn('number', 'Slices');
+            data.addRows([#{rows}]);
+            
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div_#{today}_#{ID}_#{num}'));
+            chart.draw(data, options);
