@@ -10,23 +10,25 @@ class Company(code:String) {
       .sorted
   if(Log.isDebug) for(r <- rawReports) Log.log(r)
   
-  val rmap = rawReports.groupBy(_.id).mapValues(_.head)
+  val rMap = rawReports.map(r => r.id -> r).toMap
   def toDeltaReport(report:Report[Long]) :Option[Report[Long]] = {
-    if(report.lastQuarterId.isEmpty) return Some(report)  //Q1
-    val lastId = report.lastQuarterId.get
-    if(!rmap.contains(lastId)) return None
-    val last = rmap(lastId)
-    val delta = (report.data zip last.data).map(p => p._1 - p._2)
-    Some(report.copy(data = delta))
+    report.lastQuarterId match{
+      case None => Some(report) //Q1
+      case Some(lastId) if(!rMap.contains(lastId)) => None
+      case Some(lastId) =>
+        val last = rMap(lastId)
+        val delta = (report.data zip last.data).map(p => p._1 - p._2)
+        Some(report.copy(data = delta))
+    }
   }
   val deltaReports = rawReports.map(toDeltaReport).collect{case Some(r) => r}
   if(Log.isDebug) for(r <- deltaReports) Log.log(r)
   
-  val dmap = deltaReports.groupBy(_.id).mapValues(_.head)
+  val dMap = deltaReports.map(r => r.id -> r).toMap
   def toDoubleReport(report:Report[Long]) :Option[Report[Any]] = {
     val lastId = report.lastYearId
-    if(!dmap.contains(lastId)) return None
-    val last = dmap(lastId)
+    if(!dMap.contains(lastId)) return None
+    val last = dMap(lastId)
     def toDisplay(pair:Tuple2[Long, Long]) :Any = {
       pair match {
         case (p1, p2) if p1 >  0 && p2 >  0 => 1.0 * p1 / p2 - 1.0
