@@ -3,6 +3,7 @@ package com.tkido.stock.page
 import com.tkido.tools.Log
 import com.tkido.tools.Tengine
 import com.tkido.tools.Text
+import com.tkido.tools.thisOrElse
 import com.tkido.tools.Regx.{matchedAndRest, collectMatched}
 import java.util.Date
 
@@ -25,12 +26,8 @@ object PageMakerJp {
         def stringToPairs(raw: String): Tuple2[String, String] =
           raw match{
             case reData(title, rate, plofit) =>
-              if(plofit == null)
-                title -> rate
-              else
-                (title + plofit) -> rate
+              (title + thisOrElse(plofit, "")) -> rate
           }
-
         str2
           .split('、').map(stringToPairs)
           .map(p => s"""['${p._1}', ${p._2}]""")
