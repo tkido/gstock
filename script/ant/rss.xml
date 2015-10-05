@@ -6,7 +6,7 @@
   <target name="build">
     <exec executable="/usr/local/share/scala-2.11.7/bin/scala" dir="${base.dir}">
         <arg value="-classpath" />
-        <arg value="lib/icu4j-53_1.jar" />
+        <arg value=".:lib/icu4j-53_1.jar" />
         
         <arg value="com.tkido.stock.rss.Main" />
     </exec>
