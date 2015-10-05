@@ -13,12 +13,12 @@
       <pathelement location="${scala-library.jar}" />
       <pathelement location="${base.dir}" />
       <pathelement location="${base.dir}/lib/icu4j-53_1.jar" />
+      <pathelement location="${scala.home}/lib/scala-xml_2.11-1.0.4.jar" />
     </path>
     <taskdef resource="scala/tools/ant/antlib.xml">
       <classpath>
         <pathelement location="${scala.home}/lib/scala-compiler.jar" />
         <pathelement location="${scala.home}/lib/scala-reflect.jar" />
-        <pathelement location="${scala.home}/lib/scala-xml_2.11-1.0.4.jar" />
         <pathelement location="${scala-library.jar}" />
       </classpath>
     </taskdef>
