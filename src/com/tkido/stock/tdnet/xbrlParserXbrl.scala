@@ -37,15 +37,14 @@ object XbrlParserXbrl {
     
     val order = List("NetSales", "OperatingIncome", "OrdinaryIncome", "NetIncome")
     def isValid(node:Node) :Boolean = {
-      def isValidLabel   = order.contains(node.label)
-      def isValidPrefix  = node.prefix == "tse-t-ed"
-      def isValidContext = context == node.attribute("contextRef").get.text
-      isValidLabel && isValidPrefix && isValidContext
+      order.contains(node.label) &&
+      (node.prefix == "tse-t-ed") &&
+      (node.attribute("contextRef").get.text == context)
     }
     val nodes = xml.child.filter(isValid)
     
-    val map = nodes.toList.map(n => n.label -> n.text.toLong ).toMap
-    val data = order.map(map(_))
+    val dataMap = nodes.toList.map(n => n.label -> n.text.toLong ).toMap
+    val data = order.map(dataMap(_))
     Report(year, quarter, date, month, data)
   }
 }
