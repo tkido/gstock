@@ -8,7 +8,7 @@
         <arg value="-classpath" />
         <arg value="lib/icu4j-53_1.jar" />
         
-        <arg value="com.tkido.stock.rss.main" />
+        <arg value="com.tkido.stock.rss.Main" />
     </exec>
   </target>
   
