@@ -8,7 +8,7 @@
       <arg value="-classpath" />
       <arg value=".:lib/icu4j-53_1.jar" />
       
-      <arg value="com.tkido.stock.patrol.main" />
+      <arg value="com.tkido.stock.patrol.Main" />
     </exec>
   </target>
 

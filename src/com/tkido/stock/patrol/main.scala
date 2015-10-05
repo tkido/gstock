@@ -4,7 +4,7 @@ import com.tkido.stock.Config
 import com.tkido.tools.Log
 import com.tkido.tools.Text
 
-object main extends App {
+object Main extends App {
   Log.level = Config.logLevel
   
   val number = Config.buildNumber.last.toString
