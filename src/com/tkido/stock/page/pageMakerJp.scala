@@ -22,8 +22,10 @@ object PageMakerJp {
       val (header, str2) = matchedAndRest("""【.*?】""", str)
       val reData = """(.*?)(\d+)(\(-?\d+\))?""".r
       val rows = str2.split('、')
-        .map{case reData(title, rate, plofit) =>
-          (title + selfOrElse(plofit, "")) -> rate
+        .map{
+          case reData(title, rate, plofit) =>
+            (title + selfOrElse(plofit, "")) -> rate
+          case _ => "エラー" -> "0"
         }
         .map(p => s"""['${p._1}', ${p._2}]""")
         .mkString(",\n")
