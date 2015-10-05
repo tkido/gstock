@@ -4,7 +4,7 @@ import scala.io.Source
 import scala.util.matching.Regex
 
 class Html(url:String, charset:String) {
-  val lines = Source.fromURL(url, charset).getLines.toList
+  val lines = Text.readLines(url, charset)
   
   def getPreviousLineOf(rgex:Regex) :String = {
     var last = ""
