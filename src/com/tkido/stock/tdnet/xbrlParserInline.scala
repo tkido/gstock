@@ -36,14 +36,13 @@ object XbrlParserInline {
     
     val order = List("NetSales", "OperatingIncome", "OrdinaryIncome", "NetIncome", "ProfitAttributableToOwnersOfParent")
     def isValid(node:Node) :Boolean = {
-      def isValidName = node.attribute("name") match{
+      (node.attribute("name") match{
         case None => false
         case Some(nodeSeq) => order.contains(nodeSeq.text.replaceFirst("tse-ed-t:", ""))
-      }
-      def isValidLabel   = (node.label == "nonFraction")
-      def isValidPrefix  = (node.prefix == "ix")
-      def isValidContext = (context == node.attribute("contextRef").get.text)
-      isValidName && isValidLabel && isValidPrefix && isValidContext
+      }) &&
+      (node.label == "nonFraction") &&
+      (node.prefix == "ix") &&
+      (node.attribute("contextRef").get.text == context)
     }
     val nodes = nodeSeq.filter(isValid)
     
