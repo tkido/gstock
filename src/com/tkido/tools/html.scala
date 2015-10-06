@@ -44,32 +44,6 @@ class Html(url:String, charset:String) {
     }
     results.toMap
   }
-  
-  def getPreviousLineOf(rgex:Regex) :String = {
-    var last = ""
-    for(line <- lines){
-      if(rgex.findFirstIn(line).isDefined)
-        return Html.removeTags(last)
-      last = line
-    }
-    ""
-  }
-  
-  def getNextLineOf(rgex:Regex) :String = {
-    var flag = false
-    
-    for(line <- lines){
-      if(flag)
-        return Html.removeTags(line)
-      if(rgex.findFirstIn(line).isDefined)
-        flag = true
-    }
-    ""
-  }
-  
-  def getGroupOf(rgex:Regex) :String =
-    lines.collectFirst{ case rgex(s) => s }.getOrElse("")
-  
 }
 
 object Html{
