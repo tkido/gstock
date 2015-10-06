@@ -10,7 +10,7 @@ object Log{
   val ERROR = 4
   val FATAL = 5
   
-  var level = FATAL
+  private var level = 0
   
   val template = "%tY_%<tm%<td_%<tH%<tM_%<tS"
   val started = template format new Date
@@ -23,6 +23,10 @@ object Log{
   
   def log(arg: Any) {
     logger.log(arg)
+  }
+  
+  def open(logLevel:Int) {
+    level = logLevel
   }
   
   def close() {

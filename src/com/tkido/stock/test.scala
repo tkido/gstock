@@ -6,7 +6,7 @@ import com.tkido.tools.Log
 import com.tkido.tools.Tengine
 
 object test extends App {
-  Log.level = Config.logLevel
+  Log open Config.logLevel
   
   Log d com.tkido.stock.tdnet.XbrlParser("C:\\OLS\\xbrl\\tdnet\\4834\\tse-qcedjpsm-48340-20150924402095-ixbrl.htm")
   
@@ -17,5 +17,5 @@ object test extends App {
   //Log d Ranking("2121")
   //Log d Spider("3085")
   
-  Log.close()
+  Log close
 }

@@ -5,7 +5,7 @@ import com.tkido.tools.Log
 import com.tkido.tools.Text
 
 object Main extends App {
-  Log.level = Config.logLevel
+  Log open Config.logLevel
   
   val number = Config.buildNumber.last.toString
   
@@ -15,7 +15,7 @@ object Main extends App {
   val codes = (patrolCodes &~ rssCodes &~ excludeCodes).toList.filter(c => c.endsWith(number))
   
   val data =
-    if(Log.level == Log.DEBUG)
+    if(Log.isDebug)
       codes.map(Processor(_))
     else
       codes.par.map(Processor(_))
