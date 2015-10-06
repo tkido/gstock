@@ -44,6 +44,11 @@ class Html(url:String, charset:String) {
     }
     results.toMap
   }
+  
+  def search(arg:Search) :String = {
+    search(List(arg))(arg.name)
+  }
+  
 }
 
 object Html{
