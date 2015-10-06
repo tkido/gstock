@@ -7,6 +7,11 @@ import scala.collection.mutable.{Map => MMap}
 
 case class Search(name:String, regx:Regex, arg:Int, sanitize:String => String){
 }
+object Search{
+  val GROUP = 0
+  val LAST = 1
+  val NEXT = 2
+}
 
 class Html(url:String, charset:String) {
   val lines = Text.readLines(url, charset)
@@ -28,9 +33,9 @@ class Html(url:String, charset:String) {
         val opt = pattern.regx.findFirstMatchIn(main)
         if(opt.isDefined){
           val matched = pattern.arg match{
-            case 0 => opt.get.group(1)
-            case 1 => Html.removeTags(last)
-            case 2 => Html.removeTags(next)
+            case Search.GROUP => opt.get.group(1)
+            case Search.LAST => Html.removeTags(last)
+            case Search.NEXT => Html.removeTags(next)
           }
           results(pattern.name) = pattern.sanitize(matched)
           patterns -= pattern
