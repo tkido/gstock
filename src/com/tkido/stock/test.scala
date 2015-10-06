@@ -1,21 +1,20 @@
 package com.tkido.stock
 
-import com.tkido.stock.spider.Ranking
-import com.tkido.stock.spider.Spider
+import com.tkido.stock.spider.SpiderJpConsolidate
 import com.tkido.tools.Log
-import com.tkido.tools.Tengine
+
+import com.tkido.tools.Html
+import com.tkido.tools.Search
 
 object test extends App {
   Log open Config.logLevel
   
-  Log d com.tkido.stock.tdnet.XbrlParser("C:\\OLS\\xbrl\\tdnet\\4834\\tse-qcedjpsm-48340-20150924402095-ixbrl.htm")
+  Log d SpiderJpConsolidate("3085")
   
-  //val te = Tengine("data/rss/test.html")
-  //val text = te(Map("title" -> "テストだよ！"))
-  //Log d text
-  
-  //Log d Ranking("2121")
-  //Log d Spider("3085")
+  val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(3085))
+  val searchList = List(
+    Search("現値", """^.*?<td class="stoksPrice">(.*?)</td>""".r, 0, _.replaceFirst("---", "")))
+  Log d html.search(searchList)
   
   Log close
 }
