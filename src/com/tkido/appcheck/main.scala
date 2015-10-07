@@ -1,11 +1,12 @@
 package com.tkido.appcheck
 
-object main extends App {
-  import com.tkido.tools.Log
-  import com.tkido.tools.Tengine
-  import com.tkido.tools.Text
-  
-  Log.level = Config.logLevel
+import com.tkido.stock.Config
+import com.tkido.tools.Log
+import com.tkido.tools.Tengine
+import com.tkido.tools.Text
+
+object Main extends App {
+  Log open Config.logLevel
   
   val targets = TargetParser("data/appcheck/table.txt")
   val reports = targets.map(Processor(_))
@@ -19,5 +20,5 @@ object main extends App {
   val context = Map("data" -> reports.mkString("\n"))
   Text.write("data/appcheck/report.html", te(context))
   
-  Log.close()
+  Log close
 }

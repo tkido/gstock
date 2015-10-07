@@ -1,9 +1,9 @@
 package com.tkido.stock.spider
 
+import com.tkido.tools.Html
+import com.tkido.tools.Log
+
 object Ranking {
-  import com.tkido.tools.Html
-  import com.tkido.tools.Log
-  
   Log d "Ranking spidering"
   
   val html = Html("http://info.finance.yahoo.co.jp/ranking/?kd=31&tm=d&vl=a&mk=1&p=1")

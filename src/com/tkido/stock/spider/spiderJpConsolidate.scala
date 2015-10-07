@@ -1,10 +1,10 @@
 package com.tkido.stock.spider
 
+import com.tkido.tools.Html
+import com.tkido.tools.Log
+import com.tkido.tools.tryOrElse
+
 object SpiderJpConsolidate {
-  import com.tkido.tools.Html
-  import com.tkido.tools.Log
-  import com.tkido.tools.tryOrElse
-  
   def apply(code:String) :Map[String, String] = {
     Log d s"SpiderJpConsolidate Spidering ${code}"
     

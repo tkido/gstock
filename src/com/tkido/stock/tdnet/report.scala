@@ -1,21 +1,18 @@
 package com.tkido.stock.tdnet
 
+import com.tkido.tools.Html
+
 case class Report[T](year:Int, quarter:Int, date:String, month:String, data:List[T]) extends Ordered[Report[T]]{
-  import com.tkido.tools.Html
+  private def hash(year:Int, quarter:Int) :Int = year * 10 + quarter
   
-  private def identify(year:Int, quarter:Int) :Int = year * 10 + quarter
+  def id = hash(year, quarter)
+  def compare(that:Report[T]) = id - that.id
   
-  def id = identify(year, quarter)
-  
-  def lastQuarterId:Option[Int] =
-    if(quarter == 1) None
-    else Some(identify(year, quarter-1))
-  
-  def lastYearId:Int = identify(year-1, quarter)
-  
-  def compare(that:Report[T]) =
-    if(year != that.year) year - that.year
-    else quarter - that.quarter
+  def lastQuarterId:Option[Int] = quarter match{
+    case 1 => None
+    case _ => Some(hash(year, quarter-1))
+  }
+  def lastYearId:Int = hash(year-1, quarter)
     
   override def toString =
     Html.toTrTd(month,

@@ -1,8 +1,9 @@
 package com.tkido.appcheck
 
+import com.tkido.stock.Config
+import com.tkido.tools.Log
+
 object Processor {
-  import com.tkido.tools.Log
-  
   def apply(target:Target) :String = {
     Log d target
     

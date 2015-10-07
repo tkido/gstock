@@ -1,8 +1,8 @@
 package com.tkido.stock.spider
 
+import com.tkido.tools.Log
+
 object SpiderUs {
-  import com.tkido.tools.Log
-  
   def apply(code:String) :Map[String, String] = {
     Log d s"SpiderUs Spidering ${code}"
     

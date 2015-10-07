@@ -1,9 +1,9 @@
 package com.tkido.stock.edinet
 
+import com.tkido.tools.Html
+import scala.math.pow
+
 class Company(code:String) {
-  import com.tkido.tools.Html
-  import scala.math.pow
-  
   val files = XbrlFinder(code)
   val reports = files.map(Report(_))
   

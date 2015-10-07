@@ -1,9 +1,9 @@
 package com.tkido.stock.edinet
 
+import com.tkido.tools.Log
+import scala.xml._
+
 object XbrlParserJpcrp {
-  import com.tkido.tools.Log
-  import scala.xml._
-  
   def apply(path :String) :Map[String, Long] = {
     Log d path
     val xml = XML.loadFile(path)

@@ -1,4 +1,0 @@
-logLevel = 5
-limit = 10
-#dataPath = /home/jenkins/appdata
-dataPath = C:\\OLS\\appdata

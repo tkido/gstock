@@ -3,14 +3,14 @@ package com.tkido.tools
 object Log{
   import java.io.File
   import java.util.Date
-  
+
   val DEBUG = 1
   val INFO  = 2
   val WARN  = 3
   val ERROR = 4
   val FATAL = 5
   
-  var level = FATAL
+  private var level = 0
   
   val template = "%tY_%<tm%<td_%<tH%<tM_%<tS"
   val started = template format new Date
@@ -23,6 +23,10 @@ object Log{
   
   def log(arg: Any) {
     logger.log(arg)
+  }
+  
+  def open(logLevel:Int) {
+    level = logLevel
   }
   
   def close() {
@@ -59,7 +63,6 @@ object Log{
   class FileLogger extends Logger{
     import java.io.FileOutputStream
     import java.io.OutputStreamWriter
-    import java.util.Date
     
     private val fileName = "log/%s.log" format Log.started
     

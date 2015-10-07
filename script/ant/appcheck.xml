@@ -2,10 +2,14 @@
 <project name="xbrl" default="deploy">
   
   <property name="base.dir" value="../.." />
+  <property name="scala.home" value="/usr/local/share/scala-2.11.7" />
   
   <target name="build">
-    <exec executable="/usr/local/share/scala-2.9.2/bin/scala" dir="${base.dir}">
-        <arg value="com.tkido.appcheck.main" />
+    <exec executable="${scala.home}/bin/scala" dir="${base.dir}">
+      <arg value="-classpath" />
+      <arg value="." />
+      
+      <arg value="com.tkido.appcheck.Main" />
     </exec>
   </target>
   

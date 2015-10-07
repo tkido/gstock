@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="xbrl" default="deploy">
   
-  <property name="scala.home" value="/usr/local/share/scala-2.9.2" />
   <property name="base.dir" value="../.." />
+  <property name="scala.home" value="/usr/local/share/scala-2.11.7" />
   <property name="sources.dir" value="${base.dir}/src" />
   <!--
-  <property name="deploy.dir" value="/home/jenkins/gstock" />
+  <property name="deploy.dir" value="/home/jenkins/gstock" /> //set from shell
   -->
   <target name="init">
-    <property name="scala-library.jar" value="${scala.home}/lib/scala-library.jar" />
     <path id="build.classpath">
-      <pathelement location="${scala-library.jar}" />
-        <pathelement location="${base.dir}" />
-        
-        <pathelement location="${base.dir}/lib/icu4j-53_1.jar" />
+      <pathelement location="${base.dir}" />
+      <pathelement location="${base.dir}/lib/icu4j-53_1.jar" />
+      <pathelement location="${scala.home}/lib/scala-library.jar" />
+      <pathelement location="${scala.home}/lib/scala-xml_2.11-1.0.4.jar" />
     </path>
     <taskdef resource="scala/tools/ant/antlib.xml">
       <classpath>
         <pathelement location="${scala.home}/lib/scala-compiler.jar" />
-        <pathelement location="${scala-library.jar}" />
+        <pathelement location="${scala.home}/lib/scala-reflect.jar" />
+        <pathelement location="${scala.home}/lib/scala-library.jar" />
       </classpath>
     </taskdef>
   </target>

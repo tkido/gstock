@@ -1,13 +1,15 @@
 package com.tkido.stock.rss
 
+import com.tkido.stock.Config
+import com.tkido.stock.edinet
+import com.tkido.stock.log
+import com.tkido.stock.spider.Spider
+import com.tkido.stock.tdnet
+import com.tkido.tools.Log
+import com.tkido.tools.tryOrElse
+import java.util.Date
+
 class Company(code:String, row:Int) {
-  import com.tkido.stock.edinet
-  import com.tkido.stock.log
-  import com.tkido.stock.spider.Spider
-  import com.tkido.stock.tdnet
-  import com.tkido.tools.Log
-  import com.tkido.tools.tryOrElse
-  
   val data :Map[String, String] =
     Spider(code) ++
     tryOrElse(makeLogData _, Map()) ++
@@ -78,9 +80,6 @@ class Company(code:String, row:Int) {
   
 }
 object Company{
-  import java.util.Date
-  import com.tkido.tools.Log
-  
   def apply(code:String, row:Int) :Company = {
     Log i code
     new Company(code, row)

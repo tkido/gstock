@@ -1,11 +1,11 @@
 package com.tkido.stock.patrol
 
+import com.tkido.stock.edinet
+import com.tkido.stock.tdnet
+import com.tkido.tools.Html
+import com.tkido.tools.tryOrElse
+
 class Company(code:String) {
-  import com.tkido.stock.edinet
-  import com.tkido.stock.tdnet
-  import com.tkido.tools.Html
-  import com.tkido.tools.tryOrElse
-  
   val fairValue = tryOrElse(makeFairValue _, 0.0)
   def makeFairValue = edinet.Company(code).fairValue.toDouble
   

@@ -1,11 +1,12 @@
 package com.tkido.stock.rss
 
+import com.tkido.stock.Config
 import com.tkido.stock.tdnet.XbrlDownloader
 import com.tkido.tools.Log
 import com.tkido.tools.Text
 
-object main extends App {
-  Log.level = com.tkido.stock.Config.logLevel
+object Main extends App {
+  Log open Config.logLevel
   
   val codes = Parser("data/rss/table.txt")
   val range = Range(Config.offset, Config.offset + codes.size)
@@ -20,5 +21,5 @@ object main extends App {
   Text.write("data/rss/result.txt", data.mkString("\n"))
   Text.write("data/rss/downloaded.txt", XbrlDownloader.getResult)
   
-  Log.close()
+  Log close
 }

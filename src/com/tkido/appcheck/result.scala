@@ -1,9 +1,10 @@
 package com.tkido.appcheck
 
+import com.tkido.stock.Config
 import com.tkido.tools.Log
 import com.tkido.tools.Text
 import java.io.File
-  
+
 case class Result(rank:String, updated:String) {
   override def toString :String = {
     "%s\t%s".format(rank, updated)

@@ -1,10 +1,11 @@
 package com.tkido.stock.patrol
 
-object main extends App {
-  import com.tkido.tools.Log
-  import com.tkido.tools.Text
-  
-  Log.level = com.tkido.stock.Config.logLevel
+import com.tkido.stock.Config
+import com.tkido.tools.Log
+import com.tkido.tools.Text
+
+object Main extends App {
+  Log open Config.logLevel
   
   val number = Config.buildNumber.last.toString
   
@@ -14,7 +15,7 @@ object main extends App {
   val codes = (patrolCodes &~ rssCodes &~ excludeCodes).toList.filter(c => c.endsWith(number))
   
   val data =
-    if(Log.level == Log.DEBUG)
+    if(Log.isDebug)
       codes.map(Processor(_))
     else
       codes.par.map(Processor(_))
