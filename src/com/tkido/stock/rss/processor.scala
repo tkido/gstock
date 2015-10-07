@@ -1,11 +1,11 @@
 package com.tkido.stock.rss
 
+import com.tkido.stock.edinet
+import com.tkido.stock.page.PageMaker
+import com.tkido.stock.tdnet
+
 object Processor {
-  import com.tkido.stock.edinet
-  import com.tkido.stock.page.PageMaker
-  import com.tkido.stock.tdnet
-  
-  def apply(pair:Pair[String, Int]) :String = {
+  def apply(pair:Tuple2[String, Int]) :String = {
     val (code, row) = pair
     
     edinet.XbrlDownloader(code)

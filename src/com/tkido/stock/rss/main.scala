@@ -1,19 +1,19 @@
 package com.tkido.stock.rss
 
-object main extends App {
-  import com.tkido.stock.Config
-  import com.tkido.stock.tdnet.XbrlDownloader
-  import com.tkido.tools.Logger
-  import com.tkido.tools.Text
-  
-  Logger.level = com.tkido.stock.Config.logLevel
+import com.tkido.stock.Config
+import com.tkido.stock.tdnet.XbrlDownloader
+import com.tkido.tools.Log
+import com.tkido.tools.Text
+
+object Main extends App {
+  Log.level = Config.logLevel
   
   val codes = Parser("data/rss/table.txt")
   val range = Range(Config.offset, Config.offset + codes.size)
   val pairs = codes zip range
   
   val data =
-    if(Logger.level == Logger.DEBUG)
+    if(Log.isDebug)
       pairs.map(Processor(_))
     else
       pairs.par.map(Processor(_))
@@ -21,5 +21,5 @@ object main extends App {
   Text.write("data/rss/result.txt", data.mkString("\n"))
   Text.write("data/rss/downloaded.txt", XbrlDownloader.getResult)
   
-  Logger.close()
+  Log.close()
 }

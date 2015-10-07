@@ -1,9 +1,10 @@
 package com.tkido.stock.edinet
 
+import com.tkido.tools.Html
+import com.tkido.tools.Properties
+import java.io.File
+
 class Report(path:String) {
-  import com.tkido.tools.Html
-  import java.io.File
-  
   def toYear(file:File) :Int = {
     val name = file.getName
     if(name.take(4) == "jpfr"){
@@ -51,8 +52,6 @@ class Report(path:String) {
 }
 
 object Report{
-  import com.tkido.tools.Properties
-  
   def apply(path:String) = new Report(path)
   
   val breakupItems      = Properties("data/edinet/breakup.properties",      _.toInt)

@@ -1,11 +1,11 @@
 package com.tkido.tools
 
+import java.io.FileOutputStream
+import java.io.OutputStreamWriter
+import java.io.PrintWriter
+import scala.io.Source
+
 object Text {
-  import java.io.FileOutputStream
-  import java.io.OutputStreamWriter
-  import java.io.PrintWriter
-  import scala.io.Source
-  
   val reUrl = """^https?://.*""".r
   
   def readLines(source:String, charset:String = "utf-8") :List[String] = {

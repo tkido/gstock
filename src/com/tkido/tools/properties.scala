@@ -1,9 +1,10 @@
 package com.tkido.tools
 
+import java.io.FileInputStream
+import scala.collection.JavaConverters._
+
 object Properties {
-  import java.io.FileInputStream
   import java.util.Properties
-  import scala.collection.JavaConverters._
   
   def apply(path:String) :Map[String, String] = {
     val prop = new Properties

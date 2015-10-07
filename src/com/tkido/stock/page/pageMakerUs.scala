@@ -1,8 +1,8 @@
 package com.tkido.stock.page
 
+import com.tkido.tools.Text
+
 object PageMakerUs {
-  import com.tkido.tools.Text
-  
   private val templete = Text.read("data/rss/templateUS.html")
   
   def apply(data:Map[String, String]){

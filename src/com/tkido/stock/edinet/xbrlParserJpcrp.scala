@@ -1,11 +1,11 @@
 package com.tkido.stock.edinet
 
+import com.tkido.tools.Log
+import scala.xml._
+
 object XbrlParserJpcrp {
-  import com.tkido.tools.Logger
-  import scala.xml._
-  
   def apply(path :String) :Map[String, Long] = {
-    Logger.debug(path)
+    Log d path
     val xml = XML.loadFile(path)
     
     def isNetIncome(node:Node) :Boolean = {
@@ -26,8 +26,8 @@ object XbrlParserJpcrp {
       node.text.nonEmpty && isValidPrefix && isValidContext && node.label == "NetIncome"
     }
     val isConsolidated = xml.child.exists(isNetIncome)
-    if(Logger.isDebug)
-      Logger.log("isConsolidated = %s".format(isConsolidated))
+    if(Log.isDebug)
+      Log.log("isConsolidated = %s".format(isConsolidated))
     
     
     def isValid(node:Node) :Boolean = {
@@ -58,9 +58,9 @@ object XbrlParserJpcrp {
     }
     val nodes = xml.child.filter(isValid)
     
-    if(Logger.isDebug)
+    if(Log.isDebug)
       for(node <- nodes)
-        Logger.log(node.prefix + "\t" + node.label + "\t" + node.text.toLong)
+        Log.log(node.prefix + "\t" + node.label + "\t" + node.text.toLong)
     
     nodes.toList.map(x => x.label -> x.text.toLong ).toMap
   }

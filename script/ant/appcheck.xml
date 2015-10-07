@@ -4,8 +4,11 @@
   <property name="base.dir" value="../.." />
   
   <target name="build">
-    <exec executable="/usr/local/share/scala-2.9.2/bin/scala" dir="${base.dir}">
-        <arg value="com.tkido.appcheck.main" />
+    <exec executable="/usr/local/share/scala-2.11.7/bin/scala" dir="${base.dir}">
+      <arg value="-classpath" />
+      <arg value="." />
+      
+      <arg value="com.tkido.appcheck.Main" />
     </exec>
   </target>
   

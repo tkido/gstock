@@ -1,13 +1,12 @@
 package com.tkido.stock.edinet
 
+import com.tkido.stock.reJpStockCode
+
 object XbrlDownloader {
-  val reJp = """[0-9]{4}""".r
-  val reUs = """[A-Z]{1,5}""".r
-  
-  def apply(code:String) {  
+  def apply(code:String) {
     code match {
-      case reJp() => XbrlDownloaderJp(code)
-      case _      => ()
+      case reJpStockCode() => XbrlDownloaderJp(code)
+      case _ => ()
     }
   }
 }

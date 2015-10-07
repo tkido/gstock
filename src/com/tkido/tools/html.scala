@@ -1,10 +1,10 @@
 package com.tkido.tools
 
+import scala.io.Source
+import scala.util.matching.Regex
+
 class Html(url:String, charset:String) {
-  import scala.io.Source
-  import scala.util.matching.Regex
-  
-  val lines = Source.fromURL(url, charset).getLines.toList
+  val lines = Text.readLines(url, charset)
   
   def getPreviousLineOf(rgex:Regex) :String = {
     var last = ""
@@ -66,7 +66,7 @@ object Html{
   }
   
   private def toHtml(arg:Long) :String = {
-    def round(str:String, col:Int) :String = {
+    def round(str:String) :String = {
       val size = str.size
       val (head, tail) = str.take(3).splitAt(size % 3)
       val unit = (size - 1) / 3 match {
@@ -82,7 +82,7 @@ object Html{
       val separator = if(head.isEmpty || tail.isEmpty) "" else "."
       head + separator + tail + unit
     }
-    val number = round(arg.abs.toString, 0)
+    val number = round(arg.abs.toString)
     val klass = if(arg < 0) """ class="minus"""" else ""
     val sign =  if(arg < 0) "-" else ""
     "<span%s>%s%s</span>".format(klass, sign, number)

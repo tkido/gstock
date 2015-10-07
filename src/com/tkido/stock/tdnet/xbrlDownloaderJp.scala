@@ -1,12 +1,12 @@
 package com.tkido.stock.tdnet
 
+import com.tkido.stock.Config
+import com.tkido.tools.Log
+import com.tkido.tools.Text
+import java.io.File
+import scala.xml._
+
 object XbrlDownloaderJp {
-  import com.tkido.stock.Config
-  import com.tkido.tools.Logger
-  import com.tkido.tools.Text
-  import java.io.File
-  import scala.xml._
-  
   def apply(code:String) {
     val root = new File(Config.xbrlPath, "/tdnet/"+code)
     if(!root.exists) root.mkdir

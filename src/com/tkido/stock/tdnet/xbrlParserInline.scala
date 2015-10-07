@@ -1,10 +1,11 @@
 package com.tkido.stock.tdnet
 
+import com.tkido.tools.Date.fromJpToSimple
+import com.tkido.tools.Log
+import java.io.File
+import scala.xml._
+
 object XbrlParserInline {
-  import com.tkido.tools.Logger
-  import java.io.File
-  import scala.xml._
-  
   def apply(path :String) :Report[Long] = {
     val fileName = new File(path).getName
     val isQuarter = fileName.charAt(4) == 'q'
@@ -14,7 +15,7 @@ object XbrlParserInline {
     val nodeSeq = (xml \\ "_")
     
     val dateJp = nodeSeq.filter(_ \ "@name" exists(_.text == "tse-ed-t:FilingDate"))(0).text
-    val date = com.tkido.tools.Date.fromJpToSimple(dateJp)
+    val date = fromJpToSimple(dateJp)
     
     val quarter =
       if(!isQuarter) 4
@@ -33,14 +34,15 @@ object XbrlParserInline {
     val year = period.\("startDate").text.take(4).toInt
     val month = period.\("endDate").text.take(7)
     
-    val order = List("NetSales", "OperatingIncome", "OrdinaryIncome", "NetIncome")
+    val order = List("NetSales", "OperatingIncome", "OrdinaryIncome", "NetIncome", "ProfitAttributableToOwnersOfParent")
     def isValid(node:Node) :Boolean = {
-      def isValidName    = node.attribute("name").nonEmpty &&
-                           order.contains(node.attribute("name").get.text.replaceFirst("tse-ed-t:", ""))
-      def isValidLabel   = (node.label == "nonFraction")
-      def isValidPrefix  = (node.prefix == "ix")
-      def isValidContext = (context == node.attribute("contextRef").get.text)
-      isValidName && isValidLabel && isValidPrefix && isValidContext
+      (node.attribute("name") match{
+        case None => false
+        case Some(nodeSeq) => order.contains(nodeSeq.text.replaceFirst("tse-ed-t:", ""))
+      }) &&
+      (node.label == "nonFraction") &&
+      (node.prefix == "ix") &&
+      (node.attribute("contextRef").get.text == context)
     }
     val nodes = nodeSeq.filter(isValid)
     
@@ -50,11 +52,11 @@ object XbrlParserInline {
       val sign = if(node.attribute("sign").nonEmpty) -1 else 1
       sign * (literal + "0" * scale).toLong
     }
-    val map = nodes.toList.map(n =>
+    val dataMap = nodes.toList.map(n =>
       n.attribute("name").get.text.replaceFirst("tse-ed-t:", "") -> nodeToNumber(n)
     ).toMap
     
-    val data = order.map(map(_))
+    val data = order.collect{case s if dataMap.contains(s) => dataMap(s)} //choose between "NetIncome" and "ProfitAttributableToOwnersOfParent"
     
     Report(year, quarter, date, month, data)
   }

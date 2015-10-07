@@ -1,8 +1,8 @@
 package com.tkido.appcheck
 
+import scala.xml._
+
 object Checker {
-  import scala.xml._
-  
   def apply(target:Target) :Result ={
     val xml = XML.load(target.url)
     

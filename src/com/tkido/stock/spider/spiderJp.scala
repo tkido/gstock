@@ -1,10 +1,10 @@
 package com.tkido.stock.spider
 
+import com.tkido.tools.Log
+
 object SpiderJp {
-  import com.tkido.tools.Logger
-  
   def apply(code:String) :Map[String, String] = {
-    Logger.debug("SpiderJp Spidering ", code)
+    Log d s"SpiderJp Spidering ${code}"
     
     SpiderJpStockholder(code) ++
     SpiderJpConsolidate(code) ++

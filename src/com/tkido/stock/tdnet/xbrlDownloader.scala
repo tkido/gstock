@@ -1,16 +1,14 @@
 package com.tkido.stock.tdnet
 
+import com.tkido.stock.reJpStockCode
+import scala.collection.mutable.ListBuffer
+
 object XbrlDownloader {
-  import scala.collection.mutable.ListBuffer
-  
-  val reJp = """[0-9]{4}""".r
-  val reUs = """[A-Z]{1,5}""".r
-  
   val buf = ListBuffer.empty[String]
   
-  def apply(code:String) {  
+  def apply(code:String) {
     code match {
-      case reJp() => XbrlDownloaderJp(code)
+      case reJpStockCode() => XbrlDownloaderJp(code)
       case _      => ()
     }
   }

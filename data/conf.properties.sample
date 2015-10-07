@@ -1,6 +1,9 @@
-offset = 2
 logLevel = 5
-rssFlag = true
 xbrlPath = /home/jenkins/xbrl
 #xbrlPath = C:\\OLS\\xbrl
 #xbrlPath = D:\\OLS\\xbrl
+offset = 2
+rssFlag = true
+limit = 10
+dataPath = /home/jenkins/appcheck
+#dataPath = C:\\OLS\\appdata

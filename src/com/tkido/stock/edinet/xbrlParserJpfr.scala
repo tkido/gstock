@@ -1,11 +1,11 @@
 package com.tkido.stock.edinet
 
+import com.tkido.tools.Log
+import scala.xml._
+
 object XbrlParserJpfr {
-  import com.tkido.tools.Logger
-  import scala.xml._
-  
   def apply(path :String) :Map[String, Long] = {
-    Logger.debug(path)
+    Log d path
     val xml = XML.loadFile(path)
     val isConsolidated = (xml \\ "@id").exists(_.toString == "CurrentYearConsolidatedDuration")
 
@@ -36,9 +36,9 @@ object XbrlParserJpfr {
     }
     val nodes = xml.child.filter(isValid)
     
-    if(Logger.isDebug)
+    if(Log.isDebug)
       for(node <- nodes)
-        Logger.log(node.prefix + "\t" + node.label + "\t" + node.text.toLong)
+        Log.log(node.prefix + "\t" + node.label + "\t" + node.text.toLong)
     
     nodes.toList.map(x => x.label -> x.text.toLong ).toMap
   }

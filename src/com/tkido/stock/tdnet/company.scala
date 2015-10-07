@@ -1,33 +1,35 @@
 package com.tkido.stock.tdnet
 
+import com.tkido.tools.Html
+import com.tkido.tools.Log
+
 class Company(code:String) {
-  import com.tkido.tools.Html
-  import com.tkido.tools.Logger
-  
   val rawReports =
     XbrlFinder(code).map(XbrlParser(_))
       .groupBy(_.id).mapValues(_.last).toList.map(_._2) //distinct
       .sorted
-  if(Logger.isDebug) for(r <- rawReports) Logger.log(r)
+  if(Log.isDebug) for(r <- rawReports) Log.log(r)
   
-  val rmap = rawReports.groupBy(_.id).mapValues(_.head)
+  val rMap = rawReports.map(r => r.id -> r).toMap
   def toDeltaReport(report:Report[Long]) :Option[Report[Long]] = {
-    if(report.lastQuarterId.isEmpty) return Some(report)  //Q1
-    val lastId = report.lastQuarterId.get
-    if(!rmap.contains(lastId)) return None
-    val last = rmap(lastId)
-    val delta = (report.data zip last.data).map(p => p._1 - p._2)
-    Some(report.copy(data = delta))
+    report.lastQuarterId match{
+      case None => Some(report) //Q1
+      case Some(lastId) if(!rMap.contains(lastId)) => None
+      case Some(lastId) =>
+        val last = rMap(lastId)
+        val delta = (report.data zip last.data).map(p => p._1 - p._2)
+        Some(report.copy(data = delta))
+    }
   }
   val deltaReports = rawReports.map(toDeltaReport).collect{case Some(r) => r}
-  if(Logger.isDebug) for(r <- deltaReports) Logger.log(r)
+  if(Log.isDebug) for(r <- deltaReports) Log.log(r)
   
-  val dmap = deltaReports.groupBy(_.id).mapValues(_.head)
+  val dMap = deltaReports.map(r => r.id -> r).toMap
   def toDoubleReport(report:Report[Long]) :Option[Report[Any]] = {
     val lastId = report.lastYearId
-    if(!dmap.contains(lastId)) return None
-    val last = dmap(lastId)
-    def toDisplay(pair:Pair[Long, Long]) :Any = {
+    if(!dMap.contains(lastId)) return None
+    val last = dMap(lastId)
+    def toDisplay(pair:Tuple2[Long, Long]) :Any = {
       pair match {
         case (p1, p2) if p1 >  0 && p2 >  0 => 1.0 * p1 / p2 - 1.0
         case (p1, p2) if p1 <= 0 && p2 <= 0 => """<span class="minus">赤字</span>"""
@@ -39,7 +41,7 @@ class Company(code:String) {
     Some(report.copy(data = ratio))
   }
   val doubleReports = deltaReports.map(toDoubleReport).collect{case Some(r) => r}
-  if(Logger.isDebug) for(r <- doubleReports) Logger.log(r)
+  if(Log.isDebug) for(r <- doubleReports) Log.log(r)
   
   override def toString = {
     val header = Html.toTrTh("終了月", "Q", "売上", "営利", "経利", "純利", "開示日")
