@@ -4,7 +4,7 @@ import com.tkido.tools.Log
 import com.tkido.tools.Text
 
 object main extends App {
-  Log.level = Log.DEBUG
+  Log open Log.DEBUG
   
   Log d Reporter("9795")
   

@@ -34,7 +34,10 @@ object XbrlParserInline {
     val year = period.\("startDate").text.take(4).toInt
     val month = period.\("endDate").text.take(7)
     
-    val order = List("NetSales", "OperatingIncome", "OrdinaryIncome", "NetIncome", "ProfitAttributableToOwnersOfParent")
+    val order = List("NetSales", "OperatingRevenues",
+                     "OperatingIncome",
+                     "OrdinaryIncome",
+                     "NetIncome", "ProfitAttributableToOwnersOfParent")
     def isValid(node:Node) :Boolean = {
       (node.attribute("name") match{
         case None => false
