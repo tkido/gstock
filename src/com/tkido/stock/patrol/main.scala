@@ -7,12 +7,11 @@ import com.tkido.tools.Text
 object Main extends App {
   Log open Config.logLevel
   
-  val number = Config.buildNumber.last.toString
-  
-  val patrolCodes = Parser("data/patrol/table.txt").toSet
+  val lastNumber = Config.buildNumber.last.toString
+  val patrolCodes = Parser("data/patrol/table.txt").filter(c => c.endsWith(lastNumber)).toSet
   val excludeCodes = Parser("data/patrol/exclude.txt").toSet
   val rssCodes = Parser("data/rss/table.txt").toSet
-  val codes = (patrolCodes &~ rssCodes &~ excludeCodes).toList.filter(c => c.endsWith(number))
+  val codes = (patrolCodes &~ rssCodes &~ excludeCodes).toList
   
   val data =
     if(Log.isDebug)
@@ -22,5 +21,5 @@ object Main extends App {
   
   Text.write("data/patrol/result.txt", data.collect{case Some(s) => s}.mkString("\n"))
   
-  Log.close()
+  Log close
 }
