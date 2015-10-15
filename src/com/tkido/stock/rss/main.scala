@@ -6,7 +6,7 @@ import com.tkido.tools.Log
 import com.tkido.tools.Text
 
 object Main extends App {
-  Log.level = Config.logLevel
+  Log open Config.logLevel
   
   val codes = Parser("data/rss/table.txt")
   val range = Range(Config.offset, Config.offset + codes.size)
@@ -21,5 +21,5 @@ object Main extends App {
   Text.write("data/rss/result.txt", data.mkString("\n"))
   Text.write("data/rss/downloaded.txt", XbrlDownloader.getResult)
   
-  Log.close()
+  Log close
 }

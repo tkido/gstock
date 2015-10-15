@@ -2,9 +2,10 @@
 <project name="xbrl" default="build">
   
   <property name="base.dir" value="../.." />
+  <property name="scala.home" value="/usr/local/share/scala-2.11.7" />
   
   <target name="build">
-    <exec executable="/usr/local/share/scala-2.11.7/bin/scala" dir="${base.dir}">
+    <exec executable="${scala.home}/bin/scala" dir="${base.dir}">
       <arg value="-classpath" />
       <arg value=".:lib/icu4j-53_1.jar" />
       

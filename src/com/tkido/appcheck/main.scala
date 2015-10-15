@@ -6,7 +6,7 @@ import com.tkido.tools.Tengine
 import com.tkido.tools.Text
 
 object Main extends App {
-  Log.level = Config.logLevel
+  Log open Config.logLevel
   
   val targets = TargetParser("data/appcheck/table.txt")
   val reports = targets.map(Processor(_))
@@ -20,5 +20,5 @@ object Main extends App {
   val context = Map("data" -> reports.mkString("\n"))
   Text.write("data/appcheck/report.html", te(context))
   
-  Log.close()
+  Log close
 }

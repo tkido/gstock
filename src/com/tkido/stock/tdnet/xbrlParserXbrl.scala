@@ -35,7 +35,10 @@ object XbrlParserXbrl {
     val year = period.\("startDate").text.take(4).toInt
     val month = period.\("endDate").text.take(7)
     
-    val order = List("NetSales", "OperatingIncome", "OrdinaryIncome", "NetIncome")
+    val order = List("NetSales", "OperatingRevenues",
+                     "OperatingIncome",
+                     "OrdinaryIncome",
+                     "NetIncome")
     def isValid(node:Node) :Boolean = {
       order.contains(node.label) &&
       (node.prefix == "tse-t-ed") &&
@@ -44,7 +47,7 @@ object XbrlParserXbrl {
     val nodes = xml.child.filter(isValid)
     
     val dataMap = nodes.toList.map(n => n.label -> n.text.toLong ).toMap
-    val data = order.map(dataMap(_))
+    val data = order.collect{case s if dataMap.contains(s) => dataMap(s)}
     Report(year, quarter, date, month, data)
   }
 }
