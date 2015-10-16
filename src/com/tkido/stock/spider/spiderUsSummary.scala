@@ -26,6 +26,6 @@ object SpiderUsSummary {
         case _      => ""
       }))
     )
-    map ++ Map("前比" -> (map.getOrElse("sign", "") + map("raw")))
+    map ++ Map("前比" -> (map.getOrElse("sign", "") + map.getOrElse("raw", "")))
   }
 }
