@@ -3,6 +3,7 @@ package com.tkido.stock.patrol
 import com.tkido.stock.edinet
 import com.tkido.stock.tdnet
 import com.tkido.tools.Html
+import com.tkido.tools.Search
 import com.tkido.tools.tryOrElse
 
 class Company(code:String) {
@@ -13,26 +14,19 @@ class Company(code:String) {
   
   def parseData :(Double, Double, Double, Double, Double) = {
     val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
-    
-    def getCurrentPrice() :Double =
-      html.getGroupOf("""<td class="stoksPrice">(.*?)</td>""".r).replaceAll(",", "").toDouble
-    val currentPrice = tryOrElse(getCurrentPrice, 0.0)
-      
-    def getHighest() :Double =
-      html.getPreviousLineOf("""<dt class="title">年初来高値""".r).dropRight(10).replaceAll(",", "").replaceFirst("更新", "").toDouble
-    val highest = tryOrElse(getHighest, 0.0)
-      
-    def getOutstanding() :Double =
-      html.getPreviousLineOf("""<dt class="title">発行済株式数""".r).dropRight(12).replaceAll(",", "").toDouble * 1000
-    val outStanding = tryOrElse(getOutstanding, 0.0)
-    
-    def getPer() :Double =
-      html.getPreviousLineOf("""<dt class="title">PER""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").toDouble
-    val per = tryOrElse(getPer, 0.0)
-    
-    def getPbr() :Double =
-      html.getPreviousLineOf("""<dt class="title">PBR""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").toDouble
-    val pbr = tryOrElse(getPbr, 0.0)
+    val map = html.search(List(
+      Search("currentPrice", """<td class="stoksPrice">(.*?)</td>""".r, Search.GROUP, _.replaceAll(",", "")),
+      Search("highest", """<dt class="title">年初来高値""".r, Search.LAST, _.dropRight(10).replaceAll(",", "").replaceFirst("更新", "")),
+      Search("outStanding", """<dt class="title">発行済株式数""".r, Search.LAST, _.dropRight(12).replaceAll(",", "")),
+      Search("per", """<dt class="title">PER""".r, Search.LAST, _.replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "")),
+      Search("pbr", """<dt class="title">PBR""".r, Search.LAST, _.replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "")) )
+    )
+
+    val currentPrice = map.getOrElse("currentPrice", "0.0").toDouble
+    val highest = map.getOrElse("highest", "0.0").toDouble
+    val outStanding = map.getOrElse("outStanding", "0.0").toDouble * 1000
+    val per = map.getOrElse("per", "0.0").toDouble
+    val pbr = map.getOrElse("pbr", "0.0").toDouble
     
     (currentPrice, highest, outStanding, per, pbr)
   }
