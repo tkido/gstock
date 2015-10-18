@@ -3,6 +3,7 @@ package com.tkido.stock.spider
 import com.tkido.statistics.RankCorrelationIndex
 import com.tkido.tools.Html
 import com.tkido.tools.Log
+import com.tkido.tools.Search
 import com.tkido.tools.tryOrElse
 
 object SpiderJpHistory {
@@ -16,7 +17,7 @@ object SpiderJpHistory {
       val reTd = """^<td>.*?</td><td>(.*)</td>$""".r
       val reSplit = """<tr><td>\d{4}年\d{1,2}月\d{1,2}日</td><td colspan="6" class="through">.*?</td></tr>"""
       val reColor = """ class=".*?""""
-      val list = html.getGroupOf(reTr)
+      val list = html.search(Search("", reTr, Search.GROUP, s => s))
                    .replaceAll(reSplit, "")  //exclude stock split information row
                    .replaceAll(reColor, "")  //exclude color
                    .split("""</tr><tr>""").toList.take(21) //about one month 20days + 1day for last close

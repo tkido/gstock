@@ -2,85 +2,44 @@ package com.tkido.stock.spider
 
 import com.tkido.tools.Html
 import com.tkido.tools.Log
-import com.tkido.tools.tryOrElse
+import com.tkido.tools.Search
 
 object SpiderJpDetail {
   def apply(code:String) :Map[String, String] = {
     Log d s"SpiderJpDetail Spidering ${code}"
     
-    def get :Map[String, String] = {
-      val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
-      
-      val marketName = {
-        val raw = html.getNextLineOf("""<div id="deal">""".r).replaceFirst("""PTS.*""", "")
-        raw match {
-          case "東証1部"  => "東1"
-          case "東証2部"  => "東2"
-          case "東証JQS"  => "東J"
-          case "東証JQG"  => "東J"
-          case "マザーズ" => "東M"
-          case "名証1部"  => "名1"
-          case "名証2部"  => "名2"
-          case "札証"     => "札"
-          case "福証"     => "福"
-          case _          => raw
-        }
-      }
+    def divCode(content:String, div:String) :String =
+      if(content == "-") "-" else "=%s/%s".format(content, div)
 
-      val outstanding =
-        html.getPreviousLineOf("""<dt class="title">発行済株式数""".r).dropRight(12)
-      val currentPrice =
-        html.getGroupOf("""^.*?<td class="stoksPrice">(.*?)</td>""".r).replaceFirst("---", " ")
-      val lastClose =
-        html.getPreviousLineOf("""<dt class="title">前日終値""".r).dropRight(7)
-      val ratioLast =
-        html.getGroupOf("""<td class="change"><span class="yjSt">前日比</span><span class=".*? yjMSt">.*?（(.*?)%）</span></td>""".r)
-      val valume =
-        html.getPreviousLineOf("""<dt class="title">出来高""".r).dropRight(8).replaceAll(",", "").replaceFirst("-", "0")
-      val highest =
-        html.getPreviousLineOf("""<dt class="title">年初来高値""".r).dropRight(10).replaceAll(",", "").replaceFirst("更新", "")
-      val highestDate =
-        html.getPreviousLineOf("""<dt class="title">年初来高値""".r).takeRight(10).init.tail
-      val lowest =
-        html.getPreviousLineOf("""<dt class="title">年初来安値""".r).dropRight(10).replaceAll(",", "").replaceFirst("更新", "")
-      val lowestDate =
-        html.getPreviousLineOf("""<dt class="title">年初来安値""".r).takeRight(10).init.tail
-      val dividendYield =
-        html.getPreviousLineOf("""<dt class="title">配当利回り""".r).replaceFirst("""（.*""", "").replaceFirst("---", "0")
-      val per =
-        html.getPreviousLineOf("""<dt class="title">PER""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "0")
-      val pbr =
-        html.getPreviousLineOf("""<dt class="title">PBR""".r).replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "-")
-      val buyOnCredit =
-        html.getPreviousLineOf("""<dt class="title">信用買残""".r).replaceFirst("""株.*""", "").replaceAll(",", "").replaceFirst("---", "-")
-      val sellOnCredit =
-        html.getPreviousLineOf("""<dt class="title">信用売残""".r).replaceFirst("""株.*""", "").replaceAll(",", "").replaceFirst("---", "-")
-      val buyOnCreditDelta =
-        html.getPreviousLineOf("""<dt class="title"><span class="icoL">前週比</span>.*?shinyoubaizann_zensyuuhi""".r).replaceFirst("""株.*""", "").replaceAll(",", "").replaceFirst("---", "-")
-      val sellOnCreditDelta =
-        html.getPreviousLineOf("""<dt class="title"><span class="icoL">前週比</span>.*?shinyouuriage_zensyuuhi""".r).replaceFirst("""株.*""", "").replaceAll(",", "").replaceFirst("---", "-")
-      
-      def divCode(content:String, div:String) :String =
-        if(content == "-") "-" else "=%s/%s".format(content, div)
-      
-      Map("発行"     -> outstanding,
-          "現値"     -> currentPrice,
-          "前終"     -> lastClose,
-          "前比"     -> ratioLast,
-          "出来"     -> divCode(valume, "【発行】"),
-          "買残"     -> divCode(buyOnCredit, "【発行】"),
-          "買残週差" -> divCode(buyOnCreditDelta, "【発行】"),
-          "売残"     -> divCode(sellOnCredit, "【発行】"),
-          "売残週差" -> divCode(sellOnCreditDelta, "【発行】"),
-          "年高"     -> divCode(highest, "【値】"),
-          "年高日"   -> highestDate,
-          "年安"     -> divCode(lowest, "【値】"),
-          "年安日"   -> lowestDate,
-          "市"       -> marketName,
-          "利"       -> dividendYield,
-          "PER"      -> per,
-          "PBR"      -> pbr )
-    }
-    tryOrElse(get _, Map())
+    val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
+    html.search(List(
+      Search("発行", """<dt class="title">発行済株式数""".r, Search.LAST, _.dropRight(12)),
+      Search("現値", """^.*?<td class="stoksPrice">(.*?)</td>""".r, Search.GROUP, _.replaceFirst("---", " ")),
+      Search("前終", """<dt class="title">前日終値""".r, Search.LAST, _.dropRight(7)),
+      Search("前比", """<td class="change"><span class="yjSt">前日比</span><span class=".*? yjMSt">.*?（(.*?)%）</span></td>""".r, Search.GROUP, s => s),
+      Search("出来", """<dt class="title">出来高""".r, Search.LAST, raw => divCode(raw.dropRight(8).replaceAll(",", "").replaceFirst("-", "0"), "【発行】")),
+      Search("買残", """<dt class="title">信用買残""".r, Search.LAST, raw => divCode(raw.replaceFirst("""株.*""", "").replaceAll(",", "").replaceFirst("---", "-"), "【発行】")),
+      Search("売残", """<dt class="title">信用売残""".r, Search.LAST, raw => divCode(raw.replaceFirst("""株.*""", "").replaceAll(",", "").replaceFirst("---", "-"), "【発行】")),
+      Search("買残週差", """<dt class="title"><span class="icoL">前週比</span>.*?shinyoubaizann_zensyuuhi""".r, Search.LAST, raw => divCode(raw.replaceFirst("""株.*""", "").replaceAll(",", "").replaceFirst("---", "-"), "【発行】")),
+      Search("売残週差", """<dt class="title"><span class="icoL">前週比</span>.*?shinyouuriage_zensyuuhi""".r, Search.LAST, raw => divCode(raw.replaceFirst("""株.*""", "").replaceAll(",", "").replaceFirst("---", "-"), "【発行】")),
+      Search("年高", """<dt class="title">年初来高値""".r, Search.LAST, raw => divCode(raw.dropRight(10).replaceAll(",", "").replaceFirst("更新", ""), "【値】")),
+      Search("年安", """<dt class="title">年初来安値""".r, Search.LAST, raw => divCode(raw.dropRight(10).replaceAll(",", "").replaceFirst("更新", ""), "【値】")),
+      Search("年高日", """<dt class="title">年初来高値""".r, Search.LAST, _.takeRight(10).init.tail),
+      Search("年安日", """<dt class="title">年初来安値""".r, Search.LAST, _.takeRight(10).init.tail),
+      Search("利", """<dt class="title">配当利回り""".r, Search.LAST, _.replaceFirst("""（.*""", "").replaceFirst("---", "0")),
+      Search("PER", """<dt class="title">PER""".r, Search.LAST, _.replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "0")),
+      Search("PBR", """<dt class="title">PBR""".r, Search.LAST, _.replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "-")),
+      Search("市", """<div id="deal">""".r, Search.NEXT, _.replaceFirst("""PTS.*""", "") match{
+        case "東証1部"  => "東1"
+        case "東証2部"  => "東2"
+        case "東証JQS"  => "東J"
+        case "東証JQG"  => "東J"
+        case "マザーズ" => "東M"
+        case "名証1部"  => "名1"
+        case "名証2部"  => "名2"
+        case "札証"     => "札"
+        case "福証"     => "福"
+        case s:String   => s
+      })))
   }
 }

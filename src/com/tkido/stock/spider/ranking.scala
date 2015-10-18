@@ -2,6 +2,7 @@ package com.tkido.stock.spider
 
 import com.tkido.tools.Html
 import com.tkido.tools.Log
+import com.tkido.tools.Search
 
 object Ranking {
   Log d "Ranking spidering"
@@ -15,7 +16,7 @@ object Ranking {
     val reData(rank, code) = line
     code -> rank
   }
-  val map = html.getGroupOf(reTable)
+  val map = html.search(Search("table", reTable, Search.GROUP, s => s))
                  .split("""</tr>""")
                  .map(lineToPair)
                  .toMap
