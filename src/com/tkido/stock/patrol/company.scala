@@ -22,11 +22,11 @@ class Company(code:String) {
       Search("pbr", """<dt class="title">PBR""".r, Search.LAST, _.replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "")) )
     )
 
-    val currentPrice = map.getOrElse("currentPrice", "0.0").toDouble
-    val highest = map.getOrElse("highest", "0.0").toDouble
-    val outStanding = map.getOrElse("outStanding", "0.0").toDouble * 1000
-    val per = map.getOrElse("per", "0.0").toDouble
-    val pbr = map.getOrElse("pbr", "0.0").toDouble
+    val currentPrice = tryOrElse(() => map("currentPrice").toDouble, 0.0)
+    val highest = tryOrElse(() => map("highest").toDouble, 0.0)
+    val outStanding = tryOrElse(() => map("outStanding").toDouble, 0.0)
+    val per = tryOrElse(() => map("per").toDouble, 0.0)
+    val pbr = tryOrElse(() => map("pbr").toDouble, 0.0)
     
     (currentPrice, highest, outStanding, per, pbr)
   }
@@ -39,7 +39,7 @@ class Company(code:String) {
   }
   
   def edinetScore() :Int = {
-    val ratio = (currentPrice * outStanding) / fairValue
+    val ratio = (currentPrice * outStanding * 1000) / fairValue
     
     if(ratio < 0.3)
       0
