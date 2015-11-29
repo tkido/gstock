@@ -7,8 +7,7 @@ import com.tkido.tools.Text
 object Main extends App {
   Log open Config.logLevel
   
-  val lastNumber = Config.buildNumber.last.toString
-  val patrolCodes = Parser("data/patrol/table.txt").filter(c => c.endsWith(lastNumber)).toSet
+  val patrolCodes = Parser("data/patrol/table.txt").toSet
   val excludeCodes = Parser("data/patrol/exclude.txt").toSet
   val rssCodes = Parser("data/rss/table.txt").toSet
   val codes = (patrolCodes &~ rssCodes &~ excludeCodes).toList
