@@ -13,6 +13,7 @@ object Config {
   lazy val rssFlag  = prop("rssFlag").toBoolean
   
   //for patrol
+  lazy val buildNumber = prop("buildNumber")
   
   //for appcheck
   lazy val limit = prop("limit").toInt
