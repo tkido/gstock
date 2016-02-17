@@ -10,8 +10,7 @@ object Main extends App {
   val lastNumber = Config.buildNumber.last.toString
   val patrolCodes = Parser("data/patrol/table.txt").filter(c => c.endsWith(lastNumber)).toSet
   val excludeCodes = Parser("data/patrol/exclude.txt").toSet
-  val rssCodes = Parser("data/rss/table.txt").toSet
-  val codes = (patrolCodes &~ rssCodes &~ excludeCodes).toList
+  val codes = (patrolCodes &~ excludeCodes).toList
   
   val data =
     if(Log.isDebug)
@@ -19,7 +18,9 @@ object Main extends App {
     else
       codes.par.map(Processor(_))
   
-  Text.write("data/patrol/result.txt", data.collect{case Some(s) => s}.mkString("\n"))
+  val result = data.collect{case Some(s) => s}.mkString("\n")
+  Text.write("data/patrol/result.txt", result)
+  Text.write("data/ress/table.txt", result)
   
   Log close
 }
