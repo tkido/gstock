@@ -26,8 +26,7 @@ object ParserKabuCom {
 
 
 object ParserSbi {
-  val regx = """^"[0-9]{4}.*$""".r
-  val regx2 = """^"([0-9]{4}).*$""".r
+  val regx = """^"([0-9]{4}).*$""".r
   
   def apply() :List[String] = {
     def isValid(line:String) :Boolean = {
@@ -35,13 +34,11 @@ object ParserSbi {
       arr(6) == "\"◎\"" || arr(7) == "\"◎\""
     }
     
-    Text.readLines("data/cross/CbsProductList.csv", "shift-jis").filter{
-      case regx() => true
-      case _ => false
-    }
+    Text.readLines("data/cross/CbsProductList.csv", "shift-jis")
+    .drop(8)
     .filter(isValid)
     .collect{
-      case regx2(code) => code
+      case regx(code) => code
     }
   }
 }
