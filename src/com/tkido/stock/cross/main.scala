@@ -9,6 +9,7 @@ object Main extends App {
   
   val taisyakuCodes = ParserJpx()
   val kabuComCodes = ParserKabuCom()
+  val sbiCodes = ParserSbi()
   
   /*
   val range = Range(Config.offset, Config.offset + codes.size)
@@ -20,7 +21,7 @@ object Main extends App {
     else
       pairs.par.map(Processor(_))
   */
-  Text.write("data/cross/result.txt", kabuComCodes.mkString("\n"))
+  Text.write("data/cross/result.txt", sbiCodes.mkString("\n"))
   
   Log close
 }

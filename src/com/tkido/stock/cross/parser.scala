@@ -1,5 +1,6 @@
 package com.tkido.stock.cross
 
+import com.tkido.tools.Log
 import com.tkido.tools.Text
 
 object ParserJpx {
@@ -19,6 +20,28 @@ object ParserKabuCom {
   def apply() :List[String] = {
     Text.readLines("data/cross/meigara_list.csv", "shift-jis").collect{
       case regx(code) => code
+    }
+  }
+}
+
+
+object ParserSbi {
+  val regx = """^"[0-9]{4}.*$""".r
+  val regx2 = """^"([0-9]{4}).*$""".r
+  
+  def apply() :List[String] = {
+    def isValid(line:String) :Boolean = {
+      val arr = line.split(",")
+      arr(6) == "\"◎\"" || arr(7) == "\"◎\""
+    }
+    
+    Text.readLines("data/cross/CbsProductList.csv", "shift-jis").filter{
+      case regx() => true
+      case _ => false
+    }
+    .filter(isValid)
+    .collect{
+      case regx2(code) => code
     }
   }
 }
