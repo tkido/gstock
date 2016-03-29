@@ -11,3 +11,14 @@ object ParserJpx {
     }
   }
 }
+
+
+object ParserKabuCom {
+  val regx = """^.*?([0-9]{4}).*$""".r
+  
+  def apply() :List[String] = {
+    Text.readLines("data/cross/meigara_list.csv", "shift-jis").collect{
+      case regx(code) => code
+    }
+  }
+}

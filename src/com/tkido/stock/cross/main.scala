@@ -8,7 +8,7 @@ object Main extends App {
   Log open Config.logLevel
   
   val taisyakuCodes = ParserJpx()
-  
+  val kabuComCodes = ParserKabuCom()
   
   /*
   val range = Range(Config.offset, Config.offset + codes.size)
@@ -20,7 +20,7 @@ object Main extends App {
     else
       pairs.par.map(Processor(_))
   */
-  Text.write("data/cross/result.txt", taisyakuCodes.mkString("\n"))
+  Text.write("data/cross/result.txt", kabuComCodes.mkString("\n"))
   
   Log close
 }
