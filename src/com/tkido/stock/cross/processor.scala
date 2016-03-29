@@ -1,8 +1,8 @@
 package com.tkido.stock.cross
 
 object Processor {
-  def apply(pair:Tuple2[String, Int]) :String = {
-    ""
+  def apply(code:String) :String = {
+    code
   }
   
 }

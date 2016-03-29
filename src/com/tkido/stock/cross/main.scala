@@ -11,17 +11,14 @@ object Main extends App {
   val kabuComCodes = ParserKabuCom()
   val sbiCodes = ParserSbi()
   
-  /*
-  val range = Range(Config.offset, Config.offset + codes.size)
-  val pairs = codes zip range
+  val shortableCodes = (taisyakuCodes | kabuComCodes | sbiCodes).toList.sorted
   
   val data =
     if(Log.isDebug)
-      pairs.map(Processor(_))
+      shortableCodes.map(Processor(_))
     else
-      pairs.par.map(Processor(_))
-  */
-  Text.write("data/cross/result.txt", sbiCodes.mkString("\n"))
+      shortableCodes.par.map(Processor(_))
+  Text.write("data/cross/result.txt", data.mkString("\n"))
   
   Log close
 }

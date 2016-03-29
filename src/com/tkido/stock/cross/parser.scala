@@ -6,10 +6,11 @@ import com.tkido.tools.Text
 object ParserJpx {
   val regx = """^([0-9]{4}).*貸借銘柄$""".r
   
-  def apply() :List[String] = {
+  def apply() :Set[String] = {
     Text.readLines("data/cross/list.csv", "shift-jis").collect{
       case regx(code) => code
     }
+    .toSet
   }
 }
 
@@ -17,10 +18,11 @@ object ParserJpx {
 object ParserKabuCom {
   val regx = """^.*?([0-9]{4}).*$""".r
   
-  def apply() :List[String] = {
+  def apply() :Set[String] = {
     Text.readLines("data/cross/meigara_list.csv", "shift-jis").collect{
       case regx(code) => code
     }
+    .toSet
   }
 }
 
@@ -28,7 +30,7 @@ object ParserKabuCom {
 object ParserSbi {
   val regx = """^"([0-9]{4}).*$""".r
   
-  def apply() :List[String] = {
+  def apply() :Set[String] = {
     def isValid(line:String) :Boolean = {
       val arr = line.split(",")
       arr(6) == "\"◎\"" || arr(7) == "\"◎\""
@@ -40,5 +42,6 @@ object ParserSbi {
     .collect{
       case regx(code) => code
     }
+    .toSet
   }
 }
