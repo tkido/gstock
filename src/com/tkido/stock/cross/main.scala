@@ -7,7 +7,9 @@ import com.tkido.tools.Text
 object Main extends App {
   Log open Config.logLevel
   
-  val codes = ParserJpx("data/cross/list.csv")
+  val taisyakuCodes = ParserJpx()
+  
+  
   /*
   val range = Range(Config.offset, Config.offset + codes.size)
   val pairs = codes zip range
@@ -18,7 +20,7 @@ object Main extends App {
     else
       pairs.par.map(Processor(_))
   */
-  Text.write("data/cross/result.txt", codes.mkString("\n"))
+  Text.write("data/cross/result.txt", taisyakuCodes.mkString("\n"))
   
   Log close
 }
