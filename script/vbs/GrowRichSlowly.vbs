@@ -14,7 +14,7 @@ Function ReadFile(ByVal FileName)
     ReadFile = FileShell.OpenTextFile(FileName, ForReading, False).ReadAll()
 End Function
 
-Execute ReadFile("setting.vbs")
+Execute ReadFile(".\setting.vbs")
 
 'マーケットスピードの起動
 Set WshShell = CreateObject("WScript.Shell")
