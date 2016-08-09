@@ -20,7 +20,7 @@ object Main extends App {
   
   val result = data.collect{case Some(s) => s}.mkString("\n")
   Text.write("data/patrol/result.txt", result)
-  Text.write("data/ress/table.txt", result)
+  Text.write("data/rss/table.txt", result)
   
   Log close
 }
