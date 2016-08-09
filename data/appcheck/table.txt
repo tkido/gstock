@@ -1,12 +1,5 @@
 app_id	タイトル	nation_id	国名	type_id	属性	ipad	iPad	Genre		URL
-buyma	BUYMA-海外ファッション通販	jp	日本	free	DL					https://itunes.apple.com/jp/rss/topfreeapplications/limit=200/xml
-buyma	BUYMA-海外ファッション通販	jp	日本	free	DL			catalog	カタログ	https://itunes.apple.com/jp/rss/topfreeapplications/limit=200/genre=6022/xml
-disney	ディズニーの牧場ゲーム:マジックキャッスルドリームアイランド	jp	日本	grossing	セールス					https://itunes.apple.com/jp/rss/topgrossingapplications/limit=200/xml
 monst	モンスターストライク	jp	日本	grossing	セールス					https://itunes.apple.com/jp/rss/topgrossingapplications/limit=200/xml
-monst	怪物彈珠	tw	台湾	grossing	セールス					https://itunes.apple.com/tw/rss/topgrossingapplications/limit=200/xml
 monst	Monster Strike	us	アメリカ	grossing	セールス					https://itunes.apple.com/us/rss/topgrossingapplications/limit=200/xml
-monst	Monster Strike	ca	カナダ	grossing	セールス					https://itunes.apple.com/ca/rss/topgrossingapplications/limit=200/xml
-monst	몬스터 스트라이크	kr	韓国	grossing	セールス					https://itunes.apple.com/kr/rss/topgrossingapplications/limit=200/xml
-monst	怪物弹珠	cn	中国	grossing	セールス					https://itunes.apple.com/cn/rss/topgrossingapplications/limit=200/xml
-utapuri	うたプリアイランド。	jp	日本	grossing	セールス					https://itunes.apple.com/jp/rss/topgrossingapplications/limit=200/xml
-logres	剣と魔法のログレス いにしえの女神◆人気の本格オンラインRPG	jp	日本	grossing	セールス					https://itunes.apple.com/jp/rss/topgrossingapplications/limit=200/xml
+pokemon	Pokémon GO	jp	日本	grossing	セールス					https://itunes.apple.com/jp/rss/topgrossingapplications/limit=200/xml
+pokemon	Pokémon GO	us	アメリカ	grossing	セールス					https://itunes.apple.com/us/rss/topgrossingapplications/limit=200/xml
