@@ -1,5 +1,6 @@
 app_id	タイトル	nation_id	国名	type_id	属性	ipad	iPad	Genre		URL
+yugiou	遊戯王 デュエルリンクス	jp	日本	grossing	セールス					https://itunes.apple.com/jp/rss/topgrossingapplications/limit=200/xml
 monst	モンスターストライク	jp	日本	grossing	セールス					https://itunes.apple.com/jp/rss/topgrossingapplications/limit=200/xml
 monst	Monster Strike	us	アメリカ	grossing	セールス					https://itunes.apple.com/us/rss/topgrossingapplications/limit=200/xml
-pokemon	Pokémon GO	jp	日本	grossing	セールス					https://itunes.apple.com/jp/rss/topgrossingapplications/limit=200/xml
-pokemon	Pokémon GO	us	アメリカ	grossing	セールス					https://itunes.apple.com/us/rss/topgrossingapplications/limit=200/xml
+pokemon	ポケモンGO	jp	日本	grossing	セールス					https://itunes.apple.com/jp/rss/topgrossingapplications/limit=200/xml
+pokemon	ポケモンGO	us	アメリカ	grossing	セールス					https://itunes.apple.com/us/rss/topgrossingapplications/limit=200/xml
