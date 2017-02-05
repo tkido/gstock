@@ -31,8 +31,10 @@ class Company(code:String, row:Int) {
       "=RSS|'%s.T'!%s%s".format(code, id, divStr)
     }
     Map("現値"     -> rssCode("現在値"),
+        "特売"     -> rssCode("特別売気配フラグ"),
         "最売"     -> rssCode("最良売気配値"),
         "最売数"   -> rssCode("最良売気配数量"),
+        "特買"     -> rssCode("特別買気配フラグ"),
         "最買"     -> rssCode("最良買気配値"),
         "最買数"   -> rssCode("最良買気配数量"),
         "前終"     -> rssCode("前日終値"),
@@ -87,7 +89,7 @@ object Company{
   val today = "%tY/%<tm/%<td".format(new Date)
   
   val order = List("ID", "名称", "R", "値", 
-                   "最売", "最売数", "最買", "最買数",
+                   "特売", "最売", "最売数", "特買", "最買", "最買数",
                    "現値", "前終", "前比",
                    "出来", "日出", "週出", "月出",
                    "買残", "買残週差", "売残", "売残週差",
