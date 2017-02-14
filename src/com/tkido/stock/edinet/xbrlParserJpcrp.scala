@@ -19,11 +19,12 @@ object XbrlParserJpcrp {
       def isValidContext:Boolean = {
         val contextRef = node.attribute("contextRef").get.text
         contextRef match {
+          case "CurrentYearInstant"  => true
           case "CurrentYearDuration" => true
           case _                     => false
         }
       }
-      node.text.nonEmpty && isValidPrefix && isValidContext && node.label == "NetIncome"
+      node.text.nonEmpty && isValidPrefix && isValidContext
     }
     val isConsolidated = xml.child.exists(isNetIncome)
     if(Log.isDebug)
@@ -62,6 +63,19 @@ object XbrlParserJpcrp {
       for(node <- nodes)
         Log.log(node.prefix + "\t" + node.label + "\t" + node.text.toLong)
     
-    nodes.toList.map(x => x.label -> x.text.toLong ).toMap
+    val rawMap = nodes.toList.map(x => x.label -> x.text.toLong ).toMap
+
+    val netIncome =
+      if(rawMap.contains("ProfitAttributableToOwnersOfParent")){
+        rawMap("ProfitAttributableToOwnersOfParent")
+      }else if(rawMap.contains("ProfitLoss")){
+        rawMap("ProfitLoss")
+      }else if(rawMap.contains("NetIncome")){
+        rawMap("NetIncome")
+      }else{
+        0L
+      }
+    
+    return rawMap.updated("NetIncome", netIncome)
   }
 }
