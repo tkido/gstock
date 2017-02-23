@@ -8,10 +8,12 @@ class Company(code:String) {
   val reports = files.map(Report(_))
   
   def getGrowthRate :Double = {
-    if(reports.size == 1) return 1.0
-    if(reports.head.netIncome < 0) return 1.0
-    val size = reports.size-1
-    val rate = reports.last.netIncome.toDouble / reports.head.netIncome.toDouble
+    val repos = reports.takeRight(5) //use latest reports only
+    
+    if(repos.size == 1) return 1.0
+    if(repos.head.netIncome < 0) return 1.0
+    val size = repos.size-1
+    val rate = repos.last.netIncome.toDouble / repos.head.netIncome.toDouble
     pow(rate, (1.0 / size))
   }
   val gr = getGrowthRate
