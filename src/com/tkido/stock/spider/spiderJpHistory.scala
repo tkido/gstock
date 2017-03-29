@@ -11,7 +11,7 @@ object SpiderJpHistory {
     Log d s"SpiderJpHistory Spidering ${code}"
     
     def get :Map[String, String] = {
-      val html = Html("http://info.finance.yahoo.co.jp/history/?code=%s".format(code))
+      val html = Html("https://info.finance.yahoo.co.jp/history/?code=%s".format(code))
       
       val reTr = """^</tr><tr.*?>(.*?)</tr></table>$""".r
       val reTd = """^<td>.*?</td><td>(.*)</td>$""".r

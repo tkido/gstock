@@ -7,7 +7,7 @@ import com.tkido.tools.Search
 object SpiderJpProfile {
   def apply(code:String) :Map[String, String] = {
     Log d s"SpiderJpProfile Spidering ${code}"
-    val html = Html("http://stocks.finance.yahoo.co.jp/stocks/profile/?code=%s".format(code))
+    val html = Html("https://stocks.finance.yahoo.co.jp/stocks/profile/?code=%s".format(code))
     html.search(List(
       Search("名称", """<meta http-equiv="Refresh" content="60">""".r, Search.NEXT, _.dropRight(27).replaceFirst("""\(株\)""", "")),
       Search("特色", """<th width="1%" nowrap>特色</th>""".r, Search.NEXT, _.replaceFirst(""" \[企業特色\]""", "")),

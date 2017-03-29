@@ -11,7 +11,7 @@ object SpiderJpDetail {
     def divCode(content:String, div:String) :String =
       if(content == "-") "-" else "=%s/%s".format(content, div)
 
-    val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
+    val html = Html("https://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
     html.search(List(
       Search("発行", """<dt class="title">発行済株式数""".r, Search.LAST, _.dropRight(12)),
       Search("現値", """^.*?<td class="stoksPrice">(.*?)</td>""".r, Search.GROUP, _.replaceFirst("---", " ")),

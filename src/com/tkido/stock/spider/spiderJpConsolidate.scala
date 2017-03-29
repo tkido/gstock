@@ -9,7 +9,7 @@ object SpiderJpConsolidate {
   def apply(code:String) :Map[String, String] = {
     Log d s"SpiderJpConsolidate Spidering ${code}"
     
-    val html = Html("http://profile.yahoo.co.jp/consolidate/%s".format(code))
+    val html = Html("https://profile.yahoo.co.jp/consolidate/%s".format(code))
     def clean(s:String) = s.replaceFirst("---", "-")
     val searchList = List(
       Search("決算", """<td bgcolor="#ebf4ff">決算発表日</td>""".r, Search.NEXT, clean),
