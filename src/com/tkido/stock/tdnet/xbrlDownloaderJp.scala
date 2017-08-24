@@ -5,7 +5,6 @@ import com.tkido.tools.Log
 import com.tkido.tools.Text
 import com.tkido.tools.retry
 import java.io.File
-import scala.util.control.Exception._
 import scala.xml._
 
 object XbrlDownloaderJp {
@@ -14,32 +13,31 @@ object XbrlDownloaderJp {
     if(!root.exists) root.mkdir
     
     val url = "http://resource.ufocatch.com/atom/tdnetx/query/%s".format(code)
-    val xmlOp = allCatch opt retry { XML.load(url) }
-    if(xmlOp.isEmpty) return
-    val xml = xmlOp.get
+    retry { XML.load(url) } foreach download
     
-    def isTanshin(node:Node) :Boolean = {
-      val reTanshin = """決算短信""".r
-      val title = (node \ "title").text
-      reTanshin.findFirstIn(title).isDefined
-    }
-    val tanshins = (xml \ "entry").filter(isTanshin)
-    
-    def getXbrl(node:Node) :Option[String] = {
-      val reXbrl = """(tdnet|tse)-..edjpsm.*?(\.xbrl|-ixbrl\.htm)$""".r
-      val hrefs = (node \\ "@href").map(_.text)
-      hrefs.find(reXbrl.findFirstIn(_).isDefined)
-    }
-    val xbrls = tanshins.map(getXbrl).collect{case Some(s) => s}
-    
-    for(xbrl <- xbrls){
-      val fileName = xbrl.split("/").last
-      val file = new File(root, fileName)
-      if(!file.exists){
-        val txtOp = allCatch opt retry { Text.read(xbrl) }
-        if(txtOp.isDefined){
-          Text.write(file.getPath, txtOp.get)
-          XbrlDownloader.add(xbrl)
+    def download(xml:Elem) {
+      def isTanshin(node:Node) :Boolean = {
+        val reTanshin = """決算短信""".r
+        val title = (node \ "title").text
+        reTanshin.findFirstIn(title).isDefined
+      }
+      val tanshins = (xml \ "entry").filter(isTanshin)
+      
+      def getXbrl(node:Node) :Option[String] = {
+        val reXbrl = """(tdnet|tse)-..edjpsm.*?(\.xbrl|-ixbrl\.htm)$""".r
+        val hrefs = (node \\ "@href").map(_.text)
+        hrefs.find(reXbrl.findFirstIn(_).isDefined)
+      }
+      val xbrls = tanshins.map(getXbrl).collect{case Some(s) => s}
+      
+      for(xbrl <- xbrls){
+        val fileName = xbrl.split("/").last
+        val file = new File(root, fileName)
+        if(!file.exists){
+          retry { Text.read(xbrl) } foreach {txt =>
+            Text.write(file.getPath, txt)
+            XbrlDownloader.add(xbrl)
+          }
         }
       }
     }

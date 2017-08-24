@@ -1,7 +1,13 @@
 package com.tkido
 
 package object tools {
-  def retry[T](f: => T, max:Int = 3, interval:Int = 1000, count:Int = 1):T = {
+  import scala.util.control.Exception._
+  
+  def retry[T](f: => T, max:Int = 3, interval:Int = 1000) :Option[T] = {
+    allCatch opt retrySub(f, max, interval)
+  }
+  
+  private def retrySub[T](f: => T, max:Int = 3, interval:Int = 1000, count:Int = 1):T = {
     try{
       f
     }catch{
@@ -9,7 +15,7 @@ package object tools {
         Log f e
         if(count < max){
           Thread.sleep(interval)
-          retry(f, max, interval, count+1)
+          retrySub(f, max, interval, count+1)
         }else{
           throw e
         }
