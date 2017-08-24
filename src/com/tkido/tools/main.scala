@@ -1,25 +1,17 @@
 package com.tkido.tools
 
 object main extends App {
+  import scala.util.control.Exception._
+  
   Log open Log.DEBUG
   
   Log d "Test Start"
   
-  def retry[T](f: => T, max:Int = 3, interval:Int = 1000, count:Int = 1):T = {
-    try{
-      f
-    }catch{
-      case e:Throwable  =>
-        Log d e
-        if(count < max){
-          Thread.sleep(interval)
-          retry(f, max, interval, count+1)
-        }else{
-          throw e
-        }
-    }
-  }
-  retry({ println("trying..."); "a".toInt })
+  val op = allCatch opt retry({ println("trying..."); "13".toInt })
+  //val op = allCatch opt retry({ println("trying..."); "a".toInt })
+ 
+  
+  println(op.isDefined)
   
   /*
   def retryIf[T](p: => Boolean)(f: => T):T =
