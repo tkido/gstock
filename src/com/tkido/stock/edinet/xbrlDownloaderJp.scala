@@ -13,7 +13,7 @@ object XbrlDownloaderJp {
     if(!root.exists) root.mkdir
     
     val url = s"http://resource.ufocatch.com/atom/edinetx/query/${code}"
-    val xmlOp = allCatch opt retry {XML.load(url)}
+    val xmlOp = allCatch opt retry { XML.load(url) }
     if(xmlOp.isEmpty) return
     val xml = xmlOp.get
     
@@ -34,7 +34,10 @@ object XbrlDownloaderJp {
     for(xbrl <- xbrls){
       val fileName = xbrl.split("/").last
       val file = new File(root, fileName)
-      if(!file.exists) Text.write(file.getPath, Text.read(xbrl))
+      if(!file.exists){
+        val txtOp = allCatch opt retry { Text.read(xbrl) }
+        if(txtOp.isDefined) Text.write(file.getPath, txtOp.get)
+      }
     }
   }
 }
