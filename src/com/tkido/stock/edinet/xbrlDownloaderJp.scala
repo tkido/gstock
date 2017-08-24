@@ -1,13 +1,13 @@
 package com.tkido.stock.edinet
 
-object XbrlDownloaderJp {
-  import com.tkido.stock.Config
-  import com.tkido.tools.Text
-  import com.tkido.tools.retry
-  import java.io.File
-  import scala.xml._
-  import scala.util.control.Exception._
+import com.tkido.stock.Config
+import com.tkido.tools.Text
+import com.tkido.tools.retry
+import java.io.File
+import scala.util.control.Exception._
+import scala.xml._
 
+object XbrlDownloaderJp {
   def apply(code:String) {
     val root = new File(Config.xbrlPath, "/edinet/"+code)
     if(!root.exists) root.mkdir

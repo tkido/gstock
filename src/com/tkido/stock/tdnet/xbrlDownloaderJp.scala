@@ -3,7 +3,9 @@ package com.tkido.stock.tdnet
 import com.tkido.stock.Config
 import com.tkido.tools.Log
 import com.tkido.tools.Text
+import com.tkido.tools.retry
 import java.io.File
+import scala.util.control.Exception._
 import scala.xml._
 
 object XbrlDownloaderJp {
@@ -12,7 +14,9 @@ object XbrlDownloaderJp {
     if(!root.exists) root.mkdir
     
     val url = "http://resource.ufocatch.com/atom/tdnetx/query/%s".format(code)
-    val xml = XML.load(url)
+    val xmlOp = allCatch opt retry { XML.load(url) }
+    if(xmlOp.isEmpty) return
+    val xml = xmlOp.get
     
     def isTanshin(node:Node) :Boolean = {
       val reTanshin = """決算短信""".r
@@ -32,8 +36,11 @@ object XbrlDownloaderJp {
       val fileName = xbrl.split("/").last
       val file = new File(root, fileName)
       if(!file.exists){
-        Text.write(file.getPath, Text.read(xbrl))
-        XbrlDownloader.add(xbrl)
+        val txtOp = allCatch opt retry { Text.read(xbrl) }
+        if(txtOp.isDefined){
+          Text.write(file.getPath, txtOp.get)
+          XbrlDownloader.add(xbrl)
+        }
       }
     }
   }
