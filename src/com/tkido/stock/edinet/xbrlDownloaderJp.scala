@@ -19,22 +19,17 @@ object XbrlDownloaderJp {
     retry { XML.load(url) } foreach download
     
     def download(xml:Elem) {
-      val ufos = (xml \ "entry").filter(node => (node \ "title").text.matched(reUfo))
-      
-      def getXbrl(node:Node) :String = {
-        val hrefs = (node \\ "@href").map(_.text)
-        hrefs.find(_ matched reXbrl).get
-      }
-      val xbrls = ufos.map(getXbrl)
+      val ufos = (xml \ "entry").filter(node => (node \ "title").text =~ reUfo)
+      val xbrls = ufos.map(node =>
+        (node \\ "@href").map(_.text).find(_ =~ reXbrl).get
+      )
       
       for(xbrl <- xbrls){
-        val fileName = xbrl.split("/").last
-        val file = new File(root, fileName)
+        val file = new File(root, xbrl.split("/").last)
         if(!file.exists){
           retry { Text.read(xbrl) } foreach { Text.write(file.getPath, _) }
         }
       }
     }
-    
   }
 }

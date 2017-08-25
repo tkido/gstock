@@ -5,4 +5,7 @@ class MyString(s:String) {
   
   def matched(re:Regex) :Boolean =
     re.findFirstIn(s).isDefined
+  
+  def =~(re:Regex) :Boolean = matched(re)
+  def !~(re:Regex) :Boolean = !matched(re)
 }

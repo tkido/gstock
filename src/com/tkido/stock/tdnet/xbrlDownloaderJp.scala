@@ -4,6 +4,7 @@ import com.tkido.stock.Config
 import com.tkido.tools.Log
 import com.tkido.tools.Text
 import com.tkido.tools.retry
+import com.tkido.tools.strWrapper
 import java.io.File
 import scala.xml._
 
@@ -19,21 +20,13 @@ object XbrlDownloaderJp {
     retry { XML.load(url) } foreach download
     
     def download(xml:Elem) {
-      def isTanshin(node:Node) :Boolean = {
-        val title = (node \ "title").text
-        reTanshin.findFirstIn(title).isDefined
-      }
-      val tanshins = (xml \ "entry").filter(isTanshin)
-      
-      def getXbrl(node:Node) :Option[String] = {
-        val hrefs = (node \\ "@href").map(_.text)
-        hrefs.find(reXbrl.findFirstIn(_).isDefined)
-      }
-      val xbrls = tanshins.map(getXbrl).collect{case Some(s) => s}
+      val tanshins = (xml \ "entry").filter(node => (node \ "title").text =~ reTanshin)
+      val xbrls = tanshins.map(node =>
+        (node \\ "@href").map(_.text).find(_ =~ reXbrl)
+      ).collect{case Some(s) => s}
       
       for(xbrl <- xbrls){
-        val fileName = xbrl.split("/").last
-        val file = new File(root, fileName)
+        val file = new File(root, xbrl.split("/").last)
         if(!file.exists){
           retry { Text.read(xbrl) } foreach {txt =>
             Text.write(file.getPath, txt)
