@@ -2,6 +2,7 @@ package com.tkido.stock.edinet
 
 import com.tkido.stock.Config
 import com.tkido.tools.Text
+import com.tkido.tools.strWrapper
 import com.tkido.tools.retry
 import java.io.File
 import scala.xml._
@@ -18,15 +19,11 @@ object XbrlDownloaderJp {
     retry { XML.load(url) } foreach download
     
     def download(xml:Elem) {
-      def isUfo(node:Node) :Boolean = {
-        val title = (node \ "title").text
-        reUfo.findFirstIn(title).isDefined
-      }
-      val ufos = (xml \ "entry").filter(isUfo)
+      val ufos = (xml \ "entry").filter(node => (node \ "title").text.matched(reUfo))
       
       def getXbrl(node:Node) :String = {
         val hrefs = (node \\ "@href").map(_.text)
-        hrefs.find(reXbrl.findFirstIn(_).isDefined).get
+        hrefs.find(_ matched reXbrl).get
       }
       val xbrls = ufos.map(getXbrl)
       

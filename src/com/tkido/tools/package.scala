@@ -36,4 +36,7 @@ package object tools {
       }
     }
   }
+  
+  implicit def strWrapper(s:String) :MyString = new MyString(s)
+  
 }
