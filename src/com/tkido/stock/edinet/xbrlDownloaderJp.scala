@@ -7,6 +7,9 @@ import java.io.File
 import scala.xml._
 
 object XbrlDownloaderJp {
+  val reUfo = """有価証券報告書""".r
+  val reXbrl = """(jpcrp|jpfr).*?\.xbrl$""".r
+  
   def apply(code:String) {
     val root = new File(Config.xbrlPath, "/edinet/"+code)
     if(!root.exists) root.mkdir
@@ -16,14 +19,12 @@ object XbrlDownloaderJp {
     
     def download(xml:Elem) {
       def isUfo(node:Node) :Boolean = {
-        val reUfo = """有価証券報告書""".r
         val title = (node \ "title").text
         reUfo.findFirstIn(title).isDefined
       }
       val ufos = (xml \ "entry").filter(isUfo)
       
       def getXbrl(node:Node) :String = {
-        val reXbrl = """(jpcrp|jpfr).*?\.xbrl$""".r
         val hrefs = (node \\ "@href").map(_.text)
         hrefs.find(reXbrl.findFirstIn(_).isDefined).get
       }
