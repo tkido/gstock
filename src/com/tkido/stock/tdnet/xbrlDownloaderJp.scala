@@ -12,7 +12,7 @@ object XbrlDownloaderJp {
     val root = new File(Config.xbrlPath, "/tdnet/"+code)
     if(!root.exists) root.mkdir
     
-    val url = "http://resource.ufocatch.com/atom/tdnetx/query/%s".format(code)
+    val url = s"http://resource.ufocatch.com/atom/tdnetx/query/${code}"
     retry { XML.load(url) } foreach download
     
     def download(xml:Elem) {

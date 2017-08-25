@@ -1,13 +1,12 @@
 package com.tkido
 
+import scala.util.control.Exception._
+
 package object tools {
-  import scala.util.control.Exception._
+  def retry[T](f: => T, max:Int = 3, interval:Int = 1000) :Option[T] =
+    allCatch opt retrySub(f, max, interval, 1)
   
-  def retry[T](f: => T, max:Int = 3, interval:Int = 1000) :Option[T] = {
-    allCatch opt retrySub(f, max, interval)
-  }
-  
-  private def retrySub[T](f: => T, max:Int = 3, interval:Int = 1000, count:Int = 1):T = {
+  private def retrySub[T](f: => T, max:Int = 3, interval:Int = 1000, count:Int):T = {
     try{
       f
     }catch{
