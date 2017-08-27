@@ -3,6 +3,7 @@ package com.tkido.stock.spider
 import com.tkido.tools.Html
 import com.tkido.tools.Log
 import com.tkido.tools.Search
+import com.tkido.tools.retry
 
 object SpiderJpDetail {
   def divCode(content:String, div:String) :String =
@@ -39,7 +40,9 @@ object SpiderJpDetail {
   
   def apply(code:String) :Map[String, String] = {
     Log d s"SpiderJpDetail Spidering ${code}"
-    val html = Html(s"https://stocks.finance.yahoo.co.jp/stocks/detail/?code=${code}")
-    html.search(rule)
+    retry { Html(s"https://stocks.finance.yahoo.co.jp/stocks/detail/?code=${code}") } match {
+      case Some(html) => html.search(rule)
+      case None       => Map()
+    }
   }
 }

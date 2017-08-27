@@ -4,21 +4,19 @@ import com.tkido.statistics.RankCorrelationIndex
 import com.tkido.tools.Html
 import com.tkido.tools.Log
 import com.tkido.tools.Search
-import com.tkido.tools.tryOrElse
+import com.tkido.tools.retry
 
 object SpiderJpHistory {
   val reTr = """^</tr><tr.*?>(.*?)</tr></table>$""".r
   val reTd = """^<td>.*?</td><td>(.*)</td>$""".r
   val reSplit = """<tr><td>\d{4}年\d{1,2}月\d{1,2}日</td><td colspan="6" class="through">.*?</td></tr>"""
   val reColor = """ class=".*?""""
-
-  def apply(code:String) :Map[String, String] = {
-    Log d s"SpiderJpHistory Spidering ${code}"
+  
+  val rule = Search("", reTr, Search.GROUP, s => s)
     
-    def get :Map[String, String] = {
-      val html = Html(s"https://info.finance.yahoo.co.jp/history/?code=${code}")
-      
-      val list = html.search(Search("", reTr, Search.GROUP, s => s))
+  def apply(code:String) :Map[String, String] = {
+    def convert(source:String) :Map[String, String] = {
+      val list = source
                    .replaceAll(reSplit, "")  //exclude stock split information row
                    .replaceAll(reColor, "")  //exclude color
                    .split("""</tr><tr>""").toList.take(21) //about one month 20days + 1day for last close
@@ -86,6 +84,11 @@ object SpiderJpHistory {
           "週出" -> getVolumePerDay(5),
           "月出" -> getVolumePerDay(20) )
     }
-    tryOrElse(get _, Map())
+    
+    Log d s"SpiderJpHistory Spidering ${code}"
+    retry { Html(s"https://info.finance.yahoo.co.jp/history/?code=${code}") } match {
+      case Some(html) => convert(html.search(rule))
+      case None       => Map()
+    }
   }
 }

@@ -1,9 +1,9 @@
 package com.tkido.stock.spider
 
 import com.tkido.tools.Html
-import com.tkido.tools.Search
 import com.tkido.tools.Log
-import com.tkido.tools.tryOrElse
+import com.tkido.tools.Search
+import com.tkido.tools.retry
 
 object SpiderJpConsolidate {
   def clean(s:String) = s.replaceFirst("---", "-")
@@ -14,8 +14,9 @@ object SpiderJpConsolidate {
   
   def apply(code:String) :Map[String, String] = {
     Log d s"SpiderJpConsolidate Spidering ${code}"
-    
-    val html = Html(s"https://profile.yahoo.co.jp/consolidate/${code}")
-    html.search(rule)
+    retry { Html(s"https://profile.yahoo.co.jp/consolidate/${code}") } match {
+      case Some(html) => html.search(rule)
+      case None       => Map()
+    }
   }
 }
