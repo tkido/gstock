@@ -7,16 +7,17 @@ import com.tkido.tools.Search
 import com.tkido.tools.tryOrElse
 
 object SpiderJpHistory {
+  val reTr = """^</tr><tr.*?>(.*?)</tr></table>$""".r
+  val reTd = """^<td>.*?</td><td>(.*)</td>$""".r
+  val reSplit = """<tr><td>\d{4}年\d{1,2}月\d{1,2}日</td><td colspan="6" class="through">.*?</td></tr>"""
+  val reColor = """ class=".*?""""
+
   def apply(code:String) :Map[String, String] = {
     Log d s"SpiderJpHistory Spidering ${code}"
     
     def get :Map[String, String] = {
-      val html = Html("https://info.finance.yahoo.co.jp/history/?code=%s".format(code))
+      val html = Html(s"https://info.finance.yahoo.co.jp/history/?code=${code}")
       
-      val reTr = """^</tr><tr.*?>(.*?)</tr></table>$""".r
-      val reTd = """^<td>.*?</td><td>(.*)</td>$""".r
-      val reSplit = """<tr><td>\d{4}年\d{1,2}月\d{1,2}日</td><td colspan="6" class="through">.*?</td></tr>"""
-      val reColor = """ class=".*?""""
       val list = html.search(Search("", reTr, Search.GROUP, s => s))
                    .replaceAll(reSplit, "")  //exclude stock split information row
                    .replaceAll(reColor, "")  //exclude color

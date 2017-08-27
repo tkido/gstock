@@ -13,6 +13,6 @@ object PageMakerUs {
     val title = code + " " + name
     
     val html = templete.format(title, "", title, feature, "", "")
-    Text.write("data/rss/%s.html".format(code), html)
+    Text.write(s"data/rss/${code}.html", html)
   }
 }

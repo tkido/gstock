@@ -13,7 +13,7 @@ class Company(code:String) {
   val (currentPrice, highest, outStanding, per, pbr) = parseData
   
   def parseData :(Double, Double, Double, Double, Double) = {
-    val html = Html("http://stocks.finance.yahoo.co.jp/stocks/detail/?code=%s".format(code))
+    val html = Html(s"http://stocks.finance.yahoo.co.jp/stocks/detail/?code=${code}")
     val map = html.search(List(
       Search("currentPrice", """<td class="stoksPrice">(.*?)</td>""".r, Search.GROUP, _.replaceAll(",", "")),
       Search("highest", """<dt class="title">年初来高値""".r, Search.LAST, _.dropRight(10).replaceAll(",", "").replaceFirst("更新", "")),

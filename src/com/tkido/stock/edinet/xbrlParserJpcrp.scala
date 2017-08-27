@@ -27,8 +27,7 @@ object XbrlParserJpcrp {
       node.text.nonEmpty && isValidPrefix && isValidContext
     }
     val isConsolidated = xml.child.exists(isNetIncome)
-    if(Log.isDebug)
-      Log.log("isConsolidated = %s".format(isConsolidated))
+    if(Log.isDebug) Log.log(s"isConsolidated = ${isConsolidated}")
     
     
     def isValid(node:Node) :Boolean = {

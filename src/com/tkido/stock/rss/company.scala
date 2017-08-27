@@ -28,7 +28,7 @@ class Company(code:String, row:Int) {
   
   def getRssData() :Map[String, String] = {
     def rssCode(id:String, div:String = "") :String = {
-      val divStr = if(div == "") "" else "/%s".format(div)
+      val divStr = if(div == "") "" else s"/${div}"
       "=RSS|'%s.T'!%s%s".format(code, id, divStr)
     }
     Map("現値"     -> rssCode("現在値"),

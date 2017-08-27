@@ -5,11 +5,7 @@ import com.tkido.tools.Log
 import com.tkido.tools.Search
 
 object SpiderUsSummary {
-  def apply(code:String) :Map[String, String] = {
-    Log d s"SpiderUsSummary Spidering ${code}"
-    
-    val html = Html("http://finance.yahoo.com/q?s=%s".format(code))
-    val map = html.search(List(
+  var rule = List(
       Search("名称", """^.*?<div class="title"><h2>(.*?) \(.*?\)</h2>.*$""".r, Search.GROUP, _.replaceAll("&amp;", "&")),
       Search("市", """^.*?<span class="rtq_exch"><span class="rtq_dash">-</span>(.*?)  </span>.*$""".r, Search.GROUP, s => s),
       Search("現値", """^.*?<span class="time_rtq_ticker"><span id="yfs_l84_.*?">(.*?)</span></span>.*$""".r, Search.GROUP, s => s),
@@ -24,8 +20,13 @@ object SpiderUsSummary {
         case "Up"   => ""
         case "Down" => "-"
         case _      => ""
-      }))
+      })
     )
+  def apply(code:String) :Map[String, String] = {
+    Log d s"SpiderUsSummary Spidering ${code}"
+    
+    val html = Html(s"http://finance.yahoo.com/q?s=${code}")
+    val map = html.search(rule)
     map ++ Map("前比" -> (map.getOrElse("sign", "") + map.getOrElse("raw", "")))
   }
 }
