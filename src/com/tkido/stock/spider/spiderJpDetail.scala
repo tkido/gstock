@@ -25,11 +25,11 @@ object SpiderJpDetail {
     Search("PER", """<dt class="title">PER""".r, Search.LAST, _.replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "0")),
     Search("PBR", """<dt class="title">PBR""".r, Search.LAST, _.replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "").replaceFirst("---", "-")),
     Search("市", """<div id="deal">""".r, Search.NEXT, _.replaceFirst("""PTS.*""", "") match{
-      case "東証1部"  => "1"
-      case "東証2部"  => "2"
-      case "東証JQS"  => "J"
-      case "東証JQG"  => "JG"
-      case "マザーズ" => "M"
+      case "東証1部"  => "東1"
+      case "東証2部"  => "東2"
+      case "東証JQS"  => "東J"
+      case "東証JQG"  => "東J"
+      case "マザーズ" => "東M"
       case "名証1部"  => "名1"
       case "名証2部"  => "名2"
       case "札証"     => "札"
