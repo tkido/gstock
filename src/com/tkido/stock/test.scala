@@ -8,10 +8,10 @@ import com.tkido.tools.Html
 import com.tkido.tools.Search
 
 object test extends App {
-  Log open Config.logLevel
+  Log.logging(Config.logLevel, main)
   
-  Log d SpiderJpConsolidate("3085")
-  Log d SpiderJpProfile("3085")
-
-  Log close
+  def main() {
+    Log d SpiderJpConsolidate("3085")
+    Log d SpiderJpProfile("3085")
+  }
 }

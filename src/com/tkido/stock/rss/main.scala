@@ -6,20 +6,20 @@ import com.tkido.tools.Log
 import com.tkido.tools.Text
 
 object Main extends App {
-  Log open Config.logLevel
+  Log.logging(Config.logLevel, main)
   
-  val codes = Parser("data/rss/table.txt")
-  val range = Range(Config.offset, Config.offset + codes.size)
-  val pairs = codes zip range
-  
-  val data =
-    if(Log.isDebug)
-      pairs.map(Processor(_))
-    else
-      pairs.par.map(Processor(_))
-  
-  Text.write("data/rss/result.txt", data.mkString("\n"))
-  Text.write("data/rss/downloaded.txt", XbrlDownloader.getResult)
-  
-  Log close
+  def main() {
+    val codes = Parser("data/rss/table.txt")
+    val range = Range(Config.offset, Config.offset + codes.size)
+    val pairs = codes zip range
+    
+    val data =
+      if(Log.isDebug)
+        pairs.map(Processor(_))
+      else
+        pairs.par.map(Processor(_))
+    
+    Text.write("data/rss/result.txt", data.mkString("\n"))
+    Text.write("data/rss/downloaded.txt", XbrlDownloader.getResult)
+  }
 }

@@ -4,9 +4,9 @@ import com.tkido.tools.Log
 import com.tkido.tools.Text
 
 object main extends App {
-  Log open Log.DEBUG
+  Log.logging(Log.DEBUG, main)
   
-  Log d Reporter("9795")
-  
-  Log.close()
+  def main() {
+    Log d Reporter("9795")
+  }
 }

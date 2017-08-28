@@ -25,11 +25,20 @@ object Log{
     logger.log(arg)
   }
   
-  def open(logLevel:Int) {
+  def logging[T](logLevel:Int, f: => T) {
+    try{
+      open(logLevel)
+      f
+    }finally{
+      close()
+    }
+  }
+  
+  private def open(logLevel:Int) {
     level = logLevel
   }
   
-  def close() {
+  private def close() {
     val ended = template format new Date
     f("ENDED at %s" format ended)
     logger.close()

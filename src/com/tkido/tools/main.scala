@@ -1,17 +1,16 @@
 package com.tkido.tools
 
 object main extends App {
-  import scala.util.control.Exception._
+  Log.logging(Log.DEBUG, main)
   
-  Log open Log.DEBUG
+  def main() {
+    Log d "Test Start"
+    //val op = allCatch opt retry({ println("trying..."); "13".toInt })
+    val op = retry({ println("trying..."); "a".toInt })
+    
+    println(op.isDefined)
+  }
   
-  Log d "Test Start"
-  
-  val op = allCatch opt retry({ println("trying..."); "13".toInt })
-  //val op = allCatch opt retry({ println("trying..."); "a".toInt })
- 
-  
-  println(op.isDefined)
   
   /*
   def retryIf[T](p: => Boolean)(f: => T):T =
@@ -25,5 +24,5 @@ object main extends App {
           throw e
     }
   */
-  Log.close()
+  
 }
