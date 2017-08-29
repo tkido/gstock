@@ -12,9 +12,9 @@ import java.util.Date
 class Company(code:String, row:Int) {
   val data :Map[String, String] =
     Spider(code) ++
-    tryOrElse(makeLogData _, Map()) ++
-    tryOrElse(makeEdinetData _, Map()) ++
-    tryOrElse(makeTdnetData _, Map()) ++
+    tryOrElse(makeLogData _, Map(), code) ++
+    tryOrElse(makeEdinetData _, Map(), code) ++
+    tryOrElse(makeTdnetData _, Map(), code) ++
     Map("ID"   -> code,
         "値"   -> """=IF(【現値】=" ", 【前終】, 【現値】)""",
         "値幅" -> """=VLOOKUP(【基準】, 値幅制限表, 2, TRUE)""",

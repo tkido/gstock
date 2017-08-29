@@ -7,7 +7,7 @@ import com.tkido.tools.Search
 import com.tkido.tools.tryOrElse
 
 class Company(code:String) {
-  val fairValue = tryOrElse(makeFairValue _, 0.0)
+  val fairValue = tryOrElse(makeFairValue _, 0.0, code)
   def makeFairValue = edinet.Company(code).fairValue.toDouble
   
   val (currentPrice, highest, outStanding, per, pbr) = parseData
@@ -22,11 +22,11 @@ class Company(code:String) {
       Search("pbr", """<dt class="title">PBR""".r, Search.LAST, _.replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "")) )
     )
 
-    val currentPrice = tryOrElse(() => map("currentPrice").toDouble, 0.0)
-    val highest = tryOrElse(() => map("highest").toDouble, 0.0)
-    val outStanding = tryOrElse(() => map("outStanding").toDouble, 0.0)
-    val per = tryOrElse(() => map("per").toDouble, 0.0)
-    val pbr = tryOrElse(() => map("pbr").toDouble, 0.0)
+    val currentPrice = tryOrElse(() => map("currentPrice").toDouble, 0.0, code)
+    val highest = tryOrElse(() => map("highest").toDouble, 0.0, code)
+    val outStanding = tryOrElse(() => map("outStanding").toDouble, 0.0, code)
+    val per = tryOrElse(() => map("per").toDouble, 0.0, code)
+    val pbr = tryOrElse(() => map("pbr").toDouble, 0.0, code)
     
     (currentPrice, highest, outStanding, per, pbr)
   }
@@ -59,7 +59,7 @@ class Company(code:String) {
   }
  
   def score :Int = {
-    tryOrElse(tdnetScore, 0) + edinetScore + highScore
+    tryOrElse(tdnetScore, 0, code) + edinetScore + highScore
   }
   
   def isGood() :Boolean = {
