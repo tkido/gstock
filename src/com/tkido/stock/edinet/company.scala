@@ -10,7 +10,7 @@ class Company(code:String) {
   def getGrowthRate :Double = {
     val repos = reports.takeRight(5) //use latest reports only
     
-    if(repos.size == 1) return 1.0
+    if(repos.size <= 1) return 1.0
     if(repos.head.netIncome < 0) return 1.0
     val size = repos.size-1
     val rate = repos.last.netIncome.toDouble / repos.head.netIncome.toDouble
@@ -31,10 +31,13 @@ class Company(code:String) {
     List(reports.last.breakupValue, reports.last.netCash).min
   def flow :Long =
     reports.last.netIncome
-  def fairValue :Long =
+  def fairValue :Long = {
+    if(reports.size == 0) return 0L
     stock + flow * getRate
+  }
   
-  override def toString = {
+  override def toString :String = {
+    if(reports.size == 0) return ""
     val header = Html.toTrTh("年度", "解価", "NetC", "アク", "純利", "FCF", "粗率", "営率", "経率", "純率")
     """<h3>EDINET 有価証券報告書</h3>""" +
     Html.toTable(header :: reports.reverse)
