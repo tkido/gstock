@@ -49,6 +49,10 @@ class Html(url:String, charset:String) {
     search(List(arg))(arg.name)
   }
   
+  override def toString :String = {
+    lines.mkString("\n")
+  }
+  
 }
 
 object Html{

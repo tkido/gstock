@@ -22,11 +22,11 @@ class Company(code:String) {
       Search("pbr", """<dt class="title">PBR""".r, Search.LAST, _.replaceFirst("""倍.*""", "").replaceFirst("""\(.\) """, "")) )
     )
 
-    val currentPrice = tryOrElse(() => map("currentPrice").toDouble, 0.0, code)
-    val highest = tryOrElse(() => map("highest").toDouble, 0.0, code)
-    val outStanding = tryOrElse(() => map("outStanding").toDouble, 0.0, code)
-    val per = tryOrElse(() => map("per").toDouble, 0.0, code)
-    val pbr = tryOrElse(() => map("pbr").toDouble, 0.0, code)
+    val currentPrice = tryOrElse(() => map("currentPrice").toDouble, 0.0, code + html.toString)
+    val highest = tryOrElse(() => map("highest").toDouble, 0.0, code + html.toString)
+    val outStanding = tryOrElse(() => map("outStanding").toDouble, 0.0, code + html.toString)
+    val per = tryOrElse(() => map("per").toDouble, 0.0, code + html.toString)
+    val pbr = tryOrElse(() => map("pbr").toDouble, 0.0, code + html.toString)
     
     (currentPrice, highest, outStanding, per, pbr)
   }
