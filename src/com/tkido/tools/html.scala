@@ -13,8 +13,13 @@ object Search{
   val NEXT = 2
 }
 
+class YahooCannotShowPageException extends RuntimeException
+
 class Html(url:String, charset:String) {
   val lines = Text.readLines(url, charset)
+  
+  if(lines.find(line => line == """<title>ページが表示できません - Yahoo! JAPAN</title>""").isDefined)
+    throw new YahooCannotShowPageException
   
   val trios =
     for((main, last, next) <- (lines, "" :: lines, lines.tail ::: List("")).zipped)
