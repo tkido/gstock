@@ -8,7 +8,7 @@ object Processor {
     edinet.XbrlDownloader(code)
     tdnet.XbrlDownloader(code)
     
-    if(Company(code).isGood)
+    if(Company(code))
       Some(code)
     else
       None

@@ -8,7 +8,7 @@ object SpiderUsProfile {
   def apply(code:String) :Map[String, String] = {
     Log d s"SpiderUsProfile Spidering ${code}"
     
-    val html = Html(s"http://finance.yahoo.com/q/pr?s=${code}+Profile")
+    val html = Html(s"https://finance.yahoo.com/q/pr?s=${code}+Profile")
     html.search(List(
       Search("分類", """^.*?Sector:</td><td class="yfnc_tabledata1"><a href=".*?">(.*?)</a></td>.*$""".r, Search.GROUP, s => s),
       Search("特色", """^.*?<span class="yfi-module-title">Business Summary</span></th><th align="right">&nbsp;</th></tr></table><p>(.*?)</p>.*$""".r, Search.GROUP, s => s),

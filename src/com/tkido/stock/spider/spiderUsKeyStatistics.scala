@@ -18,7 +18,7 @@ object SpiderUsKeyStatistics {
       mantissa + unit
     }
     
-    val html = Html(s"http://finance.yahoo.com/q/ks?s=${code}+Key+Statistics")
+    val html = Html(s"https://finance.yahoo.com/q/ks?s=${code}+Key+Statistics")
     html.search(List(
       Search("発行", """^.*?>Shares Outstanding<font size="-1"><sup>5</sup></font>:</td><td class="yfnc_tabledata1">(.*?)</td>.*$""".r, Search.GROUP, unRound(_).dropRight(3)),
       Search("利", """^.*?Trailing Annual Dividend Yield.*?Trailing Annual Dividend Yield<font size="-1"><sup>3</sup></font>:</td><td class="yfnc_tabledata1">(.*?)</td>.*$""".r, Search.GROUP, raw => if(raw == "N/A") "0.0%" else raw),

@@ -25,7 +25,7 @@ object SpiderUsSummary {
   def apply(code:String) :Map[String, String] = {
     Log d s"SpiderUsSummary Spidering ${code}"
     
-    val html = Html(s"http://finance.yahoo.com/q?s=${code}")
+    val html = Html(s"https://finance.yahoo.com/q?s=${code}")
     val map = html.search(rule)
     map ++ Map("前比" -> (map.getOrElse("sign", "") + map.getOrElse("raw", "")))
   }

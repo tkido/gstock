@@ -7,7 +7,7 @@ import com.tkido.tools.Search
 object Ranking {
   Log d "Ranking spidering"
   
-  val html = Html("http://info.finance.yahoo.co.jp/ranking/?kd=31&tm=d&vl=a&mk=1&p=1")
+  val html = Html("https://info.finance.yahoo.co.jp/ranking/?kd=31&tm=d&vl=a&mk=1&p=1")
   val reTable = """^<tbody>(.*)</tbody>$""".r
   
   val reData = """^<tr class="rankingTabledata yjM"><td class="txtcenter">(\d{1,4})</td><td class="txtcenter"><a href="http://stocks\.finance\.yahoo\.co\.jp/stocks/detail/\?code=(\d{4}).*""".r

@@ -26,13 +26,12 @@ package object tools {
     else source
   }
   
-  def tryOrElse[T](func:() => T, default:T, msg:String) :T = {
+  def tryOrElse[T](func:() => T, default:T) :T = {
     try{
       func()
     }catch{
       case e:Throwable => {
         Log f e
-        Log f msg
         default
       }
     }
