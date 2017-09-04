@@ -12,6 +12,7 @@ org.eclipse.jdt.core.prefs
 *.bak
 ~$*
 .picasa.ini
+
 log/*.log
 data/**/*.txt
 build.properties
@@ -19,3 +20,5 @@ conf.properties
 data/rss/*.html
 data/rss/css
 script/vbs/setting.vbs
+
+target/
