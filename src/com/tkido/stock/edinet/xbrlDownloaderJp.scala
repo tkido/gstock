@@ -2,7 +2,7 @@ package com.tkido.stock.edinet
 
 import com.tkido.stock.Config
 import com.tkido.tools.Text
-import com.tkido.tools.strWrapper
+import com.tkido.tools.MyString
 import com.tkido.tools.retry
 import java.io.File
 import scala.xml._

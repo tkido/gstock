@@ -3,6 +3,17 @@ package com.tkido
 import scala.util.control.Exception._
 
 package object tools {
+  
+  implicit class MyString(s:String) {
+    import scala.util.matching.Regex
+    
+    def matched(re:Regex) :Boolean =
+      re.findFirstIn(s).isDefined
+    
+    def =~(re:Regex) :Boolean = matched(re)
+    def !~(re:Regex) :Boolean = !matched(re)
+  }
+  
   def retry[T](f: => T, max:Int = 3, interval:Int = 1000) :Option[T] =
     allCatch opt retrySub(f, max, interval, 1)
   
@@ -38,7 +49,5 @@ package object tools {
       }
     }
   }
-  
-  implicit def strWrapper(s:String) :MyString = new MyString(s)
   
 }
