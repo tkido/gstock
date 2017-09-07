@@ -4,7 +4,7 @@ import com.tkido.stock.Config
 import com.tkido.tools.Log
 import com.tkido.tools.Text
 import com.tkido.tools.retry
-import com.tkido.tools.strWrapper
+import com.tkido.tools.MyString
 import java.io.File
 import scala.xml._
 

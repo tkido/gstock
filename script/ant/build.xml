@@ -2,7 +2,7 @@
 <project name="xbrl" default="deploy">
   
   <property name="base.dir" value="../.." />
-  <property name="scala.home" value="/usr/local/share/scala-2.11.7" />
+  <property name="scala.home" value="/usr/local/share/scala-2.12.3" />
   <property name="sources.dir" value="${base.dir}/src" />
   <!--
   <property name="deploy.dir" value="/home/jenkins/gstock" /> //set from shell
@@ -12,7 +12,7 @@
       <pathelement location="${base.dir}" />
       <pathelement location="${base.dir}/lib/icu4j-53_1.jar" />
       <pathelement location="${scala.home}/lib/scala-library.jar" />
-      <pathelement location="${scala.home}/lib/scala-xml_2.11-1.0.4.jar" />
+      <pathelement location="${scala.home}/lib/scala-xml_2.12-1.0.6.jar" />
     </path>
     <taskdef resource="scala/tools/ant/antlib.xml">
       <classpath>
