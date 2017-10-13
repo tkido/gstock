@@ -1,6 +1,5 @@
 package com.tkido.tools
 
-import com.ibm.icu.text.Transliterator
 import com.ibm.icu.text.Normalizer
 
 object main extends App {
@@ -24,9 +23,7 @@ object main extends App {
   }
 
   def tidyName(s:String) :String = {
-    val transliterator = Transliterator.getInstance("Fullwidth-Halfwidth");
     val tmp = s.replaceAll("""・|　|＆|ホールディングス?|コーポレーション|カンパニー|グループ|本社|ジャパン$""", "")
-    //transliterator.transliterate(tmp)
     Normalizer.normalize(tmp, Normalizer.NFKC)
   }
   
