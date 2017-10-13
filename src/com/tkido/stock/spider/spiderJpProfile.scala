@@ -1,5 +1,6 @@
 package com.tkido.stock.spider
 
+import com.ibm.icu.text.Transliterator
 import com.tkido.tools.Html
 import com.tkido.tools.Log
 import com.tkido.tools.Search
@@ -28,4 +29,10 @@ object SpiderJpProfile {
       case None       => Map()
     }
   }
+  
+  def tidyName(s:String) :String = {
+    
+    ""
+  }
+  
 }
