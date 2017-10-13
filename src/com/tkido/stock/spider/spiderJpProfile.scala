@@ -1,5 +1,6 @@
 package com.tkido.stock.spider
 
+import com.ibm.icu.text.Normalizer
 import com.tkido.tools.Html
 import com.tkido.tools.Log
 import com.tkido.tools.Search
@@ -7,7 +8,7 @@ import com.tkido.tools.retry
 
 object SpiderJpProfile {
   val rule = List(
-      Search("名称", """<meta http-equiv="Refresh" content="60">""".r, Search.NEXT, _.dropRight(27).replaceFirst("""\(株\)""", "")),
+      Search("名称", """<meta http-equiv="Refresh" content="60">""".r, Search.NEXT, tidyName(_)),
       Search("特色", """<th width="1%" nowrap>特色</th>""".r, Search.NEXT, _.replaceFirst(""" \[企業特色\]""", "")),
       Search("事業", """<th nowrap>連結事業</th>""".r, Search.NEXT, s => s),
       Search("分類", """<th nowrap>業種分類</th>""".r, Search.NEXT, _.replaceAll("・", "")),
@@ -28,4 +29,10 @@ object SpiderJpProfile {
       case None       => Map()
     }
   }
+  
+  def tidyName(s:String) :String = {
+    val tmp = s.dropRight(27).replaceAll("""\(株\)|・|　|＆|ホールディングス?|コーポレーション|カンパニー|グループ|本社|ジャパン$""", "")
+    Normalizer.normalize(tmp, Normalizer.NFKC)
+  }
+  
 }
