@@ -1,8 +1,11 @@
 package com.tkido.tools
 
 import com.ibm.icu.text.Normalizer
+import com.ibm.icu.text.Transliterator
 
 object main extends App {
+  val transliterator = Transliterator.getInstance("Fullwidth-Halfwidth");
+  
   Log.logging(Log.DEBUG, main)
   
   def main() {
@@ -23,8 +26,13 @@ object main extends App {
   }
 
   def tidyName(s:String) :String = {
-    val tmp = s.replaceAll("""・|　|＆|ホールディングス?|コーポレーション|カンパニー|グループ|本社|ジャパン$""", "")
-    Normalizer.normalize(tmp, Normalizer.NFKC)
+    val tmp1 = s.replaceAll("""・|　|＆|ホールディングス?|コーポレーション|カンパニー|グループ|本社|ジャパン$""", "")
+    val tmp2 = Normalizer.normalize(tmp1, Normalizer.NFKC)
+    if(tmp2.size > 10){
+      transliterator.transliterate(tmp2)
+    }else{
+      tmp2
+    }
   }
   
   

@@ -1,12 +1,15 @@
 package com.tkido.stock.spider
 
 import com.ibm.icu.text.Normalizer
+import com.ibm.icu.text.Transliterator
 import com.tkido.tools.Html
 import com.tkido.tools.Log
 import com.tkido.tools.Search
 import com.tkido.tools.retry
 
 object SpiderJpProfile {
+  val transliterator = Transliterator.getInstance("Fullwidth-Halfwidth");
+  
   val rule = List(
       Search("名称", """<meta http-equiv="Refresh" content="60">""".r, Search.NEXT, tidyName(_)),
       Search("特色", """<th width="1%" nowrap>特色</th>""".r, Search.NEXT, _.replaceFirst(""" \[企業特色\]""", "")),
@@ -31,8 +34,13 @@ object SpiderJpProfile {
   }
   
   def tidyName(s:String) :String = {
-    val tmp = s.dropRight(27).replaceAll("""\(株\)|・|　|＆|ホールディングス?|コーポレーション|カンパニー|グループ|本社|ジャパン$""", "")
-    Normalizer.normalize(tmp, Normalizer.NFKC)
+    val tmp1 = s.dropRight(27).replaceAll("""\(株\)|・|　|＆|ホールディングス?|コーポレーション|カンパニー|グループ|本社|ジャパン$""", "")
+    val tmp2 = Normalizer.normalize(tmp1, Normalizer.NFKC)
+    if(tmp2.size > 10){
+      transliterator.transliterate(tmp2)
+    }else{
+      tmp2
+    }
   }
   
 }
