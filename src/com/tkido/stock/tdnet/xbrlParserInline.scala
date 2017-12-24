@@ -2,12 +2,14 @@ package com.tkido.stock.tdnet
 
 import com.tkido.tools.Date.fromJpToSimple
 import com.tkido.tools.Log
+import com.tkido.tools.OpsNum
 import java.io.File
 import scala.xml._
 
 object XbrlParserInline {
   def apply(path :String) :Report[Long] = {
     val fileName = new File(path).getName
+    Log i fileName
     val isQuarter = fileName.charAt(4) == 'q'
     val isConsolidated = fileName.charAt(5) == 'c'
     
@@ -45,7 +47,8 @@ object XbrlParserInline {
       }) &&
       (node.label == "nonFraction") &&
       (node.prefix == "ix") &&
-      (node.attribute("contextRef").get.text == context)
+      (node.attribute("contextRef").get.text == context) &&
+      node.text.isNumeric()
     }
     val nodes = nodeSeq.filter(isValid)
     

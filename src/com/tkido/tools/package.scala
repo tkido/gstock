@@ -3,6 +3,9 @@ package com.tkido
 import scala.util.control.Exception._
 
 package object tools {
+  implicit class OpsNum(val str: String) extends AnyVal {
+    def isNumeric() = scala.util.Try(str.toDouble).isSuccess
+  }
   
   implicit class MyString(s:String) {
     import scala.util.matching.Regex

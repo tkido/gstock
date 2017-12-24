@@ -14,7 +14,7 @@ object Main extends App {
     val pairs = codes zip range
     
     val data =
-      if(Log.isDebug)
+      if(Log.isInfo)
         pairs.map(Processor(_))
       else
         pairs.par.map(Processor(_))
