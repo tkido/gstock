@@ -2,7 +2,7 @@
 'GrowRichSlowly.vbs で使用される設定
 
 '■共通設定
-MS_PASSWORD = "CZPW7960"
+MS_PASSWORD = "hogehoge"
 
 '■マシンごとに違う設定
 '●バージョン設定
